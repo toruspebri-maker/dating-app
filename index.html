@@ -199,6 +199,45 @@
             card.querySelector('p.text-sm').innerText = bio;
         }
     </script>
+
+<!-- Tempatkan Script Supabase di Sini -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://khnutdbcmouvorhlrmvx.supabase.co";
+  const SUPABASE_KEY = "Sb_publishable_THO_LNAdTebdBL46aouZDA_Hdm7psLU";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Fungsi cek user otomatis saat Mini App dibuka
+  const tg = window.Telegram?.WebApp;
+  const tgUser = tg?.initDataUnsafe?.user;
+
+  async function checkAndRegisterUser() {
+    if (!tgUser) return;
+    
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('telegram_id', tgUser.id)
+      .single();
+
+    if (error && error.code === 'PGRST116') {
+      await supabase.from('users').insert([{
+        telegram_id: tgUser.id,
+        username: tgUser.username || '',
+        name: `${tgUser.first_name} ${tgUser.last_name || ''}`.trim(),
+        age: 20,
+        gender: 'Not Specified'
+      }]);
+    }
+  }
+
+  if (tg) {
+    tg.ready();
+    checkAndRegisterUser();
+  }
+</script>
+
 </body>
-  </html>
+</html>
+
           
