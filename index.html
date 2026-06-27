@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TeleMatch Premium UI</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0b141c;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
+        }
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+        }
+        .card-shadow {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .glass-nav {
+            background: rgba(18, 27, 34, 0.85);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .pulse-live {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .swipe-left {
+            transform: translateX(-150%) rotate(-20deg) !important;
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        .swipe-right {
+            transform: translateX(150%) rotate(20deg) !important;
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen justify-between select-none">
+
+    <!-- TOP HEADER -->
+    <div class="px-5 py-4 flex items-center justify-between border-b border-gray-800/60 bg-[#121b22]">
+        <div class="flex items-center space-x-2">
+            <div class="premium-gradient w-8 h-8 rounded-full flex items-center justify-center glow-effect">
+                <i class="fa-solid fa-bolt text-white text-sm"></i>
+            </div>
+            <span class="text-xl font-black tracking-wider bg-gradient-to-r from-pink-500 to-purple-400 bg-clip-text text-transparent">TELEMATCH</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div class="bg-gray-800/80 px-3 py-1 rounded-full flex items-center space-x-1.5 border border-gray-700/50">
+                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                <span class="text-xs font-bold text-amber-400" id="stars-count">120</span>
+            </div>
+            <button class="relative bg-gray-800 p-2 rounded-full border border-gray-700 w-9 h-9 flex items-center justify-center">
+                <i class="fa-solid fa-bell text-gray-300 text-sm"></i>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full"></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER (SWIPE AREA) -->
+    <div class="flex-1 flex items-center justify-center px-4 relative">
+        
+        <!-- CARD PROFIL -->
+        <div id="profile-card" class="w-full max-w-sm h-[70vh] rounded-[28px] overflow-hidden relative card-shadow border border-gray-800/80 transition-all duration-300 bg-[#121b22] flex flex-col justify-end p-6 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600');">
+            
+            <!-- GRADIENT OVERLAY PREMIUM -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b141c] via-[#0b141c]/40 to-transparent pointer-events-none"></div>
+            
+            <!-- BADGE JARAK & LIVE -->
+            <div class="absolute top-4 left-4 z-10 flex space-x-2">
+                <span class="bg-black/40 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10 flex items-center space-x-1">
+                    <i class="fa-solid fa-location-dot text-pink-500"></i>
+                    <span>2.4 km</span>
+                </span>
+                <span class="bg-green-500/20 backdrop-blur-md text-green-400 text-xs font-semibold px-3 py-1.5 rounded-full border border-green-500/30 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-live"></span>
+                    <span>Aktif</span>
+                </span>
+            </div>
+
+            <!-- DETAIL INFO PENGGUNA -->
+            <div class="relative z-10 space-y-2">
+                <div class="flex items-baseline space-x-2">
+                    <h2 class="text-2xl font-black tracking-tight text-white">Nabila, 22</h2>
+                    <i class="fa-solid fa-circle-check text-sky-400 text-lg" title="Terverifikasi"></i>
+                </div>
+                
+                <!-- INTEREST TAGS -->
+                <div class="flex flex-wrap gap-1.5 my-2">
+                    <span class="bg-white/10 backdrop-blur-sm text-gray-200 text-[11px] px-2.5 py-1 rounded-full">🎬 Nonton Film</span>
+                    <span class="bg-white/10 backdrop-blur-sm text-gray-200 text-[11px] px-2.5 py-1 rounded-full">☕ Ngopi</span>
+                    <span class="bg-white/10 backdrop-blur-sm text-gray-200 text-[11px] px-2.5 py-1 rounded-full">🎵 Spotify</span>
+                </div>
+
+                <p class="text-sm text-gray-300 font-medium leading-relaxed">"Cari yang bisa diajak kulineran bareng weekend ini. Suka ngobrol deep-talk sebelum tidur ✨"</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BUTTON ACTION ACTION -->
+    <div class="flex justify-center items-center space-x-5 pb-6 pt-2 px-4 relative z-10">
+        <button id="btn-dislike" class="w-14 h-14 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center text-xl text-gray-400 shadow-lg active:scale-90 transition-all duration-150 hover:bg-gray-800">
+            <i class="fa-solid fa-xmark text-red-500"></i>
+        </button>
+        <button id="btn-superlike" class="w-12 h-12 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center text-lg text-gray-400 shadow-lg active:scale-90 transition-all duration-150 hover:bg-gray-800">
+            <i class="fa-solid fa-star text-sky-400"></i>
+        </button>
+        <button id="btn-like" class="w-14 h-14 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center text-xl text-gray-400 shadow-lg active:scale-90 transition-all duration-150 hover:bg-gray-800">
+            <i class="fa-solid fa-heart text-emerald-500"></i>
+        </button>
+    </div>
+
+    <!-- BOTTOM PREMIUM NAVIGATION BAR -->
+    <div class="glass-nav px-6 py-3 flex justify-between items-center text-gray-500">
+        <button class="flex flex-col items-center space-y-1 text-pink-500">
+            <i class="fa-solid fa-fire text-xl"></i>
+            <span class="text-[10px] font-bold">Temukan</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 hover:text-gray-300 relative" id="btn-premium-menu">
+            <i class="fa-solid fa-crown text-xl text-amber-500"></i>
+            <span class="text-[10px] font-bold text-amber-500">VIP</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 hover:text-gray-300 relative">
+            <i class="fa-solid fa-comment-dots text-xl"></i>
+            <span class="text-[10px] font-medium">Obrolan</span>
+            <span class="absolute top-0 right-2 w-4 h-4 bg-pink-500 text-[9px] text-white font-bold rounded-full flex items-center justify-center scale-90">3</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 hover:text-gray-300">
+            <i class="fa-solid fa-user text-xl"></i>
+            <span class="text-[10px] font-medium">Profil</span>
+        </button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        if(tg) {
+            tg.ready();
+            tg.expand();
+            if(tg.setHeaderColor) tg.setHeaderColor('#121b22');
+        }
+
+        const card = document.getElementById('profile-card');
+        
+        document.getElementById('btn-dislike').addEventListener('click', () => {
+            card.classList.add('swipe-left');
+            setTimeout(() => { resetCard('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600', 'Salsa, 21', '1.8 km', '"Suka jalan-jalan sore, cari yang sefrekuensi."'); }, 400);
+        });
+
+        document.getElementById('btn-like').addEventListener('click', () => {
+            card.classList.add('swipe-right');
+            setTimeout(() => {
+                if(tg && tg.showPopup) {
+                    tg.showPopup({
+                        title: 'Match! 🎉',
+                        message: 'Nabila juga menyukaimu! Kirim pesan sekarang?',
+                        buttons: [{id: 'msg', type: 'default', text: 'Kirim Pesan (Buka Chat)'}]
+                    });
+                } else {
+                    alert('Match! (Simulasi Pop-up Telegram)');
+                }
+                resetCard('https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600', 'Amanda, 24', '4.2 km', '"Coffee enthusiast, let\'s share stories."');
+            }, 400);
+        });
+
+        document.getElementById('btn-premium-menu').addEventListener('click', () => {
+            if(tg && tg.showPopup) {
+                tg.showPopup({
+                    title: '👑 TeleMatch VIP',
+                    message: 'Lihat siapa yang menyukaimu & dapatkan swipe tanpa batas dengan 150 Telegram Stars!',
+                    buttons: [
+                        {id: 'buy', type: 'default', text: 'Aktifkan Premium'},
+                        {id: 'cancel', type: 'cancel', text: 'Nanti Saja'}
+                    ]
+                });
+            } else {
+                alert('Menu VIP Premium Terbuka');
+            }
+        });
+
+        function resetCard(imgUrl, nameAge, dist, bio) {
+            card.className = "w-full max-w-sm h-[70vh] rounded-[28px] overflow-hidden relative card-shadow border border-gray-800/80 transition-all duration-300 bg-[#121b22] flex flex-col justify-end p-6 bg-cover bg-center";
+            card.style.backgroundImage = `url('${imgUrl}')`;
+            card.querySelector('h2').innerHTML = `${nameAge}`;
+            card.querySelector('span', 'fa-location-dot').parentNode.querySelector('span:not(.fa-solid)').innerText = dist;
+            card.querySelector('p.text-sm').innerText = bio;
+        }
+    </script>
+</body>
+  </html>
+          
