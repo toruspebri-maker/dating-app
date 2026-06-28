@@ -1,83 +1,69 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER-OPS | COMMAND CENTER</title>
+    <title>CYBER-OPS | GLOBAL TACTICAL TERMINAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #00FF41; font-family: 'Courier New', monospace; }
-        .cyber-card { border: 1px solid #00FF41; background: #050505; cursor: pointer; transition: 0.2s; }
-        .cyber-card:hover { background: #002200; box-shadow: 0 0 10px #00FF41; }
-        #terminal { height: 200px; overflow-y: auto; border: 1px solid #00FF41; padding: 15px; font-size: 12px; background: #080808; }
+        body { background: #050505; color: #00FF41; font-family: 'Courier New', Courier, monospace; }
+        .cyber-box { border: 1px solid #00FF41; background: #0a0a0a; }
+        .scan-line { animation: scan 2s linear infinite; }
+        @keyframes scan { from { transform: translateY(0); } to { transform: translateY(100%); } }
+        #terminal { height: 250px; overflow-y: auto; background: #000; border: 1px solid #00FF41; padding: 10px; }
     </style>
 </head>
-<body class="p-4">
-    <h1 class="text-2xl font-bold text-center uppercase mb-4 tracking-widest text-shadow">Cyber-Ops Tactical Terminal</h1>
-    
-    <div id="terminal" class="mb-4">> System Ready... Select Module...</div>
+<body class="p-4 max-w-4xl mx-auto">
 
-    <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2"></div>
+    <header class="text-center mb-6">
+        <h1 class="text-3xl font-bold tracking-widest text-shadow">CYBER-OPS TERMINAL</h1>
+        <p class="text-xs uppercase text-gray-500">Global Cyber Intelligence & Reconnaissance</p>
+    </header>
+
+    <div id="terminal" class="mb-4 text-sm whitespace-pre-wrap font-bold">
+> SYSTEM BOOT... 
+> MODULES LOADED (30/30)
+> AWAITING COMMANDS...
+    </div>
+
+    <div id="grid" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
 
     <script>
         const modules = [
             { name: "IP Trace", url: "https://ipapi.co/json/" },
-            { name: "Crypto Price", url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" },
-            { name: "ISS Position", url: "https://api.wheretheiss.at/v1/satellites/25544" },
-            { name: "Public Holidays", url: "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide" },
-            { name: "Tech News", url: "https://hacker-news.firebaseio.com/v0/topstories.json" },
-            { name: "Random User", url: "https://randomuser.me/api/" },
-            { name: "Gender Predict", url: "https://api.genderize.io/?name=lucas" },
-            { name: "Dog Fact", url: "https://dog-api.kinduff.com/api/facts" },
-            { name: "University List", url: "http://universities.hipolabs.com/search?country=indonesia" },
-            { name: "Anime Quote", url: "https://animechan.xyz/api/random" },
-            { name: "Bored Task", url: "https://www.boredapi.com/api/activity" },
-            { name: "Cat Fact", url: "https://catfact.ninja/fact" },
-            { name: "Game Info", url: "https://www.freetogame.com/api/games" },
-            { name: "Coffee Info", url: "https://coffee.alexflipnote.dev/random.json" },
-            { name: "Advice", url: "https://api.adviceslip.com/advice" },
-            { name: "Exchange Rate", url: "https://api.exchangerate-api.com/v4/latest/USD" },
-            { name: "Emoji List", url: "https://emojihub.yurace.pro/api/random" },
-            { name: "JSON Placeholder", url: "https://jsonplaceholder.typicode.com/posts/1" },
-            { name: "Pokemon List", url: "https://pokeapi.co/api/v2/pokemon/ditto" },
-            { name: "Beer Data", url: "https://api.punkapi.com/v2/beers/random" },
-            { name: "Agify (Age)", url: "https://api.agify.io/?name=michael" },
-            { name: "Nation Data", url: "https://restcountries.com/v3.1/name/indonesia" },
-            { name: "Book Data", url: "https://openlibrary.org/api/books?bibkeys=ISBN:9780596009205&format=json" },
-            { name: "Giphy (Random)", url: "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC" },
-            { name: "Music Data", url: "https://itunes.apple.com/search?term=jack+johnson" },
-            { name: "Numbers Fact", url: "http://numbersapi.com/random/trivia" },
+            { name: "DNS Lookup", url: "https://api.hackertarget.com/dnslookup/?q=google.com&format=json" },
+            { name: "Geo-Loc", url: "https://get.geojs.io/v1/ip/geo.json" },
+            { name: "Crypto", url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd" },
+            { name: "Server Status", url: "https://api.github.com/zen" },
             { name: "User Agent", url: "https://httpbin.org/user-agent" },
-            { name: "Server Status", url: "https://httpbin.org/status/200" },
-            { name: "Currency List", url: "https://api.frankfurter.app/currencies" },
-            { name: "Kanye Quote", url: "https://api.kanye.rest/" }
+            { name: "Public Holidays", url: "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide" },
+            { name: "Tech News", url: "https://hacker-news.firebaseio.com/v0/item/2921983.json" },
+            { name: "Gen Predict", url: "https://api.genderize.io/?name=alex" },
+            { name: "Bored Task", url: "https://www.boredapi.com/api/activity" },
+            // ... Tambahkan URL lain untuk mengaktifkan semua slot
         ];
 
         const grid = document.getElementById('grid');
         const term = document.getElementById('terminal');
 
-        function log(msg) {
-            term.innerHTML += `\n> ${msg}`;
-            term.scrollTop = term.scrollHeight;
-        }
+        function log(msg) { term.innerText += "\n> " + msg; term.scrollTop = term.scrollHeight; }
 
-        async function activateModule(name, url) {
-            log(`INITIATING ${name.toUpperCase()}...`);
+        async function run(mod) {
+            term.innerText = "> INITIALIZING " + mod.name.toUpperCase() + "...";
             try {
-                const response = await fetch(url);
-                const data = await response.json();
-                log(`[SUCCESS] Data Retrieved: ${JSON.stringify(data).slice(0, 80)}...`);
-            } catch (err) {
-                log(`[ERROR] Module ${name} failed to connect.`);
-            }
+                const res = await fetch(mod.url);
+                const data = await res.json();
+                
+                // Formatter cerdas untuk tampilan pro
+                let output = `[INTEL REPORT - ${mod.name.toUpperCase()}]\n`;
+                output += JSON.stringify(data, null, 2).substring(0, 400); 
+                
+                term.innerText = output + "\n\n> SCAN COMPLETED. AWAITING INPUT.";
+            } catch(e) { term.innerText = "> ERROR: FIREWALL BLOCKED CONNECTION."; }
         }
 
-        modules.forEach((mod, index) => {
-            grid.innerHTML += `
-                <div class="cyber-card p-2 text-[10px] text-center" onclick="activateModule('${mod.name}', '${mod.url}')">
-                    ${index + 1}. ${mod.name}
-                </div>
-            `;
+        modules.forEach((mod, i) => {
+            grid.innerHTML += `<div class="cyber-box p-2 text-[10px] text-center hover:bg-[#00FF41] hover:text-black transition" onclick="run(modules[${i}])">${i+1}. ${mod.name}</div>`;
         });
     </script>
 </body>
