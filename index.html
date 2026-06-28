@@ -2,72 +2,83 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TeleMatch Premium</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://sad.adsgram.ai/js/adsgram.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER-OPS | COMMAND CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0b141c; color: white; font-family: sans-serif; overflow: hidden; }
-        .premium-gradient { background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%); }
-        .swipe-right { transform: translateX(150%) rotate(20deg) !important; opacity: 0; transition: all 0.5s ease; }
+        body { background: #000; color: #00FF41; font-family: 'Courier New', monospace; }
+        .cyber-card { border: 1px solid #00FF41; background: #050505; cursor: pointer; transition: 0.2s; }
+        .cyber-card:hover { background: #002200; box-shadow: 0 0 10px #00FF41; }
+        #terminal { height: 200px; overflow-y: auto; border: 1px solid #00FF41; padding: 15px; font-size: 12px; background: #080808; }
     </style>
 </head>
-<body class="flex flex-col h-screen">
+<body class="p-4">
+    <h1 class="text-2xl font-bold text-center uppercase mb-4 tracking-widest text-shadow">Cyber-Ops Tactical Terminal</h1>
+    
+    <div id="terminal" class="mb-4">> System Ready... Select Module...</div>
 
-    <!-- HEADER -->
-    <div class="px-5 py-4 flex items-center justify-between border-b border-gray-800 bg-[#121b22]">
-        <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">TELEMATCH</span>
-        <div class="bg-gray-800 px-3 py-1 rounded-full border border-gray-700 flex items-center space-x-1.5">
-            <i class="fa-solid fa-star text-amber-400 text-xs"></i>
-            <span class="text-xs font-bold text-amber-400" id="stars-count">0</span>
-        </div>
-    </div>
-
-    <!-- MAIN SWIPE AREA -->
-    <div class="flex-1 flex flex-col items-center justify-center p-4">
-        <div id="profile-card" class="w-full max-w-sm h-[60vh] rounded-[28px] bg-cover bg-center flex flex-col justify-end p-6 border border-gray-800 bg-[url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600')]">
-            <h2 class="text-2xl font-black">Nabila, 22</h2>
-            <p class="text-sm text-gray-200">"Suka ngopi dan deep-talk ✨"</p>
-        </div>
-
-        <!-- REWARD AD BUTTON -->
-        <button id="btn-ads" class="mt-6 bg-emerald-600 px-8 py-3 rounded-full font-bold shadow-lg active:scale-90 transition">
-            <i class="fa-solid fa-play mr-2"></i>Nonton Iklan (+5 Stars)
-        </button>
-    </div>
+    <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2"></div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        const supabase = supabase.createClient("https://khnutdbcmouvorhlrmvx.supabase.co", "Sb_publishable_THO_LNAdTebdBL46aouZDA_Hdm7psLU");
-        const AdController = window.Adsgram.init({ blockId: "36435" });
+        const modules = [
+            { name: "IP Trace", url: "https://ipapi.co/json/" },
+            { name: "Crypto Price", url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" },
+            { name: "ISS Position", url: "https://api.wheretheiss.at/v1/satellites/25544" },
+            { name: "Public Holidays", url: "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide" },
+            { name: "Tech News", url: "https://hacker-news.firebaseio.com/v0/topstories.json" },
+            { name: "Random User", url: "https://randomuser.me/api/" },
+            { name: "Gender Predict", url: "https://api.genderize.io/?name=lucas" },
+            { name: "Dog Fact", url: "https://dog-api.kinduff.com/api/facts" },
+            { name: "University List", url: "http://universities.hipolabs.com/search?country=indonesia" },
+            { name: "Anime Quote", url: "https://animechan.xyz/api/random" },
+            { name: "Bored Task", url: "https://www.boredapi.com/api/activity" },
+            { name: "Cat Fact", url: "https://catfact.ninja/fact" },
+            { name: "Game Info", url: "https://www.freetogame.com/api/games" },
+            { name: "Coffee Info", url: "https://coffee.alexflipnote.dev/random.json" },
+            { name: "Advice", url: "https://api.adviceslip.com/advice" },
+            { name: "Exchange Rate", url: "https://api.exchangerate-api.com/v4/latest/USD" },
+            { name: "Emoji List", url: "https://emojihub.yurace.pro/api/random" },
+            { name: "JSON Placeholder", url: "https://jsonplaceholder.typicode.com/posts/1" },
+            { name: "Pokemon List", url: "https://pokeapi.co/api/v2/pokemon/ditto" },
+            { name: "Beer Data", url: "https://api.punkapi.com/v2/beers/random" },
+            { name: "Agify (Age)", url: "https://api.agify.io/?name=michael" },
+            { name: "Nation Data", url: "https://restcountries.com/v3.1/name/indonesia" },
+            { name: "Book Data", url: "https://openlibrary.org/api/books?bibkeys=ISBN:9780596009205&format=json" },
+            { name: "Giphy (Random)", url: "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC" },
+            { name: "Music Data", url: "https://itunes.apple.com/search?term=jack+johnson" },
+            { name: "Numbers Fact", url: "http://numbersapi.com/random/trivia" },
+            { name: "User Agent", url: "https://httpbin.org/user-agent" },
+            { name: "Server Status", url: "https://httpbin.org/status/200" },
+            { name: "Currency List", url: "https://api.frankfurter.app/currencies" },
+            { name: "Kanye Quote", url: "https://api.kanye.rest/" }
+        ];
 
-        // Fungsi Reward
-        async function addReward() {
-            const userId = tg.initDataUnsafe.user.id;
-            // Panggil fungsi SQL untuk menambah stars
-            await supabase.rpc('increment_stars', { p_telegram_id: userId, amount: 5 });
-            alert("Reward diterima! Saldo bertambah.");
-            updateUI();
+        const grid = document.getElementById('grid');
+        const term = document.getElementById('terminal');
+
+        function log(msg) {
+            term.innerHTML += `\n> ${msg}`;
+            term.scrollTop = term.scrollHeight;
         }
 
-        document.getElementById('btn-ads').addEventListener('click', () => {
-            AdController.show().then((result) => {
-                if (result.done) addReward();
-            });
+        async function activateModule(name, url) {
+            log(`INITIATING ${name.toUpperCase()}...`);
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                log(`[SUCCESS] Data Retrieved: ${JSON.stringify(data).slice(0, 80)}...`);
+            } catch (err) {
+                log(`[ERROR] Module ${name} failed to connect.`);
+            }
+        }
+
+        modules.forEach((mod, index) => {
+            grid.innerHTML += `
+                <div class="cyber-card p-2 text-[10px] text-center" onclick="activateModule('${mod.name}', '${mod.url}')">
+                    ${index + 1}. ${mod.name}
+                </div>
+            `;
         });
-
-        async function updateUI() {
-            const userId = tg.initDataUnsafe.user.id;
-            const { data } = await supabase.from('users').select('stars').eq('telegram_id', userId).single();
-            if (data) document.getElementById('stars-count').innerText = data.stars;
-        }
-
-        tg.ready();
-        tg.expand();
-        updateUI();
     </script>
 </body>
 </html>
