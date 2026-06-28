@@ -1,73 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CYBER-OPS // GLOBAL COMMAND</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&display=swap');
-        body { background: #000; color: #00FF41; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; margin: 0; }
-        .panel { background: #0a0a0a; border: 1px solid #00FF41; display: flex; flex-direction: column; }
-        .btn-tac { border: 1px solid #00FF41; padding: 6px; text-align: left; font-size: 9px; transition: 0.3s; width: 100%; margin-bottom: 4px; }
-        .btn-tac:hover { background: #00FF41; color: #000; }
-        .status-dot { height: 6px; width: 6px; background-color: #00FF41; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        body { margin: 0; background: #000; color: #00FF41; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
+        /* CCTV Utama Layar Penuh */
+        #cctv-feed { width: 100vw; height: 100vh; border: none; }
+        /* Widget Peta Serangan Siber (Diperkecil) */
+        .map-widget { position: absolute; bottom: 15px; right: 15px; width: 280px; height: 180px; border: 1px solid #00FF41; background: #000; overflow: hidden; }
+        /* Panel Menu Melayang */
+        .glass { background: rgba(0,0,0,0.85); border: 1px solid #00FF41; backdrop-filter: blur(5px); }
     </style>
 </head>
-<body class="grid grid-cols-12 h-screen p-2 gap-2">
+<body>
 
-    <div class="col-span-2 panel p-2">
-        <h2 class="text-[10px] font-bold border-b border-[#00FF41] pb-1 mb-2">GLOBAL NODES</h2>
-        <button onclick="autoDetectCCTV()" class="btn-tac animate-pulse border-[#ff0000] text-[#ff0000]">>> AUTO-SCAN REGION</button>
-        <button onclick="updateVisual('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g')" class="btn-tac">ASIA_NODE_ID</button>
-        <button onclick="updateVisual('https://www.youtube.com/embed/live_stream?channel=UCh2mH_0G467yYwZ5Gz8G6gQ')" class="btn-tac">ASIA_NODE_JP</button>
-        <button onclick="updateVisual('https://threatmap.checkpoint.com/')" class="btn-tac">CYBER_THREAT_MAP</button>
+    <iframe id="cctv-feed" src="https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g"></iframe>
+
+    <div class="glass absolute top-4 left-4 p-3 w-52 text-[10px]">
+        <div class="font-bold border-b border-[#00FF41] mb-2">OPERATOR_PROFILE</div>
+        <div id="user-info" class="mb-3">LOADING...</div>
+        
+        <button onclick="autoDetectCCTV()" class="w-full text-left p-1 border border-[#ff0000] text-[#ff0000] mb-2 animate-pulse">>> AUTO-SCAN REGION CCTV</button>
+        <button onclick="updateCCTV('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g')" class="w-full text-left p-1 border border-[#00FF41] mb-1">CCTV: ASIA_NODE</button>
+        <button onclick="updateCCTV('https://www.youtube.com/embed/live_stream?channel=UCh2mH_0G467yYwZ5Gz8G6gQ')" class="w-full text-left p-1 border border-[#00FF41]">CCTV: GLOBAL_NODE</button>
     </div>
 
-    <div class="col-span-5 panel p-2">
-        <div id="stats" class="text-[8px] mb-2 border border-[#00FF41] p-1">
-            GLOBAL_OPERATORS: <span id="op-count">0</span> | NETWORK: <span class="text-[#00FF41]">STABLE</span>
-        </div>
-        <h2 class="text-[9px] font-bold border-b border-[#00FF41] pb-1">TACTICAL LOG</h2>
-        <div id="terminal" class="flex-grow overflow-y-auto text-[8px] my-2 space-y-1"></div>
-    </div>
-
-    <div class="col-span-5 panel relative">
-        <div class="absolute top-0 right-0 p-1 text-[8px] bg-black border-l border-b border-[#00FF41]">
-            <span class="status-dot"></span> LIVE_STREAM
-        </div>
-        <iframe id="visual-feed" class="w-full h-full border-none" src="https://threatmap.checkpoint.com/"></iframe>
+    <div class="map-widget">
+        <div class="text-[8px] p-1 border-b border-[#00FF41]">LIVE_THREAT_MONITOR</div>
+        <iframe class="w-full h-full" src="https://threatmap.checkpoint.com/"></iframe>
     </div>
 
     <script>
-        const term = document.getElementById('terminal');
-        const opCount = document.getElementById('op-count');
+        // Profil Pengguna
+        const userDiv = document.getElementById('user-info');
+        userDiv.innerHTML = `ID: OPS_${Math.floor(Math.random()*9000)}<br>PLATFORM: ${navigator.platform}<br>STATUS: ACTIVE_GLOBAL`;
 
-        // Simulasi keramaian global
-        setInterval(() => {
-            opCount.innerText = 1200 + Math.floor(Math.random() * 500);
-            if (Math.random() > 0.7) log("INCOMING_DATA_PACKET: " + Math.random().toString(36).substring(7).toUpperCase());
-        }, 2000);
+        function updateCCTV(url) { document.getElementById('cctv-feed').src = url; }
 
-        function log(msg) { 
-            term.innerHTML += `<div class="opacity-80">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
-            term.scrollTop = term.scrollHeight;
-        }
-
-        function updateVisual(url) {
-            document.getElementById('visual-feed').src = url;
-            log("ROUTING CONNECTION TO: " + url.substring(8, 15));
-        }
-
+        // Fungsi Deteksi Lokasi untuk CCTV Lokal
         function autoDetectCCTV() {
-            log("GEOLOCATION_REQUEST_INIT...");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
-                    log(`SYNCING TO REGION: ${pos.coords.latitude.toFixed(1)}, ${pos.coords.longitude.toFixed(1)}`);
-                    updateVisual('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g');
-                }, () => log("ERR: GEO_RESTRICTED"));
+                    const lat = pos.coords.latitude;
+                    // Logika: Jika di Indonesia (lat antara -11 s/d 6)
+                    if (lat >= -11 && lat <= 6) {
+                        updateCCTV('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g');
+                    } else {
+                        updateCCTV('https://www.youtube.com/embed/live_stream?channel=UCh2mH_0G467yYwZ5Gz8G6gQ');
+                    }
+                    alert("CCTV disesuaikan dengan wilayah Anda: " + lat.toFixed(2));
+                });
+            } else {
+                alert("Geolocation tidak didukung.");
             }
         }
-        log("SYSTEMS_ONLINE // GLOBAL_NETWORK_SYNCED");
     </script>
 </body>
 </html>
