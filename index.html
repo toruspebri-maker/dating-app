@@ -6,52 +6,49 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&display=swap');
-        body { background: #050505; color: #00FF41; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; }
-        .panel { background: #0a0a0a; border: 1px solid #00FF41; }
-        .frame { width: 100%; height: 100%; border: none; }
-        button { transition: 0.3s; }
+        body { background: #000; color: #00FF41; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; margin: 0; }
+        .panel { background: #0a0a0a; border: 1px solid #00FF41; display: flex; flex-direction: column; }
+        .btn-tac { border: 1px solid #00FF41; padding: 6px; text-align: left; font-size: 10px; transition: 0.3s; }
+        .btn-tac:hover { background: #00FF41; color: #000; }
     </style>
 </head>
-<body class="p-2 grid grid-cols-1 md:grid-cols-3 gap-2 h-screen">
+<body class="grid grid-cols-2 h-screen p-2 gap-2">
 
-    <!-- Kolom 1: Kontrol & Profil -->
-    <div class="panel p-4 flex flex-col overflow-hidden">
+    <!-- Kolom 1: Kontrol & Profil (50%) -->
+    <div class="panel p-3 overflow-hidden">
         <!-- Profil Pengguna -->
-        <div class="mb-4 p-2 border border-[#00FF41] text-[10px]">
+        <div class="mb-3 p-2 border border-[#00FF41] text-[10px]">
             <div class="font-bold border-b border-[#00FF41] mb-1">OPERATOR_PROFILE</div>
-            <div id="user-info">DETECTING_USER...</div>
+            <div id="user-info">SCANNING_IDENTITY...</div>
         </div>
 
-        <h2 class="text-xs font-bold border-b border-[#00FF41] pb-2 mb-2">TACTICAL COMMAND</h2>
-        <div id="terminal" class="flex-grow overflow-y-auto text-[10px] space-y-1">
+        <!-- Terminal Log -->
+        <h2 class="text-[9px] font-bold border-b border-[#00FF41] pb-1">TACTICAL COMMAND LOG</h2>
+        <div id="terminal" class="flex-grow overflow-y-auto text-[8px] my-2 space-y-1">
             <div class="text-[#00FF41]">>> SYSTEM_READY_ONLINE</div>
         </div>
 
-        <div class="mt-4 grid grid-cols-1 gap-1 text-[9px]">
-            <!-- CCTV Publik -->
-            <button onclick="updateVisual('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g')" class="p-2 border border-[#00FF41] hover:bg-[#00FF41] hover:text-black">LIVE CCTV: JAKARTA TRAFFIC</button>
-            <button onclick="updateVisual('https://www.youtube.com/embed/live_stream?channel=UCh2mH_0G467yYwZ5Gz8G6gQ')" class="p-2 border border-[#00FF41] hover:bg-[#00FF41] hover:text-black">LIVE CCTV: TOKYO CROSSING</button>
-            <button onclick="updateVisual('https://threatmap.checkpoint.com/')" class="p-2 border border-[#00FF41] hover:bg-[#00FF41] hover:text-black">CYBER THREAT MAP</button>
+        <!-- Tombol Kontrol -->
+        <div class="grid grid-cols-1 gap-2">
+            <button onclick="autoDetectCCTV()" class="btn-tac animate-pulse border-[#ff0000] text-[#ff0000]">>> AUTO-REGION SCAN (CCTV)</button>
+            <button onclick="updateVisual('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g')" class="btn-tac">LIVE CCTV: JAKARTA TRAFFIC</button>
+            <button onclick="updateVisual('https://threatmap.checkpoint.com/')" class="btn-tac">GLOBAL CYBER THREAT MAP</button>
+            <button onclick="updateVisual('https://earth.nullschool.net/#current/wind/surface/level/orthographic=-105.41,20.25,3000')" class="btn-tac">LIVE WIND/WEATHER MAP</button>
         </div>
     </div>
 
-    <!-- Kolom 2 & 3: Visual Feed -->
-    <div class="md:col-span-2 panel overflow-hidden relative">
-        <div id="visual-overlay" class="absolute top-2 left-2 z-10 bg-black p-1 text-[10px] border border-[#00FF41]">ACTIVE_FEED: THREAT_MAP</div>
-        <iframe id="visual-feed" class="frame" src="https://threatmap.checkpoint.com/"></iframe>
+    <!-- Kolom 2: Visual Feed (50%) -->
+    <div class="panel overflow-hidden relative">
+        <div id="visual-overlay" class="absolute top-0 left-0 text-[8px] p-1 bg-black border-r border-b border-[#00FF41]">FEED: READY_STATE</div>
+        <iframe id="visual-feed" class="w-full h-full border-none" src="https://threatmap.checkpoint.com/"></iframe>
     </div>
 
     <script>
-        const term = document.getElementById('terminal');
+        // Inisialisasi Profil
         const userDiv = document.getElementById('user-info');
-
-        // Deteksi Profil Pengguna
-        userDiv.innerHTML = `
-            <div>ID: OPERATOR_ALPHA</div>
-            <div>IP: ${window.location.hostname || "127.0.0.1"}</div>
-            <div>PLATFORM: ${navigator.platform}</div>
-            <div>STATUS: AUTHORIZED</div>
-        `;
+        const term = document.getElementById('terminal');
+        
+        userDiv.innerHTML = `<div>ID: OPS_ALPHA_${Math.floor(Math.random()*9000)}</div><div>PLATFORM: ${navigator.platform}</div><div>STATUS: SECURE_LINK</div>`;
 
         function log(msg) { 
             term.innerHTML += `<div class="opacity-80">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
@@ -60,14 +57,30 @@
 
         function updateVisual(url) {
             document.getElementById('visual-feed').src = url;
-            document.getElementById('visual-overlay').innerText = "ACTIVE_FEED: " + url.substring(8, 22) + "...";
-            log("SWITCHING VISUAL FEED TO: " + url);
+            document.getElementById('visual-overlay').innerText = "FEED: " + url.substring(8, 25) + "...";
+            log("SWITCHING FEED: " + url.substring(8, 20));
         }
 
-        log("INITIALIZING ENTERPRISE MODULES...");
-        log("SATELLITE_LINK: ESTABLISHED");
-        log("CCTV_FEED_ARRAY: LOADED");
+        // Fungsi Deteksi Lokasi Otomatis (CCTV Daerah Pengguna)
+        function autoDetectCCTV() {
+            log("REQUESTING GEOLOCATION...");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    log(`LOCATION FOUND: LAT ${pos.coords.latitude.toFixed(2)}`);
+                    // Jika user di wilayah Indonesia (Latitude -11 s/d 6)
+                    if (pos.coords.latitude >= -11 && pos.coords.latitude <= 6) {
+                        updateVisual('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g');
+                        log("REGION DETECTED: INDONESIA - CCTV LINKED");
+                    } else {
+                        updateVisual('https://www.youtube.com/embed/live_stream?channel=UCh2mH_0G467yYwZ5Gz8G6gQ');
+                        log("REGION DETECTED: GLOBAL - CCTV LINKED");
+                    }
+                }, () => log("GEO_ACCESS_DENIED. DEFAULTING TO GLOBAL."));
+            }
+        }
+
+        log("SYSTEMS OPERATIONAL...");
     </script>
 </body>
-</html>
-
+    </html>
+            
