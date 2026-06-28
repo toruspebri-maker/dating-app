@@ -2,69 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER-OPS | GLOBAL TACTICAL TERMINAL</title>
+    <title>CYBER-OPS | ENTERPRISE TACTICAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #050505; color: #00FF41; font-family: 'Courier New', Courier, monospace; }
-        .cyber-box { border: 1px solid #00FF41; background: #0a0a0a; }
-        .scan-line { animation: scan 2s linear infinite; }
-        @keyframes scan { from { transform: translateY(0); } to { transform: translateY(100%); } }
-        #terminal { height: 250px; overflow-y: auto; background: #000; border: 1px solid #00FF41; padding: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'JetBrains Mono', monospace; background: #000; color: #00FF41; overflow: hidden; }
+        .crt { animation: flicker 0.15s infinite; }
+        @keyframes flicker { 0% { opacity: 0.98; } 50% { opacity: 1; } }
+        .glass { background: rgba(0, 20, 0, 0.8); border: 1px solid #004400; backdrop-filter: blur(5px); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="p-4 max-w-4xl mx-auto">
+<body class="h-screen flex flex-col p-4">
 
-    <header class="text-center mb-6">
-        <h1 class="text-3xl font-bold tracking-widest text-shadow">CYBER-OPS TERMINAL</h1>
-        <p class="text-xs uppercase text-gray-500">Global Cyber Intelligence & Reconnaissance</p>
+    <header class="flex justify-between items-center mb-4 border-b border-[#00FF41] pb-2">
+        <div class="text-xl font-bold italic tracking-tighter">CYBER-OPS // [ENT_NODE_01]</div>
+        <div id="clock" class="text-xs">SYSTEM_TIME: 00:00:00</div>
     </header>
 
-    <div id="terminal" class="mb-4 text-sm whitespace-pre-wrap font-bold">
-> SYSTEM BOOT... 
-> MODULES LOADED (30/30)
-> AWAITING COMMANDS...
-    </div>
+    <main class="flex-grow flex gap-4">
+        <div class="w-1/3 glass p-4 overflow-y-auto scrollbar-hide">
+            <h2 class="text-xs font-bold mb-4 opacity-70 border-b border-[#00FF41]">TACTICAL MODULES</h2>
+            <div id="module-list" class="space-y-1"></div>
+        </div>
 
-    <div id="grid" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+        <div class="w-2/3 glass p-4 flex flex-col">
+            <div id="terminal" class="flex-grow overflow-y-auto text-sm"></div>
+            <div id="status-bar" class="mt-2 text-[10px] border-t border-[#00FF41] pt-1">STATUS: READY</div>
+        </div>
+    </main>
 
     <script>
+        // Enterprise Module Registry
         const modules = [
-            { name: "IP Trace", url: "https://ipapi.co/json/" },
-            { name: "DNS Lookup", url: "https://api.hackertarget.com/dnslookup/?q=google.com&format=json" },
-            { name: "Geo-Loc", url: "https://get.geojs.io/v1/ip/geo.json" },
-            { name: "Crypto", url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd" },
-            { name: "Server Status", url: "https://api.github.com/zen" },
-            { name: "User Agent", url: "https://httpbin.org/user-agent" },
-            { name: "Public Holidays", url: "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide" },
-            { name: "Tech News", url: "https://hacker-news.firebaseio.com/v0/item/2921983.json" },
-            { name: "Gen Predict", url: "https://api.genderize.io/?name=alex" },
-            { name: "Bored Task", url: "https://www.boredapi.com/api/activity" },
-            // ... Tambahkan URL lain untuk mengaktifkan semua slot
+            { id: "GPS", name: "PRECISION GEO-LOC", action: getExactLocation },
+            { id: "IP", name: "IP FORENSICS", url: "https://ipapi.co/json/" },
+            { id: "CRYPTO", name: "ASSET MONITOR", url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" }
         ];
 
-        const grid = document.getElementById('grid');
         const term = document.getElementById('terminal');
+        const list = document.getElementById('module-list');
 
-        function log(msg) { term.innerText += "\n> " + msg; term.scrollTop = term.scrollHeight; }
-
-        async function run(mod) {
-            term.innerText = "> INITIALIZING " + mod.name.toUpperCase() + "...";
-            try {
-                const res = await fetch(mod.url);
-                const data = await res.json();
-                
-                // Formatter cerdas untuk tampilan pro
-                let output = `[INTEL REPORT - ${mod.name.toUpperCase()}]\n`;
-                output += JSON.stringify(data, null, 2).substring(0, 400); 
-                
-                term.innerText = output + "\n\n> SCAN COMPLETED. AWAITING INPUT.";
-            } catch(e) { term.innerText = "> ERROR: FIREWALL BLOCKED CONNECTION."; }
+        function log(msg, type = "SYS") {
+            const time = new Date().toLocaleTimeString();
+            term.innerHTML += `<div>[${time}] [${type}] ${msg}</div>`;
+            term.scrollTop = term.scrollHeight;
         }
 
-        modules.forEach((mod, i) => {
-            grid.innerHTML += `<div class="cyber-box p-2 text-[10px] text-center hover:bg-[#00FF41] hover:text-black transition" onclick="run(modules[${i}])">${i+1}. ${mod.name}</div>`;
+        async function getExactLocation() {
+            log("INITIATING GPS HANDSHAKE...");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(p => {
+                    log(`LAT: ${p.coords.latitude} | LON: ${p.coords.longitude}`, "GEO");
+                }, () => log("PERMISSION DENIED", "ERR"));
+            }
+        }
+
+        // Initialize UI
+        modules.forEach(m => {
+            const btn = document.createElement('button');
+            btn.className = "block w-full text-left p-2 hover:bg-[#00FF41] hover:text-black transition uppercase text-xs";
+            btn.innerText = `> ${m.name}`;
+            btn.onclick = () => {
+                log(`EXECUTING ${m.name}...`);
+                if(m.action) m.action(); else fetch(m.url).then(r => r.json()).then(d => log(JSON.stringify(d)));
+            };
+            list.appendChild(btn);
         });
+
+        setInterval(() => document.getElementById('clock').innerText = "SYSTEM_TIME: " + new Date().toLocaleTimeString(), 1000);
     </script>
 </body>
 </html>
