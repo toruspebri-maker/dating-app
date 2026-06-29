@@ -1,62 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CYBER-OPS // GLOBAL COMMAND</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&display=swap');
         body { margin: 0; background: #000; color: #00FF41; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-        .glass { background: rgba(0,0,0,0.8); border: 1px solid #00FF41; backdrop-filter: blur(8px); }
+        
+        /* Panel Transparan (Hanya garis tepi & blur) */
+        .glass { 
+            position: absolute;
+            background: rgba(0, 0, 0, 0.2); /* Sangat transparan */
+            border: 1px solid #00FF41; 
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            cursor: move; /* Menandakan bisa digeser */
+            touch-action: none; /* Agar lancar di layar HP */
+        }
+
+        .btn-opt { 
+            background: rgba(0, 255, 65, 0.1); 
+            border: 1px solid #00FF41; 
+            color: #00FF41;
+            padding: 8px; font-size: 10px; width: 100%; margin-bottom: 5px; cursor: pointer;
+        }
+
         iframe { width: 100vw; height: 100vh; border: none; }
-        .btn-opt { transition: 0.3s; padding: 8px; font-size: 10px; border: 1px solid #00FF41; margin-bottom: 5px; cursor: pointer; }
-        .btn-opt:hover { background: #00FF41; color: #000; }
     </style>
 </head>
 <body>
 
     <iframe id="main-view" src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-105.41,20.25,3000"></iframe>
 
-    <div class="glass absolute top-4 left-4 p-4 w-60">
-        <div class="text-[12px] font-bold border-b border-[#00FF41] mb-3">GLOBAL COMMAND HUB</div>
-        <div id="user-info" class="text-[9px] mb-4 opacity-70">ID: OPS_GLOBAL_2365 | STATUS: ACTIVE</div>
-        
-        <button onclick="updateView('https://earth.nullschool.net/#current/wind/surface/level/orthographic=-105.41,20.25,3000')" class="btn-opt w-full text-left">>> SATELLITE: WEATHER/WIND</button>
-        <button onclick="autoDetectCCTV()" class="btn-opt w-full text-left text-[#ff0000] border-[#ff0000] animate-pulse">>> AUTO-SCAN LOCAL CCTV</button>
-        <button onclick="updateView('https://threatmap.checkpoint.com/')" class="btn-opt w-full text-left">>> GLOBAL THREAT MONITOR</button>
-    </div>
-
-    <div class="glass absolute top-4 right-4 p-4 w-48 text-[9px]">
-        <div class="font-bold border-b border-[#00FF41] mb-2">SYSTEM_TELEMETRY</div>
-        <div>UPLINK: <span class="text-white">STABLE</span></div>
-        <div>LATENCY: <span class="text-white">24ms</span></div>
-        <div>OPERATORS: <span id="op-count" class="text-white">0</span></div>
-        <div class="mt-4 border-t border-[#00FF41] pt-2 text-[8px] italic" id="log">SYSTEM READY...</div>
+    <div id="drag-panel" class="glass w-60 top-4 left-4">
+        <div class="font-bold text-[10px] border-b border-[#00FF41] mb-3">COMMAND_CENTER [DRAG_ME]</div>
+        <button onclick="autoDetectCCTV()" class="btn-opt animate-pulse border-[#ff0000] text-[#ff0000]">>> SCAN CCTV LOKAL</button>
+        <button onclick="updateView('https://earth.nullschool.net/#current/wind/surface/level/orthographic=-105.41,20.25,3000')" class="btn-opt">>> VIEW SATELLITE</button>
     </div>
 
     <script>
-        // Simulasi jumlah operator agar terlihat ramai
-        const opCount = document.getElementById('op-count');
-        setInterval(() => { opCount.innerText = 2400 + Math.floor(Math.random() * 300); }, 2000);
+        // Fungsi Geser (Draggable)
+        const panel = document.getElementById('drag-panel');
+        let pos = { top: 20, left: 20 };
 
-        function log(msg) { document.getElementById('log').innerText = msg; }
-        function updateView(url) { 
-            document.getElementById('main-view').src = url; 
-            log("ROUTING_SIGNAL_TO_NODE: " + url.substring(8, 15));
-        }
+        panel.addEventListener('touchstart', (e) => {
+            let touch = e.touches[0];
+            let shiftX = touch.clientX - panel.getBoundingClientRect().left;
+            let shiftY = touch.clientY - panel.getBoundingClientRect().top;
 
+            function moveAt(pageX, pageY) {
+                panel.style.left = pageX - shiftX + 'px';
+                panel.style.top = pageY - shiftY + 'px';
+            }
+
+            function onTouchMove(e) {
+                moveAt(e.touches[0].clientX, e.touches[0].clientY);
+            }
+
+            document.addEventListener('touchmove', onTouchMove);
+            panel.ontouchend = () => { document.removeEventListener('touchmove', onTouchMove); };
+        });
+
+        function updateView(url) { document.getElementById('main-view').src = url; }
+        
         function autoDetectCCTV() {
-            log("SCANNING GEOLOCATION...");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
-                    log("COORD_SYNCED: " + pos.coords.latitude.toFixed(2));
-                    // Jika di Indonesia, pakai CCTV ini, jika tidak, pakai node global
                     if (pos.coords.latitude >= -11 && pos.coords.latitude <= 6) {
                         updateView('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g');
-                    } else {
-                        updateView('https://www.youtube.com/embed/live_stream?channel=UCh2mH_0G467yYwZ5Gz8G6gQ');
                     }
-                }, () => log("ERR: PERMISSION_DENIED"));
+                });
             }
         }
     </script>
