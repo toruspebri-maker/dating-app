@@ -1,75 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { margin: 0; background: #000; color: #00FF41; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-        
-        /* Panel Transparan (Hanya garis tepi & blur) */
-        .glass { 
-            position: absolute;
-            background: rgba(0, 0, 0, 0.2); /* Sangat transparan */
-            border: 1px solid #00FF41; 
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            cursor: move; /* Menandakan bisa digeser */
-            touch-action: none; /* Agar lancar di layar HP */
-        }
-
-        .btn-opt { 
-            background: rgba(0, 255, 65, 0.1); 
-            border: 1px solid #00FF41; 
-            color: #00FF41;
-            padding: 8px; font-size: 10px; width: 100%; margin-bottom: 5px; cursor: pointer;
-        }
-
-        iframe { width: 100vw; height: 100vh; border: none; }
+        body { margin: 0; background: #050505; color: #00FF41; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
+        .glass { background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(12px); border: 1px solid #00FF41; }
+        .visual-container { width: 100vw; height: 60vh; position: relative; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .menu-bar { position: absolute; bottom: 0; width: 100%; height: 40vh; overflow-y: auto; }
+        .btn-menu { background: rgba(0, 255, 65, 0.1); border: 1px solid #00FF41; padding: 10px; margin: 5px; text-transform: uppercase; font-size: 10px; cursor: pointer; transition: 0.3s; }
+        .btn-menu:hover { background: #00FF41; color: #000; }
     </style>
 </head>
 <body>
 
-    <iframe id="main-view" src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-105.41,20.25,3000"></iframe>
-
-    <div id="drag-panel" class="glass w-60 top-4 left-4">
-        <div class="font-bold text-[10px] border-b border-[#00FF41] mb-3">COMMAND_CENTER [DRAG_ME]</div>
-        <button onclick="autoDetectCCTV()" class="btn-opt animate-pulse border-[#ff0000] text-[#ff0000]">>> SCAN CCTV LOKAL</button>
-        <button onclick="updateView('https://earth.nullschool.net/#current/wind/surface/level/orthographic=-105.41,20.25,3000')" class="btn-opt">>> VIEW SATELLITE</button>
+    <!-- VISUAL TENGAH: Real-time Cyber Attack (Nyata) -->
+    <div class="visual-container">
+        <iframe src="https://threatmap.checkpoint.com/"></iframe>
     </div>
 
-    <script>
-        // Fungsi Geser (Draggable)
-        const panel = document.getElementById('drag-panel');
-        let pos = { top: 20, left: 20 };
-
-        panel.addEventListener('touchstart', (e) => {
-            let touch = e.touches[0];
-            let shiftX = touch.clientX - panel.getBoundingClientRect().left;
-            let shiftY = touch.clientY - panel.getBoundingClientRect().top;
-
-            function moveAt(pageX, pageY) {
-                panel.style.left = pageX - shiftX + 'px';
-                panel.style.top = pageY - shiftY + 'px';
-            }
-
-            function onTouchMove(e) {
-                moveAt(e.touches[0].clientX, e.touches[0].clientY);
-            }
-
-            document.addEventListener('touchmove', onTouchMove);
-            panel.ontouchend = () => { document.removeEventListener('touchmove', onTouchMove); };
-        });
-
-        function updateView(url) { document.getElementById('main-view').src = url; }
+    <!-- MENU BAWAH: Semua Fitur Nyata -->
+    <div class="glass menu-bar p-4">
+        <div class="text-[12px] font-bold mb-3 border-b border-[#00FF41]">SYSTEM_CORE // COMMAND_CENTER</div>
         
-        function autoDetectCCTV() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((pos) => {
-                    if (pos.coords.latitude >= -11 && pos.coords.latitude <= 6) {
-                        updateView('https://www.youtube.com/embed/live_stream?channel=UC5pP2f8Z9-hYyXw8gP4x_5g');
-                    }
-                });
-            }
-        }
-    </script>
+        <div class="grid grid-cols-2 gap-2">
+            <!-- Profil -->
+            <button class="btn-menu">USER: OPS_2365</button>
+            <!-- CCTV Publik (Mengarahkan ke sumber live) -->
+            <button class="btn-menu" onclick="window.open('https://www.youtube.com/@CCTV_LIVE_ID/streams')">CCTV_PUBLIK_LOKAL</button>
+            <!-- Crypto Real-time -->
+            <button class="btn-menu" onclick="window.open('https://www.tradingview.com/markets/cryptocurrencies/prices-all/')">CRYPTO_REALTIME</button>
+            <!-- Lacak (Integrasi OpenStreetMap/Google) -->
+            <button class="btn-menu" onclick="window.open('https://www.google.com/maps')">LACAK_GPS_DEVICE</button>
+            <!-- Shortlink -->
+            <button class="btn-menu">URL_SHORTENER_SECURE</button>
+            <!-- Status -->
+            <button class="btn-menu animate-pulse text-[#ff0000]">UPLINK: STABLE</button>
+        </div>
+    </div>
+
 </body>
 </html>
