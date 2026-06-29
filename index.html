@@ -1,50 +1,56 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOBAL_COMMAND_CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #00FF41; font-family: 'Courier New', monospace; }
-        .glass-miner { background: rgba(0, 0, 0, 0.6); border: 2px solid #00FF41; box-shadow: 0 0 20px #00FF41; }
-        .data-stream { color: #00FF41; font-size: 14px; text-shadow: 0 0 5px #00FF41; }
+        body { background: #000; color: #00FF41; font-family: 'Courier New', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .cyber-map { flex: 1; position: relative; border-bottom: 2px solid #00FF41; }
+        .dashboard { height: 40vh; background: #000; padding: 10px; overflow-y: auto; }
+        .glass-box { border: 1px solid #00FF41; padding: 10px; margin-bottom: 10px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .btn-menu { border: 1px solid #00FF41; padding: 8px 2px; text-align: center; font-size: 8px; cursor: pointer; }
+        .btn-menu:hover { background: #00FF41; color: #000; }
     </style>
 </head>
-<body class="p-4 flex flex-col items-center">
+<body>
 
-    <div class="fixed top-0 left-0 w-full h-full -z-10 opacity-30">
+    <div class="cyber-map">
         <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full"></iframe>
     </div>
 
-    <div class="glass-miner w-full max-w-md p-6 mt-10 text-center">
-        <div class="text-[10px] uppercase tracking-widest">Mining Status: <span class="text-white">Active</span></div>
-        <div id="miner-balance" class="text-4xl font-bold my-4 animate-pulse">0.00428190</div>
-        <div class="text-xs opacity-80">BTC TOTAL MINED</div>
-        
-        <div class="grid grid-cols-2 gap-4 mt-8 text-[10px]">
-            <div class="border p-2">HASH: 4.2 TH/s</div>
-            <div class="border p-2">TEMP: 42°C</div>
+    <div class="dashboard">
+        <div class="glass-box text-center">
+            <div class="text-[10px]">MINING_STATUS: <span class="text-white">ACTIVE</span></div>
+            <div id="balance" class="text-2xl font-bold">0.00428640 BTC</div>
         </div>
 
-        <button onclick="toggleMiner()" id="btn-miner" class="w-full mt-6 py-3 border border-[#00FF41] hover:bg-[#00FF41] hover:text-black font-bold uppercase">
-            Start Mining
-        </button>
+        <div class="menu-grid">
+            <div class="btn-menu">DAILY_REWARD</div>
+            <div class="btn-menu">REFERRAL</div>
+            <div class="btn-menu">DEPOSIT</div>
+            <div class="btn-menu">WITHDRAW</div>
+        </div>
+
+        <div class="mt-4 flex justify-between items-center border-t border-[#00FF41] pt-2">
+            <div class="text-[10px]">PROFILE: OPS_2365</div>
+            <select class="bg-black border border-[#00FF41] text-[10px] p-1">
+                <option>EN</option>
+                <option>ID</option>
+                <option>CN</option>
+                <option>RU</option>
+            </select>
+        </div>
     </div>
 
     <script>
-        let balance = 0.00428190;
-        let active = false;
-        function toggleMiner() {
-            active = !active;
-            const btn = document.getElementById('btn-miner');
-            btn.innerText = active ? "Stop Mining" : "Start Mining";
-            
-            if(active) {
-                setInterval(() => {
-                    balance += 0.00000001;
-                    document.getElementById('miner-balance').innerText = balance.toFixed(8);
-                }, 500);
-            }
-        }
+        // Logika Miner ringan agar layar tetap lancar
+        setInterval(() => {
+            let b = parseFloat(document.getElementById('balance').innerText);
+            document.getElementById('balance').innerText = (b + 0.00000001).toFixed(8) + " BTC";
+        }, 2000);
     </script>
 </body>
 </html>
-
