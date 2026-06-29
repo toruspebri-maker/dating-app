@@ -1,56 +1,80 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL_COMMAND_CENTER</title>
+    <title>GLOBAL_OPERATIONS_CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #00FF41; font-family: 'Courier New', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        .cyber-map { flex: 1; position: relative; border-bottom: 2px solid #00FF41; }
-        .dashboard { height: 40vh; background: #000; padding: 10px; overflow-y: auto; }
-        .glass-box { border: 1px solid #00FF41; padding: 10px; margin-bottom: 10px; }
-        .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .btn-menu { border: 1px solid #00FF41; padding: 8px 2px; text-align: center; font-size: 8px; cursor: pointer; }
-        .btn-menu:hover { background: #00FF41; color: #000; }
+        :root { --neon-green: #00FF41; }
+        body { background: #000; color: var(--neon-green); font-family: 'JetBrains Mono', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Cyber Map Area */
+        #map-container { flex: 1; border-bottom: 2px solid var(--neon-green); position: relative; }
+        
+        /* Dashboard Area */
+        #dashboard { height: 45vh; background: linear-gradient(to bottom, #0a0a0a, #000); border-top: 1px solid var(--neon-green); padding: 15px; overflow-y: auto; }
+        
+        /* Glass & UI Elements */
+        .glass-panel { border: 1px solid var(--neon-green); background: rgba(0, 20, 0, 0.4); padding: 10px; margin-bottom: 15px; }
+        .grid-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .btn-action { border: 1px solid var(--neon-green); padding: 8px; text-align: center; font-size: 9px; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        .btn-action:hover { background: var(--neon-green); color: #000; }
+        
+        /* Miner Stats */
+        .miner-stat { text-align: center; padding: 10px; }
+        .miner-value { font-size: 24px; font-weight: bold; color: #fff; }
     </style>
 </head>
 <body>
 
-    <div class="cyber-map">
-        <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full"></iframe>
+    <div id="map-container">
+        <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none"></iframe>
     </div>
 
-    <div class="dashboard">
-        <div class="glass-box text-center">
-            <div class="text-[10px]">MINING_STATUS: <span class="text-white">ACTIVE</span></div>
-            <div id="balance" class="text-2xl font-bold">0.00428640 BTC</div>
+    <div id="dashboard">
+        <div class="glass-panel miner-stat">
+            <div class="text-[10px] uppercase">Active Cloud Mining</div>
+            <div id="btc-balance" class="miner-value animate-pulse">0.00428640 BTC</div>
+            <div class="text-[8px] opacity-60">Status: Operational // Hashrate: 4.2TH/s</div>
         </div>
 
-        <div class="menu-grid">
-            <div class="btn-menu">DAILY_REWARD</div>
-            <div class="btn-menu">REFERRAL</div>
-            <div class="btn-menu">DEPOSIT</div>
-            <div class="btn-menu">WITHDRAW</div>
+        <div class="grid-menu">
+            <div class="btn-action">Reward</div>
+            <div class="btn-action">Referral</div>
+            <div class="btn-action">Deposit</div>
+            <div class="btn-action">Withdraw</div>
         </div>
 
-        <div class="mt-4 flex justify-between items-center border-t border-[#00FF41] pt-2">
-            <div class="text-[10px]">PROFILE: OPS_2365</div>
-            <select class="bg-black border border-[#00FF41] text-[10px] p-1">
-                <option>EN</option>
-                <option>ID</option>
-                <option>CN</option>
-                <option>RU</option>
+        <div class="flex justify-between items-center glass-panel">
+            <div class="text-[10px]">USER: OPS_2365 | Lvl: 42</div>
+            <select id="lang-select" class="bg-black border border-[var(--neon-green)] text-[8px] p-1">
+                <option value="en">ENGLISH</option>
+                <option value="id">INDONESIA</option>
+                <option value="ru">RUSSIAN</option>
+                <option value="cn">CHINESE</option>
             </select>
         </div>
+        
+        <div class="text-[8px] opacity-40 text-center">SYSTEM_ID: GOC-2026-X99 // UPLINK: STABLE</div>
     </div>
 
     <script>
-        // Logika Miner ringan agar layar tetap lancar
-        setInterval(() => {
-            let b = parseFloat(document.getElementById('balance').innerText);
-            document.getElementById('balance').innerText = (b + 0.00000001).toFixed(8) + " BTC";
-        }, 2000);
+        // Logika Miner Profesional
+        let btcBalance = 0.00428640;
+        const btcDisplay = document.getElementById('btc-balance');
+        
+        function updateMiner() {
+            btcBalance += 0.00000002;
+            btcDisplay.innerText = btcBalance.toFixed(8) + " BTC";
+        }
+        setInterval(updateMiner, 1000);
+
+        // Language Switcher Logic
+        document.getElementById('lang-select').addEventListener('change', (e) => {
+            console.log("Language switched to: " + e.target.value);
+            // Anda bisa menambah fungsi translate di sini nantinya
+        });
     </script>
 </body>
 </html>
