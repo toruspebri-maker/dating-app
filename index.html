@@ -3,41 +3,48 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { margin: 0; background: #050505; color: #00FF41; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-        .glass { background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(12px); border: 1px solid #00FF41; }
-        .visual-container { width: 100vw; height: 60vh; position: relative; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .menu-bar { position: absolute; bottom: 0; width: 100%; height: 40vh; overflow-y: auto; }
-        .btn-menu { background: rgba(0, 255, 65, 0.1); border: 1px solid #00FF41; padding: 10px; margin: 5px; text-transform: uppercase; font-size: 10px; cursor: pointer; transition: 0.3s; }
-        .btn-menu:hover { background: #00FF41; color: #000; }
+        body { background: #000; color: #00FF41; font-family: 'Courier New', monospace; }
+        .glass-miner { background: rgba(0, 0, 0, 0.6); border: 2px solid #00FF41; box-shadow: 0 0 20px #00FF41; }
+        .data-stream { color: #00FF41; font-size: 14px; text-shadow: 0 0 5px #00FF41; }
     </style>
 </head>
-<body>
+<body class="p-4 flex flex-col items-center">
 
-    <!-- VISUAL TENGAH: Real-time Cyber Attack (Nyata) -->
-    <div class="visual-container">
-        <iframe src="https://threatmap.checkpoint.com/"></iframe>
+    <div class="fixed top-0 left-0 w-full h-full -z-10 opacity-30">
+        <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full"></iframe>
     </div>
 
-    <!-- MENU BAWAH: Semua Fitur Nyata -->
-    <div class="glass menu-bar p-4">
-        <div class="text-[12px] font-bold mb-3 border-b border-[#00FF41]">SYSTEM_CORE // COMMAND_CENTER</div>
+    <div class="glass-miner w-full max-w-md p-6 mt-10 text-center">
+        <div class="text-[10px] uppercase tracking-widest">Mining Status: <span class="text-white">Active</span></div>
+        <div id="miner-balance" class="text-4xl font-bold my-4 animate-pulse">0.00428190</div>
+        <div class="text-xs opacity-80">BTC TOTAL MINED</div>
         
-        <div class="grid grid-cols-2 gap-2">
-            <!-- Profil -->
-            <button class="btn-menu">USER: OPS_2365</button>
-            <!-- CCTV Publik (Mengarahkan ke sumber live) -->
-            <button class="btn-menu" onclick="window.open('https://www.youtube.com/@CCTV_LIVE_ID/streams')">CCTV_PUBLIK_LOKAL</button>
-            <!-- Crypto Real-time -->
-            <button class="btn-menu" onclick="window.open('https://www.tradingview.com/markets/cryptocurrencies/prices-all/')">CRYPTO_REALTIME</button>
-            <!-- Lacak (Integrasi OpenStreetMap/Google) -->
-            <button class="btn-menu" onclick="window.open('https://www.google.com/maps')">LACAK_GPS_DEVICE</button>
-            <!-- Shortlink -->
-            <button class="btn-menu">URL_SHORTENER_SECURE</button>
-            <!-- Status -->
-            <button class="btn-menu animate-pulse text-[#ff0000]">UPLINK: STABLE</button>
+        <div class="grid grid-cols-2 gap-4 mt-8 text-[10px]">
+            <div class="border p-2">HASH: 4.2 TH/s</div>
+            <div class="border p-2">TEMP: 42°C</div>
         </div>
+
+        <button onclick="toggleMiner()" id="btn-miner" class="w-full mt-6 py-3 border border-[#00FF41] hover:bg-[#00FF41] hover:text-black font-bold uppercase">
+            Start Mining
+        </button>
     </div>
 
+    <script>
+        let balance = 0.00428190;
+        let active = false;
+        function toggleMiner() {
+            active = !active;
+            const btn = document.getElementById('btn-miner');
+            btn.innerText = active ? "Stop Mining" : "Start Mining";
+            
+            if(active) {
+                setInterval(() => {
+                    balance += 0.00000001;
+                    document.getElementById('miner-balance').innerText = balance.toFixed(8);
+                }, 500);
+            }
+        }
+    </script>
 </body>
 </html>
+
