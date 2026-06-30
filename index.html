@@ -9,17 +9,16 @@
         :root { --neon-green: #00FF41; }
         body { background: #000; color: var(--neon-green); font-family: 'JetBrains Mono', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* Map Container - Peta Threat Map Tetap Hidup */
         #map-container { flex: 1; border-bottom: 2px solid var(--neon-green); position: relative; z-index: 1; }
         
-        /* Control Dashboard - Lebih Minimalis & Elegan */
-        #dashboard { height: 20vh; background: #000; border-top: 1px solid var(--neon-green); padding: 10px; display: flex; flex-direction: column; justify-content: center; }
+        /* Dashboard Ramping & Elegan */
+        #dashboard { height: 25vh; background: rgba(0, 10, 0, 0.9); border-top: 1px solid var(--neon-green); padding: 15px; display: flex; flex-direction: column; justify-content: space-between; }
         
-        .btn-menu { border: 1px solid var(--neon-green); padding: 10px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 10px; text-transform: uppercase; }
+        .miner-display { text-align: center; border: 1px solid var(--neon-green); padding: 5px; background: rgba(0, 40, 0, 0.3); }
+        .btn-menu { border: 1px solid var(--neon-green); padding: 8px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 9px; text-transform: uppercase; }
         .btn-menu:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 10px var(--neon-green); }
         
-        /* Panel Geser - Agar Tidak Menumpuk */
-        #side-panel { position: fixed; right: -100%; top: 0; width: 300px; height: 100%; background: rgba(0, 10, 0, 0.95); border-left: 2px solid var(--neon-green); transition: 0.5s ease-in-out; z-index: 100; padding: 20px; }
+        #side-panel { position: fixed; right: -100%; top: 0; width: 320px; height: 100%; background: rgba(0, 0, 0, 0.98); border-left: 2px solid var(--neon-green); transition: 0.5s ease-in-out; z-index: 100; padding: 25px; }
         #side-panel.open { right: 0; }
     </style>
 </head>
@@ -30,31 +29,52 @@
     </div>
 
     <div id="dashboard">
-        <div class="grid grid-cols-4 gap-2 mb-2">
+        <div class="miner-display">
+            <div class="text-[8px] opacity-70">ACTIVE SOLANA MINER</div>
+            <div id="sol-balance" class="text-xl font-bold text-white animate-pulse">12.450285 SOL</div>
+            <div class="text-[7px] text-green-500">STATUS: OPERATIONAL // HASH: 14.8 GH/s</div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-2">
             <div class="btn-menu" onclick="openPanel('REWARD')">Reward</div>
             <div class="btn-menu" onclick="openPanel('REFERRAL')">Referral</div>
             <div class="btn-menu" onclick="openPanel('DEPOSIT')">Deposit</div>
             <div class="btn-menu" onclick="openPanel('WITHDRAW')">Withdraw</div>
         </div>
-        <div class="text-[9px] text-center opacity-50">SYSTEM_ID: GOC-2026 // STATUS: ACTIVE_MONITORING</div>
     </div>
 
     <div id="side-panel">
-        <div class="flex justify-between mb-4">
-            <h2 id="panel-title" class="text-xs uppercase">TITLE</h2>
-            <div class="cursor-pointer" onclick="closePanel()">CLOSE X</div>
+        <div class="flex justify-between mb-6 border-b border-green-900 pb-2">
+            <h2 id="panel-title" class="text-sm uppercase tracking-widest">MODULE</h2>
+            <div class="cursor-pointer text-red-500" onclick="closePanel()">[ CLOSE ]</div>
         </div>
-        <div id="panel-content" class="text-[10px]">Konten di sini...</div>
+        <div id="panel-content" class="text-[11px] leading-relaxed">
+            Pilih menu untuk memulai aktivitas operasi.
+        </div>
     </div>
 
     <script>
+        // Logika Mining Solana
+        let solBalance = 12.450285;
+        const solDisplay = document.getElementById('sol-balance');
+        setInterval(() => {
+            solBalance += 0.00000005;
+            solDisplay.innerText = solBalance.toFixed(6) + " SOL";
+        }, 1000);
+
+        // Fungsi Panel
         function openPanel(type) {
             const panel = document.getElementById('side-panel');
-            const title = document.getElementById('panel-title');
-            const content = document.getElementById('panel-content');
-            
-            title.innerText = type;
-            content.innerText = "Membuka modul " + type + "... Sistem sedang terkoneksi.";
+            document.getElementById('panel-title').innerText = type;
+            document.getElementById('panel-content').innerHTML = `
+                <div class="p-4 border border-green-900 bg-green-900/20">
+                    <p class="mb-4 text-green-300">Menjalankan modul: ${type}</p>
+                    <div class="space-y-4">
+                        <div class="h-10 border border-green-700 flex items-center justify-center">INPUT DATA</div>
+                        <div class="h-10 bg-green-500 text-black flex items-center justify-center cursor-pointer font-bold">EXECUTE</div>
+                    </div>
+                </div>
+            `;
             panel.classList.add('open');
         }
 
