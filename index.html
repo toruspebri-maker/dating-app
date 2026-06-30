@@ -3,93 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOC_GLOBAL_ENTERPRISE_COMMAND</title>
+    <title>SOLANA_GLOBAL_COMMAND</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        body { background: #000; color: #00FF41; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-        .page { display: none; height: 100vh; flex-direction: column; }
-        .page.active { display: flex; }
-        .glass-panel { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); border: 1px solid #1a1a1a; }
-        .nav-glow { box-shadow: 0 -5px 20px rgba(0, 255, 65, 0.15); }
-        .btn-hover:hover { background: #00FF41; color: #000; transform: scale(1.02); transition: 0.3s; }
-        /* Animasi Kustom */
-        @keyframes scan { from { top: 0; } to { top: 100%; } }
-        .scanner { position: absolute; width: 100%; height: 2px; background: #00FF41; opacity: 0.3; animation: scan 3s linear infinite; }
+        body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(15px); border: 1px solid #333; }
+        .btn-sol { background: linear-gradient(135deg, #9945FF, #14F195); color: #000; font-weight: 800; border-radius: 12px; }
+        .nav-active { color: #14F195 !important; }
     </style>
 </head>
-<body>
+<body class="h-screen flex flex-col">
 
-<main class="h-screen flex flex-col relative">
-    <div class="scanner"></div>
+    <div class="p-4 flex justify-between items-center bg-black/50 border-b border-green-900">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-green-500 animate-pulse"></div>
+            <span class="font-bold">SOL_OPERATOR</span>
+        </div>
+        <div id="sol-balance" class="text-lg font-mono font-bold text-green-400">0.000000 SOL</div>
+    </div>
 
-    <header class="h-[45%] border-b-2 border-green-900 relative">
-        <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none"></iframe>
-    </header>
-
-    <section id="content-area" class="flex-1 overflow-y-auto p-6 space-y-6">
-        
-        <div id="page-home" class="page active animate-in fade-in duration-500">
-            <div class="glass-panel p-6 rounded-2xl border border-green-800 text-center">
-                <div class="text-[10px] opacity-70 tracking-widest uppercase">Solana Cloud Miner</div>
-                <div id="sol-balance" class="text-4xl font-bold text-white my-3">12.450285 SOL</div>
-                <div id="timer-text" class="text-xl font-bold text-yellow-500 mb-6 font-mono">01:54:35</div>
-                <button id="main-btn" class="w-full py-4 bg-green-900 border border-green-500 text-white font-bold rounded-lg shadow-lg">MINING IN PROGRESS...</button>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <button class="glass-panel p-5 rounded-2xl btn-hover border border-green-900">💰 DEPOSIT</button>
-                <button class="glass-panel p-5 rounded-2xl btn-hover border border-green-900">💸 WITHDRAW</button>
-                <button class="glass-panel p-5 rounded-2xl btn-hover border border-green-900">📋 TASKS</button>
-                <button class="glass-panel p-5 rounded-2xl btn-hover border border-green-900">👥 INVITE</button>
-            </div>
+    <main class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="h-48 rounded-2xl overflow-hidden border border-green-900">
+            <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none"></iframe>
         </div>
 
-        <div id="page-profile" class="page">
-            <div class="glass-panel p-8 rounded-2xl border border-green-900">
-                <h2 class="text-xl text-white mb-6">System Configuration</h2>
-                <label class="text-[10px]">Select Global Language</label>
-                <select class="w-full bg-black border border-green-700 p-4 mt-2 text-white rounded">
-                    <option>English (Global)</option>
-                    <option>Bahasa Indonesia</option>
-                    <option>Русский</option>
-                    <option>中文</option>
-                </select>
-            </div>
+        <div class="glass-card p-6 rounded-2xl text-center">
+            <div class="text-xs uppercase opacity-50 tracking-widest">Mining Status</div>
+            <div id="timer-text" class="text-3xl font-mono my-2">00:00:00</div>
+            <button id="mine-btn" onclick="startMining()" class="btn-sol w-full py-4 text-lg">START SOL MINING</button>
         </div>
-    </section>
 
-    <nav class="nav-glow h-24 bg-black flex justify-around items-center px-4 border-t border-green-900">
-        <div onclick="switchPage('page-home', this)" class="nav-item cursor-pointer text-center active"><span class="text-2xl">🏠</span><br><span class="text-[10px]">HOME</span></div>
-        <div onclick="alert('Module: Tasks/Ads Active')" class="nav-item cursor-pointer text-center"><span class="text-2xl">📋</span><br><span class="text-[10px]">TASKS</span></div>
-        <div onclick="alert('Module: Referral Active')" class="nav-item cursor-pointer text-center"><span class="text-2xl">👥</span><br><span class="text-[10px]">INVITE</span></div>
-        <div onclick="switchPage('page-profile', this)" class="nav-item cursor-pointer text-center"><span class="text-2xl">👤</span><br><span class="text-[10px]">PROFILE</span></div>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="glass-card p-4 rounded-xl text-center">💰 Deposit</div>
+            <div class="glass-card p-4 rounded-xl text-center">💸 Withdraw</div>
+            <div class="glass-card p-4 rounded-xl text-center">📋 Tasks</div>
+            <div class="glass-card p-4 rounded-xl text-center">👥 Invite</div>
+        </div>
+    </main>
+
+    <nav class="h-20 bg-black border-t border-gray-800 flex justify-around items-center">
+        <div class="nav-active flex flex-col items-center">🏠<span class="text-[10px]">HOME</span></div>
+        <div class="flex flex-col items-center">📋<span class="text-[10px]">TASKS</span></div>
+        <div class="flex flex-col items-center">👥<span class="text-[10px]">INVITE</span></div>
+        <div class="flex flex-col items-center">👤<span class="text-[10px]">PROFILE</span></div>
     </nav>
-</main>
 
-<script>
-    // Logic Switching
-    function switchPage(id, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        el.classList.add('active');
-    }
-    
-    // Logika Mining Berjalan
-    let time = 6875; // 01:54:35 in seconds
-    setInterval(() => {
-        if(time > 0) {
-            time--;
-            let h = Math.floor(time / 3600);
-            let m = Math.floor((time % 3600) / 60);
-            let s = time % 60;
-            document.getElementById('timer-text').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        } else {
-            document.getElementById('main-btn').innerText = "CLAIM REWARD";
-            document.getElementById('main-btn').classList.add('animate-pulse');
+    <script>
+        let saldo = parseFloat(localStorage.getItem('sol_saldo')) || 0;
+        let endTime = parseInt(localStorage.getItem('sol_end_time')) || 0;
+
+        function startMining() {
+            const sekarang = Math.floor(Date.now() / 1000);
+            endTime = sekarang + 7200; // 2 jam
+            localStorage.setItem('sol_end_time', endTime);
+            updateMining();
         }
-    }, 1000);
-</script>
+
+        function updateMining() {
+            const sekarang = Math.floor(Date.now() / 1000);
+            const sisa = endTime - sekarang;
+            
+            if (sisa > 0) {
+                let h = Math.floor(sisa / 3600);
+                let m = Math.floor((sisa % 3600) / 60);
+                let s = sisa % 60;
+                document.getElementById('timer-text').innerText = `${h}:${m}:${s}`;
+                document.getElementById('mine-btn').disabled = true;
+                document.getElementById('mine-btn').innerText = "MINING...";
+            } else {
+                document.getElementById('mine-btn').disabled = false;
+                document.getElementById('mine-btn').innerText = "CLAIM SOL";
+                if (endTime !== 0) {
+                    saldo += 0.05; // Reward
+                    localStorage.setItem('sol_saldo', saldo);
+                    document.getElementById('sol-balance').innerText = saldo.toFixed(6) + " SOL";
+                    endTime = 0;
+                    localStorage.setItem('sol_end_time', 0);
+                }
+            }
+        }
+        setInterval(updateMining, 1000);
+    </script>
 </body>
 </html>
