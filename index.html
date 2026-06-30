@@ -7,76 +7,90 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
+        
+        /* Layout */
         .page { display: none; height: 100vh; flex-direction: column; }
         .page.active { display: flex; }
         
-        /* Tombol Mewah & Hidup */
-        .btn-luxury { background: linear-gradient(135deg, #00FF41, #008f11); box-shadow: 0 0 15px rgba(0, 255, 65, 0.3); transition: 0.3s; }
-        .btn-luxury:active { transform: scale(0.98); }
-        .animate-pulse-slow { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
-
         /* Navigasi Mewah */
-        .nav-active { color: #00FF41 !important; border-top: 2px solid #00FF41; }
+        .bottom-nav { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-top: 1px solid #333; }
+        .nav-item { transition: 0.3s; color: #666; }
+        .nav-item.active { color: #00FF41; border-top: 2px solid #00FF41; }
+
+        /* Tombol Start/Claim */
+        .btn-action { background: linear-gradient(90deg, #00FF41, #008811); color: #000; font-weight: bold; padding: 15px; border-radius: 12px; transition: 0.3s; }
+        .btn-action:disabled { background: #333; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-<main class="h-screen flex flex-col">
-    <div class="h-1/4 border-b border-green-900">
-        <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none"></iframe>
-    </div>
-
-    <div id="page-home" class="page active flex-1 p-6 text-center">
-        <div class="text-[10px] text-green-500 uppercase tracking-widest">Solana Cloud Mining</div>
-        <div id="sol-balance" class="text-4xl font-bold text-white my-2">12.450285 SOL</div>
-        <div class="w-full h-2 bg-gray-900 rounded-full mt-4 overflow-hidden">
-            <div id="progress" class="h-full bg-green-500 w-full transition-all"></div>
+    <main class="h-screen flex flex-col">
+        <div class="h-1/3 w-full border-b border-green-900">
+            <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none"></iframe>
         </div>
-        <button id="claim-btn" class="mt-8 w-full py-4 rounded-xl btn-luxury text-black font-bold animate-pulse-slow" onclick="playAds()">
-            CLAIM REWARD (2H)
-        </button>
-    </div>
 
-    <div id="page-profile" class="page flex-1 p-6">
-        <h2 class="text-xl font-bold mb-6">Profile Settings</h2>
-        <div class="bg-gray-900 p-4 rounded-xl mb-4">
-            <label class="text-[10px] opacity-50">LANGUAGE</label>
-            <select class="w-full bg-transparent border-b border-green-500 mt-2 p-2 outline-none">
-                <option>English</option>
-                <option>Bahasa Indonesia</option>
-                <option>Русский</option>
-            </select>
+        <div id="page-home" class="page active flex-1 p-6 items-center justify-center">
+            <div class="text-center w-full">
+                <div class="text-[10px] text-green-500 uppercase tracking-widest">Solana Miner Status</div>
+                <div id="sol-balance" class="text-4xl font-bold my-4">12.450285 SOL</div>
+                
+                <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+                    <div id="timer-text" class="text-2xl font-mono mb-2">02:00:00</div>
+                    <button id="btn-mine" class="btn-action w-full" onclick="startMining()">START MINING</button>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <nav class="h-20 bg-black border-t border-green-900 flex justify-around items-center text-[10px]">
-        <div onclick="switchPage('page-home', this)" class="nav-item nav-active cursor-pointer">🏠 HOME</div>
-        <div onclick="switchPage('page-profile', this)" class="nav-item cursor-pointer">👤 PROFILE</div>
-    </nav>
-</main>
+        <div id="page-profile" class="page flex-1 p-6">
+            <h2 class="text-2xl font-bold mb-6">Profile Settings</h2>
+            <div class="bg-gray-900 p-4 rounded-xl">
+                <label class="text-[10px] opacity-50 block mb-2">INTERFACE LANGUAGE</label>
+                <select class="w-full bg-black border border-green-500 p-3 rounded-lg text-white">
+                    <option>English</option>
+                    <option>Bahasa Indonesia</option>
+                    <option>Русский</option>
+                </select>
+            </div>
+        </div>
 
-<script>
-    function switchPage(id, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
-        document.getElementById(id).classList.add('active');
-        el.classList.add('nav-active');
-    }
+        <nav class="bottom-nav h-20 flex justify-around items-center px-4">
+            <div onclick="switchPage('page-home', this)" class="nav-item active cursor-pointer text-[10px] flex flex-col items-center">🏠 HOME</div>
+            <div onclick="alert('Task Page')" class="nav-item cursor-pointer text-[10px] flex flex-col items-center">📋 TASKS</div>
+            <div onclick="alert('Invite Page')" class="nav-item cursor-pointer text-[10px] flex flex-col items-center">👥 INVITE</div>
+            <div onclick="switchPage('page-profile', this)" class="nav-item cursor-pointer text-[10px] flex flex-col items-center">👤 PROFILE</div>
+        </nav>
+    </main>
 
-    function playAds() {
-        alert("Menampilkan Iklan... (Integrasi AdMob/AdSense di sini)");
-        // Logika reset timer setelah iklan selesai
-    }
+    <script>
+        let isMining = false;
+        let time = 7200;
 
-    // Timer logic untuk progress bar
-    let duration = 7200;
-    setInterval(() => {
-        if(duration > 0) {
-            duration--;
-            document.getElementById('progress').style.width = (duration/7200*100) + "%";
+        function switchPage(id, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
         }
-    }, 1000);
-</script>
+
+        function startMining() {
+            isMining = true;
+            document.getElementById('btn-mine').innerText = "MINING IN PROGRESS...";
+            document.getElementById('btn-mine').disabled = true;
+            
+            let interval = setInterval(() => {
+                time--;
+                let h = Math.floor(time / 3600);
+                let m = Math.floor((time % 3600) / 60);
+                let s = time % 60;
+                document.getElementById('timer-text').innerText = `${h}:${m}:${s}`;
+                
+                if(time <= 0) {
+                    clearInterval(interval);
+                    document.getElementById('btn-mine').innerText = "CLAIM SOL";
+                    document.getElementById('btn-mine').disabled = false;
+                }
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
