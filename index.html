@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL_OPERATIONS_CENTER</title>
+    <title>GOC_COMMAND_CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --neon-green: #00FF41; }
-        body { background: #000; color: var(--neon-green); font-family: 'JetBrains Mono', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        body { background: #000; color: var(--neon-green); font-family: 'JetBrains Mono', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* Cyber Map Area */
-        #map-container { flex: 1; border-bottom: 2px solid var(--neon-green); position: relative; }
+        /* Map Container - Peta Threat Map Tetap Hidup */
+        #map-container { flex: 1; border-bottom: 2px solid var(--neon-green); position: relative; z-index: 1; }
         
-        /* Dashboard Area */
-        #dashboard { height: 45vh; background: linear-gradient(to bottom, #0a0a0a, #000); border-top: 1px solid var(--neon-green); padding: 15px; overflow-y: auto; }
+        /* Control Dashboard - Lebih Minimalis & Elegan */
+        #dashboard { height: 20vh; background: #000; border-top: 1px solid var(--neon-green); padding: 10px; display: flex; flex-direction: column; justify-content: center; }
         
-        /* Glass & UI Elements */
-        .glass-panel { border: 1px solid var(--neon-green); background: rgba(0, 20, 0, 0.4); padding: 10px; margin-bottom: 15px; }
-        .grid-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-        .btn-action { border: 1px solid var(--neon-green); padding: 8px; text-align: center; font-size: 9px; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
-        .btn-action:hover { background: var(--neon-green); color: #000; }
+        .btn-menu { border: 1px solid var(--neon-green); padding: 10px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 10px; text-transform: uppercase; }
+        .btn-menu:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 10px var(--neon-green); }
         
-        /* Miner Stats */
-        .miner-stat { text-align: center; padding: 10px; }
-        .miner-value { font-size: 24px; font-weight: bold; color: #fff; }
+        /* Panel Geser - Agar Tidak Menumpuk */
+        #side-panel { position: fixed; right: -100%; top: 0; width: 300px; height: 100%; background: rgba(0, 10, 0, 0.95); border-left: 2px solid var(--neon-green); transition: 0.5s ease-in-out; z-index: 100; padding: 20px; }
+        #side-panel.open { right: 0; }
     </style>
 </head>
 <body>
@@ -33,48 +30,37 @@
     </div>
 
     <div id="dashboard">
-        <div class="glass-panel miner-stat">
-            <div class="text-[10px] uppercase">Active Cloud Mining</div>
-            <div id="btc-balance" class="miner-value animate-pulse">0.00428640 BTC</div>
-            <div class="text-[8px] opacity-60">Status: Operational // Hashrate: 4.2TH/s</div>
+        <div class="grid grid-cols-4 gap-2 mb-2">
+            <div class="btn-menu" onclick="openPanel('REWARD')">Reward</div>
+            <div class="btn-menu" onclick="openPanel('REFERRAL')">Referral</div>
+            <div class="btn-menu" onclick="openPanel('DEPOSIT')">Deposit</div>
+            <div class="btn-menu" onclick="openPanel('WITHDRAW')">Withdraw</div>
         </div>
+        <div class="text-[9px] text-center opacity-50">SYSTEM_ID: GOC-2026 // STATUS: ACTIVE_MONITORING</div>
+    </div>
 
-        <div class="grid-menu">
-            <div class="btn-action">Reward</div>
-            <div class="btn-action">Referral</div>
-            <div class="btn-action">Deposit</div>
-            <div class="btn-action">Withdraw</div>
+    <div id="side-panel">
+        <div class="flex justify-between mb-4">
+            <h2 id="panel-title" class="text-xs uppercase">TITLE</h2>
+            <div class="cursor-pointer" onclick="closePanel()">CLOSE X</div>
         </div>
-
-        <div class="flex justify-between items-center glass-panel">
-            <div class="text-[10px]">USER: OPS_2365 | Lvl: 42</div>
-            <select id="lang-select" class="bg-black border border-[var(--neon-green)] text-[8px] p-1">
-                <option value="en">ENGLISH</option>
-                <option value="id">INDONESIA</option>
-                <option value="ru">RUSSIAN</option>
-                <option value="cn">CHINESE</option>
-            </select>
-        </div>
-        
-        <div class="text-[8px] opacity-40 text-center">SYSTEM_ID: GOC-2026-X99 // UPLINK: STABLE</div>
+        <div id="panel-content" class="text-[10px]">Konten di sini...</div>
     </div>
 
     <script>
-        // Logika Miner Profesional
-        let btcBalance = 0.00428640;
-        const btcDisplay = document.getElementById('btc-balance');
-        
-        function updateMiner() {
-            btcBalance += 0.00000002;
-            btcDisplay.innerText = btcBalance.toFixed(8) + " BTC";
+        function openPanel(type) {
+            const panel = document.getElementById('side-panel');
+            const title = document.getElementById('panel-title');
+            const content = document.getElementById('panel-content');
+            
+            title.innerText = type;
+            content.innerText = "Membuka modul " + type + "... Sistem sedang terkoneksi.";
+            panel.classList.add('open');
         }
-        setInterval(updateMiner, 1000);
 
-        // Language Switcher Logic
-        document.getElementById('lang-select').addEventListener('change', (e) => {
-            console.log("Language switched to: " + e.target.value);
-            // Anda bisa menambah fungsi translate di sini nantinya
-        });
+        function closePanel() {
+            document.getElementById('side-panel').classList.remove('open');
+        }
     </script>
 </body>
 </html>
