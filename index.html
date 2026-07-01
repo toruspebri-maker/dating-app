@@ -7,7 +7,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- SDK Utama Monetag Anda -->
     <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
     
     <style>
@@ -57,15 +56,12 @@
 
     <div class="max-w-md mx-auto p-4 space-y-4">
 
-        <!-- ==================== HOME TAB ==================== -->
         <div id="view-home" class="tab-view active">
-            <!-- CYBER THREAT MAP (DIPERBESAR KE BAWAH MENJADI h-80) -->
             <div class="w-full h-80 rounded-2xl overflow-hidden border border-red-500/30 shadow-[0_0_25px_rgba(239,68,68,0.15)] relative mb-4">
                 <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none pointer-events-none"></iframe>
                 <div class="absolute top-3 left-3 bg-red-600/90 text-white font-mono text-[9px] px-2 py-1 rounded font-bold tracking-wider animate-pulse">LIVE ATTACK MONITOR</div>
             </div>
 
-            <!-- FITUR BARU: DAILY STREAK MULTIPLIER (UI PERUSAHAAN BESAR) -->
             <div class="glass-panel p-4 rounded-2xl mb-4 border border-white/5">
                 <div class="flex justify-between items-center mb-2">
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">7-Day Mining Streak Loyalty</p>
@@ -96,7 +92,6 @@
                 </button>
             </div>
 
-            <!-- GRID DIUBAH: HANYA BERISI DEPOSIT & WITHDRAW (TANPA DUPLIKASI) -->
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="pindahTabDirect('deposit')" class="glass-btn p-4 rounded-xl flex items-center justify-between text-left">
                     <div>
@@ -115,7 +110,6 @@
             </div>
         </div>
 
-        <!-- ==================== TASKS TAB ==================== -->
         <div id="view-task" class="tab-view">
             <h2 class="text-lg font-black mb-1" data-key="menu_task">Misi Harian</h2>
             <p class="text-xs text-gray-400 mb-4">Selesaikan misi untuk mendapatkan saldo tambahan.</p>
@@ -130,7 +124,6 @@
             </div>
         </div>
 
-        <!-- ==================== REFERRAL TAB ==================== -->
         <div id="view-ref" class="tab-view">
             <h2 class="text-lg font-black mb-4" data-key="menu_ref">Undang Teman</h2>
             <div class="glass-panel p-5 rounded-2xl text-center mb-4">
@@ -141,7 +134,6 @@
             <button onclick="navigator.clipboard.writeText('https://t.me/SolanaCloudBot?start=ref'); alert('Copied!');" class="w-full bg-solana-gradient py-3 text-black font-extrabold text-xs rounded-xl shadow-[0_4px_15px_rgba(153,69,255,0.2)]">SALIN LINK</button>
         </div>
 
-        <!-- ==================== DEPOSIT TAB ==================== -->
         <div id="view-deposit" class="tab-view">
             <h2 class="text-lg font-black mb-1" data-key="menu_dep">Deposit & Upgrade Booster</h2>
             <p class="text-xs text-gray-400 mb-4" data-key="dep_global_info">Sistem akan membuka gerbang wallet eksternal Anda otomatis.</p>
@@ -154,7 +146,6 @@
             </div>
         </div>
 
-        <!-- ==================== WITHDRAW TAB ==================== -->
         <div id="view-wd" class="tab-view">
             <h2 class="text-lg font-black mb-1" data-key="menu_wd">Penarikan Saldo (Withdraw)</h2>
             <p class="text-xs text-gray-400 mb-4">Minimal penarikan adalah 0.1 SOL.</p>
@@ -171,7 +162,6 @@
             </div>
         </div>
 
-        <!-- ==================== PROFILE TAB ==================== -->
         <div id="view-profil" class="tab-view">
             <h2 class="text-lg font-black mb-4" data-key="menu_prof">Profil & Pengaturan</h2>
             <div class="glass-panel p-5 rounded-2xl text-center mb-4">
@@ -190,7 +180,6 @@
 
     </div>
 
-    <!-- MAIN BOTTOM NAVIGATION BAR (DIPERLENGKAP DENGAN KELAS NAV-ACTIVE HIDUP) -->
     <nav class="fixed bottom-0 left-0 w-full bg-[#0d1221]/90 border-t border-white/5 flex justify-around py-3 px-2 z-50 backdrop-blur-lg shadow-[0_-5px_25px_rgba(0,0,0,0.6)]">
         <button id="nav-btn-home" onclick="pindahTab('home', this)" class="nav-btn flex flex-col items-center gap-1 nav-active">
             <span class="text-xl">🏠</span><span class="text-[9px]">HOME</span>
@@ -206,7 +195,6 @@
         </button>
     </nav>
 
-    <!-- CORE JAVASCRIPT SYSTEM ENGINE -->
     <script>
         // State & LocalStorage Management
         let saldo = parseFloat(localStorage.getItem('sol_saldo')) || 0.000000;
@@ -248,7 +236,7 @@
         }
         function gantiBahasaManual(val) { bahasaAktif = val; localStorage.setItem('app_lang', val); terapkanBahasaUI(); }
 
-        // Fungsi Perpindahan Tab SPA Nyata (Ditingkatkan Efek Transisi Hidup)
+        // Fungsi Perpindahan Tab SPA Nyata
         function pindahTab(tabId, element) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -277,12 +265,32 @@
             }
         }
 
-        // FUNGSI UTAMA HITUNG HALVING (Bikin Pengguna Butuh Waktu Lama Untuk Withdraw)
+        // FUNGSI UTAMA HITUNG HALVING
         function dapatkanMultiplierHalving() {
-            // Formula Perusahaan Besar: Semakin tinggi saldo mendekati batas 0.1, semakin lambat pendapatan didapat.
-            if (saldo >= 0.09) { return 0.05; }      // Tingkat Kesulitan Tinggi: Kecepatan kuras tinggal 5%
-            if (saldo >= 0.075) { return 0.15; }    // Kecepatan kuras tinggal 15%
-            if (saldo >= 0.05) { return 0.40; }     // Kecepatan kuras tinggal 40%
-            if (saldo >= 0.025) { return 0.70; }    // Kecepatan kuras tinggal 70%
-            return 1.0;                             // Kecepatan penuh di awal (100%)
- 
+            if (saldo >= 0.09) { return 0.05; }      
+            if (saldo >= 0.075) { return 0.15; }    
+            if (saldo >= 0.05) { return 0.40; }     
+            if (saldo >= 0.025) { return 0.70; }    
+            return 1.0;                             
+        }
+
+        // Real-time Engine Core
+        function updateEngineSistem() {
+            const sekarang = Math.floor(Date.now() / 1000);
+            const tombol = document.getElementById('main-mine-btn');
+            const statusText = document.getElementById('miner-status');
+            
+            if (sekarang < waktuSelesaiMining) {
+                let sisaWaktu = waktuSelesaiMining - sekarang;
+                let jam = Math.floor(sisaWaktu / 3600);
+                let menit = Math.floor((wisaWaktu % 3600) / 60);
+                let detik = sisaWaktu % 60;
+                
+                tombol.disabled = true;
+                tombol.className = "w-full py-4 bg-gray-800 text-gray-500 rounded-xl font-bold cursor-not-allowed text-sm";
+                tombol.innerText = "MINING IN PROGRESS...";
+                statusText.innerText = `${String(jam).padStart(2,'0')}:${String(menit).padStart(2,'0')}:${String(detik).padStart(2,'0')}`;
+            } else {
+                tombol.disabled = false;
+                tombol.className = "w-full py-4 bg-solana-gradient rounded-xl text-black font-black tracking-wide text-sm active:scale-95 transition-transform duration-100";
+             
