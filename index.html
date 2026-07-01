@@ -3,410 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLANA_PRO_MINER_PREMIUM_V4</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>SolanaPremiumMine</title>
+    <!-- Tailwind CSS untuk tampilan UI Premium -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
-    <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='how_11226289'></script>
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;700;800&family=JetBrains+Mono:wght=700&display=swap');
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; user-select: none; }
-        body { background-color: #05070f; color: #f1f5f9; padding-bottom: 100px; overflow-x: hidden; }
-        
-        /* Tema Glow & Glassmorphism Premium */
-        .glass-panel { background: rgba(13, 18, 33, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
-        .glass-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(153, 69, 255, 0.4); box-shadow: 0 0 15px rgba(153, 69, 255, 0.1); }
-        .glass-btn:active { transform: scale(0.95); background: rgba(20, 241, 149, 0.1); border-color: #14F195; }
-        
-        /* Animasi Transisi Tab Berfungsi Nyata */
-        .tab-view { display: none; width: 100%; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .tab-view.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Solana Core Colors */
-        .text-solana { background: linear-gradient(135deg, #9945FF, #14F195); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .bg-solana-gradient { background: linear-gradient(135deg, #9945FF, #14F195); }
-
-        /* Desain UI Mewah Tambahan */
-        .glow-card-solana { border: 1px solid rgba(20, 241, 149, 0.2); box-shadow: 0 0 20px rgba(20, 241, 149, 0.05); }
-        .streak-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: all 0.3s; }
-        .streak-dot.active { background: #14F195; box-shadow: 0 0 8px #14F195; }
-        .nav-active { color: #14F195 !important; font-weight: 800; filter: drop-shadow(0 0 8px rgba(20, 241, 149, 0.5)); transform: translateY(-2px); }
-        .nav-btn { transition: all 0.2s ease; }
-    </style>
+    <!-- ⚠️ PASANG SCRIPT TAG MONETAG REWARDED INTERSTITIAL ANDA DI BAWAH SINI ⚠️ -->
+    <!-- Contoh: <script src="https://libtl.com/sdk.js" data-zone="11226289" data-sdk="show_11226289"></script> -->
 </head>
-<body>
+<body class="bg-slate-950 text-white font-sans antialiased select-none">
 
-    <header class="flex justify-between items-center px-5 py-4 bg-[#0d1221]/80 border-b border-white/5 sticky top-0 z-50 backdrop-blur-md">
-        <div class="flex items-center gap-3">
-            <div id="app-avatar" class="w-9 h-9 rounded-full bg-gradient-to-tr from-[#9945FF] to-[#14F195] flex items-center justify-center font-extrabold text-black text-sm shadow-[0_0_10px_rgba(153,69,255,0.5)]">S</div>
-            <div>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Network Operator</p>
-                <p id="username-display" class="font-bold text-xs text-white">SOL_OPERATOR</p>
-            </div>
-        </div>
-        <div class="text-right">
-            <p id="header-balance" class="font-mono font-bold text-sm text-[#14F195]">0.000000 SOL</p>
-            <span id="user-level-badge" class="text-[9px] bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded-full font-bold border border-yellow-500/20">LV 1 Standard</span>
-        </div>
-    </header>
+    <!-- CONTAINER UTAMA MINI APP -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col justify-between p-6 bg-gradient-to-b from-slate-900 to-slate-950 shadow-2xl relative overflow-hidden">
+        
+        <!-- Ornamen Latar Belakang Glow -->
+        <div class="absolute top-[-10%] left-[-10%] w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="max-w-md mx-auto p-4 space-y-4">
-
-        <div id="view-home" class="tab-view active">
-            <div class="w-full h-80 rounded-2xl overflow-hidden border border-red-500/30 shadow-[0_0_25px_rgba(239,68,68,0.15)] relative mb-4">
-                <iframe src="https://threatmap.checkpoint.com/" class="w-full h-full border-none pointer-events-none"></iframe>
-                <div class="absolute top-3 left-3 bg-red-600/90 text-white font-mono text-[9px] px-2 py-1 rounded font-bold tracking-wider animate-pulse">LIVE ATTACK MONITOR</div>
-            </div>
-
-            <div class="glass-panel p-4 rounded-2xl mb-4 border border-white/5">
-                <div class="flex justify-between items-center mb-2">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">7-Day Mining Streak Loyalty</p>
-                    <span id="streak-multiplier-text" class="text-[10px] text-[#14F195] font-mono font-bold">Bonus: 1.0x</span>
+        <!-- HEADER SECTION -->
+        <header class="relative z-10">
+            <div class="flex items-center justify-between bg-slate-800/40 backdrop-blur-md p-4 rounded-2xl border border-slate-700/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center border border-teal-500/40">
+                        <span class="text-teal-400 font-black tracking-wider text-xs">SOL</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Network Operator</p>
+                        <h2 id="usernameDisplay" class="text-sm font-bold text-slate-200">SOL_OPERATOR</h2>
+                    </div>
                 </div>
-                <div class="flex justify-between px-1 py-2 bg-black/30 rounded-xl items-center">
-                    <div class="flex flex-col items-center gap-1"><div id="streak-1" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D1</span></div>
-                    <div class="flex flex-col items-center gap-1"><div id="streak-2" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D2</span></div>
-                    <div class="flex flex-col items-center gap-1"><div id="streak-3" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D3</span></div>
-                    <div class="flex flex-col items-center gap-1"><div id="streak-4" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D4</span></div>
-                    <div class="flex flex-col items-center gap-1"><div id="streak-5" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D5</span></div>
-                    <div class="flex flex-col items-center gap-1"><div id="streak-6" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D6</span></div>
-                    <div class="flex flex-col items-center gap-1"><div id="streak-7" class="streak-dot"></div><span class="text-[8px] text-gray-500 font-bold">D7</span></div>
+                <div class="text-right">
+                    <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium">LV 1 Standard</span>
                 </div>
             </div>
 
-            <div class="glass-panel p-6 rounded-2xl text-center mb-4 glow-card-solana">
-                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1" data-key="wallet_bal">Saldo Dompet Anda</p>
-                <h1 class="text-3xl font-black font-mono text-white"><span id="saldo-display">0.000000</span> SOL</h1>
-                <div class="mt-2 text-[10px] text-gray-500 font-mono" id="halving-status-text">Mining Speed: 100% (Normal Rate)</div>
+            <!-- 7-DAY STREAK -->
+            <div class="mt-4 bg-slate-800/20 p-4 rounded-2xl border border-slate-800/80">
+                <div class="flex justify-between items-center mb-2.5">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400">7-Day Mining Streak Loyalty</p>
+                    <span class="text-xs font-semibold text-teal-400">Bonus: 1.00x</span>
+                </div>
+                <div class="grid grid-cols-7 gap-2">
+                    <div class="bg-teal-500 text-slate-950 font-bold text-xs py-2 rounded-xl text-center shadow-lg shadow-teal-500/20">D1</div>
+                    <div class="bg-slate-800/80 text-slate-500 font-medium text-xs py-2 rounded-xl text-center border border-slate-700/30">D2</div>
+                    <div class="bg-slate-800/80 text-slate-500 font-medium text-xs py-2 rounded-xl text-center border border-slate-700/30">D3</div>
+                    <div class="bg-slate-800/80 text-slate-500 font-medium text-xs py-2 rounded-xl text-center border border-slate-700/30">D4</div>
+                    <div class="bg-slate-800/80 text-slate-500 font-medium text-xs py-2 rounded-xl text-center border border-slate-700/30">D5</div>
+                    <div class="bg-slate-800/80 text-slate-500 font-medium text-xs py-2 rounded-xl text-center border border-slate-700/30">D6</div>
+                    <div class="bg-slate-800/80 text-slate-500 font-medium text-xs py-2 rounded-xl text-center border border-slate-700/30">D7</div>
+                </div>
             </div>
+        </header>
 
-            <div class="glass-panel p-5 rounded-2xl text-center mb-4 border border-white/5">
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-3 font-bold">SOLANA CLOUD MINING CORE</p>
-                <div id="miner-status" class="text-2xl font-mono font-bold text-yellow-400 mb-4 tracking-widest filter drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]">02:00:00</div>
-                <button id="main-mine-btn" onclick="prosesAktivasiWithAd()" class="w-full py-4 bg-solana-gradient rounded-xl text-black font-black tracking-wide text-sm shadow-[0_4px_20px_rgba(20,241,149,0.3)] active:scale-95 transition-all duration-150 transform hover:brightness-110">
-                    TAP TO MINE
+        <!-- MAIN DASHBOARD BALANCE -->
+        <main class="flex-1 flex flex-col justify-center items-center my-8 relative z-10">
+            <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Your Wallet Balance</p>
+            <div class="flex items-baseline gap-2 mb-1">
+                <!-- Desimal dinaikkan menjadi 9 angka di belakang koma agar pergerakannya sangat detail dan lambat -->
+                <h1 id="balanceDisplay" class="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">0.000000000</h1>
+                <span class="text-xl font-extrabold text-teal-400 tracking-wide">SOL</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium">Mining Speed: <span class="text-slate-400 font-semibold">0.00001% (Secure Faucet Rate)</span></p>
+
+            <!-- MINING CORE INTERFACE -->
+            <div class="w-full mt-10 bg-slate-900/60 backdrop-blur-sm p-6 rounded-3xl border border-slate-800 flex flex-col items-center shadow-xl">
+                <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Solana Cloud Mining Core</p>
+                
+                <!-- TIMER COUNTDOWN -->
+                <div id="timerDisplay" class="text-3xl font-mono font-bold text-amber-400 tracking-wider mb-6 bg-slate-950 px-6 py-2.5 rounded-2xl border border-slate-800 shadow-inner">02:00:00</div>
+                
+                <!-- THE CRITICAL BUTTON (TAP TO MINE) -->
+                <button id="btnTapToMine" onclick="prosesAktivasiWithAd()" class="w-full bg-gradient-to-r from-teal-400 to-emerald-500 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.98] text-slate-950 font-black tracking-wider text-sm py-4 rounded-2xl shadow-xl shadow-teal-500/20 transition-all cursor-pointer duration-200 uppercase">
+                    Tap to Mine
                 </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="pindahTabDirect('deposit')" class="glass-btn p-4 rounded-xl flex items-center justify-between text-left">
-                    <div>
-                        <p class="text-xs font-bold text-white">💰 DEPOSIT</p>
-                        <p class="text-[9px] text-gray-400 mt-0.5">Upgrade Speed</p>
-                    </div>
-                    <span class="text-gray-500 text-xs">→</span>
+            <!-- ACTION BUTTONS -->
+            <div class="w-full grid grid-cols-2 gap-4 mt-4">
+                <button onclick="alert('Fitur Deposit Booster dinonaktifkan sementara untuk pemeliharaan jaringan.')" class="bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-slate-300 font-bold text-xs py-3.5 rounded-2xl transition-colors cursor-pointer flex flex-col items-center gap-0.5">
+                    <span class="tracking-wide uppercase">⚡ Deposit</span>
+                    <span class="text-[10px] text-slate-500 font-normal">Upgrade Speed</span>
                 </button>
-                <button onclick="pindahTabDirect('wd')" class="glass-btn p-4 rounded-xl flex items-center justify-between text-left">
-                    <div>
-                        <p class="text-xs font-bold text-white">💸 WITHDRAW</p>
-                        <p class="text-[9px] text-gray-400 mt-0.5">Instant Payout</p>
-                    </div>
-                    <span class="text-gray-500 text-xs">→</span>
+                <button onclick="prosesWithdrawSistem()" class="bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-slate-300 font-bold text-xs py-3.5 rounded-2xl transition-colors cursor-pointer flex flex-col items-center gap-0.5">
+                    <span class="tracking-wide uppercase">💸 Withdraw</span>
+                    <span class="text-[10px] text-slate-500 font-normal">Instant Payout</span>
                 </button>
             </div>
-        </div>
+        </main>
 
-        <div id="view-task" class="tab-view">
-            <h2 class="text-lg font-black mb-1" data-key="menu_task">Misi Harian</h2>
-            <p class="text-xs text-gray-400 mb-4">Selesaikan misi untuk mendapatkan saldo tambahan.</p>
-            <div class="space-y-2">
-                <div class="glass-panel p-4 rounded-xl flex justify-between items-center">
-                    <div>
-                        <p class="text-xs font-bold text-white">Join Telegram Sponsor</p>
-                        <p class="text-[10px] text-emerald-400 font-bold">+0.05 SOL</p>
-                    </div>
-                    <button onclick="bukaMisi(this, 'https://t.me/', 0.05)" class="bg-blue-600 px-4 py-2 rounded-lg text-xs font-bold text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]">Buka</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-ref" class="tab-view">
-            <h2 class="text-lg font-black mb-4" data-key="menu_ref">Undang Teman</h2>
-            <div class="glass-panel p-5 rounded-2xl text-center mb-4">
-                <p class="text-xs text-gray-300 mb-3" data-key="ref_desc">Dapatkan bonus 10% setiap kali teman klaim mining!</p>
-                <h3 class="text-2xl font-black text-[#14F195]">0 Teman</h3>
-            </div>
-            <input type="text" readonly class="w-full bg-black/40 border border-white/10 p-3 rounded-xl text-xs text-gray-400 mb-2 font-mono focus:outline-none" value="https://t.me/SolanaCloudBot?start=ref">
-            <button onclick="navigator.clipboard.writeText('https://t.me/SolanaCloudBot?start=ref'); alert('Copied!');" class="w-full bg-solana-gradient py-3 text-black font-extrabold text-xs rounded-xl shadow-[0_4px_15px_rgba(153,69,255,0.2)]">SALIN LINK</button>
-        </div>
-
-        <div id="view-deposit" class="tab-view">
-            <h2 class="text-lg font-black mb-1" data-key="menu_dep">Deposit & Upgrade Booster</h2>
-            <p class="text-xs text-gray-400 mb-4" data-key="dep_global_info">Sistem akan membuka gerbang wallet eksternal Anda otomatis.</p>
-            <div class="glass-panel p-4 rounded-xl flex justify-between items-center mb-3">
-                <div>
-                    <p class="text-xs font-bold text-white">⚡ Speed Booster X2</p>
-                    <p class="text-[10px] text-gray-400">Durasi bertambah ke 4 Jam</p>
-                </div>
-                <button onclick="eksekusiDeepLinkDeposit('SOL', 0.5, 2, 14400, 'Booster X2')" class="bg-[#14F195] text-black px-4 py-2 rounded-lg text-xs font-black shadow-[0_0_15px_rgba(20,241,149,0.3)]">0.5 SOL</button>
-            </div>
-        </div>
-
-        <div id="view-wd" class="tab-view">
-            <h2 class="text-lg font-black mb-1" data-key="menu_wd">Penarikan Saldo (Withdraw)</h2>
-            <p class="text-xs text-gray-400 mb-4">Minimal penarikan adalah 0.1 SOL.</p>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-[11px] text-gray-400 uppercase font-bold tracking-wider">Alamat Dompet SOL (Mainnet):</label>
-                    <input type="text" class="w-full bg-black/40 border border-white/10 p-3 rounded-xl text-xs text-white mt-1 focus:border-[#9945FF] focus:outline-none transition-colors" placeholder="Masukkan alamat wallet Solana">
-                </div>
-                <div>
-                    <label class="text-[11px] text-gray-400 uppercase font-bold tracking-wider">Jumlah Penarikan:</label>
-                    <input type="number" id="wd-amount" class="w-full bg-black/40 border border-white/10 p-3 rounded-xl text-xs text-white mt-1 focus:border-[#9945FF] focus:outline-none transition-colors" placeholder="0.00">
-                </div>
-                <button onclick="eksekusiWd()" class="w-full bg-red-600 text-white font-extrabold py-3.5 rounded-xl text-xs tracking-wide shadow-[0_4px_15px_rgba(220,38,38,0.3)] active:scale-95 transition-transform">KIRIM PENARIKAN</button>
-            </div>
-        </div>
-
-        <div id="view-profil" class="tab-view">
-            <h2 class="text-lg font-black mb-4" data-key="menu_prof">Profil & Pengaturan</h2>
-            <div class="glass-panel p-5 rounded-2xl text-center mb-4">
-                <div class="w-16 h-16 bg-solana-gradient rounded-full mx-auto flex items-center justify-center font-black text-black text-xl mb-3 shadow-[0_0_15px_rgba(20,241,149,0.4)]">U</div>
-                <h3 id="prof-username" class="text-white font-bold text-sm">Operator</h3>
-                <p id="prof-status" class="text-xs text-[#14F195] mt-1 font-mono font-bold">Status: Standard Free</p>
-            </div>
-            <div class="glass-panel p-4 rounded-xl">
-                <label class="text-xs text-gray-400 font-bold block mb-2" data-key="prof_lang_setting">Pilih Bahasa (Language)</label>
-                <select class="w-full bg-black/60 border border-white/10 text-white p-3 rounded-xl text-xs focus:outline-none" onchange="gantiBahasaManual(this.value)">
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="en">English (International)</option>
-                </select>
-            </div>
-        </div>
+        <!-- FOOTER NAVIGATION BAR -->
+        <footer class="relative z-10 bg-slate-900/80 backdrop-blur-md -mx-6 -mb-6 px-6 py-4 border-t border-slate-800/60 grid grid-cols-4 gap-1 text-center">
+            <button class="text-teal-400 font-bold text-xs flex flex-col items-center gap-1 cursor-pointer">
+                <div class="w-1.5 h-1.5 rounded-full bg-teal-400 mb-0.5"></div>
+                <span>HOME</span>
+            </button>
+            <button onclick="alert('Misi belum tersedia harian.')" class="text-slate-500 hover:text-slate-300 font-semibold text-xs flex flex-col items-center gap-1 transition-colors cursor-pointer pt-2">
+                <span>TASKS</span>
+            </button>
+            <button onclick="alert('Fitur referral akan aktif setelah update versi V5.')" class="text-slate-500 hover:text-slate-300 font-semibold text-xs flex flex-col items-center gap-1 transition-colors cursor-pointer pt-2">
+                <span>INVITE</span>
+            </button>
+            <button onclick="alert('Profil Operator terenkripsi aman.')" class="text-slate-500 hover:text-slate-300 font-semibold text-xs flex flex-col items-center gap-1 transition-colors cursor-pointer pt-2">
+                <span>PROFILE</span>
+            </button>
+        </footer>
 
     </div>
 
-    <nav class="fixed bottom-0 left-0 w-full bg-[#0d1221]/90 border-t border-white/5 flex justify-around py-3 px-2 z-50 backdrop-blur-lg shadow-[0_-5px_25px_rgba(0,0,0,0.6)]">
-        <button id="nav-btn-home" onclick="pindahTab('home', this)" class="nav-btn flex flex-col items-center gap-1 nav-active">
-            <span class="text-xl">🏠</span><span class="text-[9px]">HOME</span>
-        </button>
-        <button id="nav-btn-task" onclick="pindahTab('task', this)" class="nav-btn flex flex-col items-center gap-1 text-gray-500">
-            <span class="text-xl">📋</span><span class="text-[9px]">TASKS</span>
-        </button>
-        <button id="nav-btn-ref" onclick="pindahTab('ref', this)" class="nav-btn flex flex-col items-center gap-1 text-gray-500">
-            <span class="text-xl">👥</span><span class="text-[9px]">INVITE</span>
-        </button>
-        <button id="nav-btn-profil" onclick="pindahTab('profil', this)" class="nav-btn flex flex-col items-center gap-1 text-gray-500">
-            <span class="text-xl">👤</span><span class="text-[9px]">PROFILE</span>
-        </button>
-    </nav>
-
+    <!-- ==================== JAVASCRIPT ENGINE SECURE & MAX PROFIT ==================== -->
     <script>
-        let saldo = parseFloat(localStorage.getItem('sol_saldo')) || 0.000000;
-        let waktuSelesaiMining = parseInt(localStorage.getItem('sol_mine_end')) || 0;
-        let namaLevel = localStorage.getItem('sol_level_name') || 'LV 1 Standard';
+        // State Global (Mengambil penyimpanan lokal browser agar data tersimpan)
+        let solBalance = parseFloat(localStorage.getItem('sol_secure_bal')) || 0.000000000;
+        let isMiningActive = false;
+        let countdownSeconds = 7200; // Sesi 2 Jam penuh
+        let timerInterval = null;
+        
+        // Batas Penarikan Koin yang Sangat Tinggi (Biar Lambat WD)
+        const MINIMUM_WITHDRAW = 2.500000000; 
 
-        let streakHarian = parseInt(localStorage.getItem('sol_streak_count')) || 1;
-        let terakhirClaimStreak = parseInt(localStorage.getItem('sol_last_streak_time')) || 0;
+        // DOM Elemen
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const btnTapToMine = document.getElementById('btnTapToMine');
 
-        const tg = window.Telegram?.WebApp;
-        if (tg) { tg.ready(); tg.expand(); }
-        const userTg = tg?.initDataUnsafe?.user;
-        const akunNama = userTg ? (userTg.username || userTg.first_name) : "SOL_OPERATOR";
+        // Render nilai awal saat aplikasi dibuka
+        balanceDisplay.innerText = solBalance.toFixed(9);
 
-        document.getElementById('username-display').innerText = akunNama;
-        document.getElementById('prof-username').innerText = akunNama;
-        document.getElementById('user-level-badge').innerText = namaLevel;
-        document.getElementById('prof-status').innerText = "Status: " + namaLevel;
-        updateSistemStreakUI();
-        renderSaldo();
-
-        const bahasaKamus = {
-            id: { wallet_bal: "Saldo Dompet Anda", menu_task: "Misi Harian", menu_ref: "Undang Teman", menu_dep: "Deposit & Upgrade", menu_wd: "Penarikan Saldo", menu_prof: "Profil & Pengaturan", ref_desc: "Dapatkan bonus 10% setiap kali teman klaim mining!", prof_lang_setting: "Pilih Bahasa (Language)", dep_global_info: "Sistem akan membuka gerbang wallet eksternal Anda otomatis." },
-            en: { wallet_bal: "Your Wallet Balance", menu_task: "Daily Tasks", menu_ref: "Invite Friends", menu_dep: "Deposit & Upgrade", menu_wd: "Withdraw Balance", menu_prof: "Profile & Settings", ref_desc: "Get 10% bonus every time friend claims mining!", prof_lang_setting: "Select Language", dep_global_info: "The system will automatically open your external wallet gateway." }
-        };
-        let bahasaAktif = localStorage.getItem('app_lang') || 'en';
-        terapkanBahasaUI();
-
-        function terapkanBahasaUI() {
-            const kamus = bahasaKamus[bahasaAktif] || bahasaKamus['en'];
-            document.querySelectorAll('[data-key]').forEach(el => {
-                const kunci = el.getAttribute('data-key');
-                if (kamus[kunci]) el.innerText = kamus[kunci];
-            });
-        }
-        function gantiBahasaManual(val) { bahasaAktif = val; localStorage.setItem('app_lang', val); terapkanBahasaUI(); }
-
-        function pindahTab(tabId, element) {
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('nav-active');
-                btn.classList.add('text-gray-500');
-            });
-            
-            document.getElementById('view-' + tabId).classList.add('active');
-            element.classList.remove('text-gray-500');
-            element.classList.add('nav-active');
-        }
-
-        function pindahTabDirect(tabId) {
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
-            document.getElementById('view-' + tabId).classList.add('active');
-            
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('nav-active');
-                btn.classList.add('text-gray-500');
-            });
-            
-            const targetNav = document.getElementById('nav-btn-' + tabId);
-            if(targetNav) {
-                targetNav.classList.remove('text-gray-500');
-                targetNav.classList.add('nav-active');
-            }
-        }
-
-        function dapatkanMultiplierHalving() {
-            if (saldo >= 0.09) return 0.05;      
-            if (saldo >= 0.075) return 0.15;    
-            if (saldo >= 0.05) return 0.40;     
-            if (saldo >= 0.025) return 0.70;    
-            return 1.0;                             
-        }
-
-        function updateEngineSistem() {
-            const sekarang = Math.floor(Date.now() / 1000);
-            const tombol = document.getElementById('main-mine-btn');
-            const statusText = document.getElementById('miner-status');
-            
-            if (sekarang < waktuSelesaiMining) {
-                let sisaWaktu = waktuSelesaiMining - sekarang;
-                let jam = Math.floor(sisaWaktu / 3600);
-                let menit = Math.floor((sisaWaktu % 3600) / 60);
-                let detik = sisaWaktu % 60;
-                
-                tombol.disabled = true;
-                tombol.className = "w-full py-4 bg-gray-800 text-gray-500 rounded-xl font-bold cursor-not-allowed text-sm";
-                tombol.innerText = "MINING IN PROGRESS...";
-                statusText.innerText = `${String(jam).padStart(2,'0')}:${String(menit).padStart(2,'0')}:${String(detik).padStart(2,'0')}`;
-            } else {
-                tombol.disabled = false;
-                tombol.className = "w-full py-4 bg-solana-gradient rounded-xl text-black font-black tracking-wide text-sm active:scale-95 transition-transform duration-100";
-                tombol.innerText = "TAP TO MINE";
-                statusText.innerText = "00:00:00";
-                if (waktuSelesaiMining !== 0) {
-                    let baseReward = 0.025;
-                    let pengaliHalving = dapatkanMultiplierHalving();
-                    let pengaliStreak = 1 + ((streakHarian - 1) * 0.05); 
-                    
-                    saldo += (baseReward * pengaliHalving * pengaliStreak);
-                    localStorage.setItem('sol_saldo', saldo);
-                    
-                    waktuSelesaiMining = 0;
-                    localStorage.setItem('sol_mine_end', 0);
-                    renderSaldo();
-                }
-            }
-        }
-
-        // Penanganan Fungsi Utama Monetag Iklan yang Tepat (how_11226289)
+        // ==================== ENGINE MONETAG WAJIB (ANTI BYPASS / ANTI RUGI) ====================
         function prosesAktivasiWithAd() {
-            if (typeof how_11226289 === "function") {
-                how_11226289().then(() => {
+            if (isMiningActive) {
+                alert("Proses enkripsi cloud mining Anda sedang berjalan!");
+                return;
+            }
+
+            // FILTER 1: CEK APAKAH SDK MONETAG DIAKTIFKAN ATAU DIBLOKIR AD-BLOCKER
+            if (typeof show_11226289 !== "function") {
+                alert("Sistem Keamanan Keuntungan: Script Iklan Gagal Dimuat! Silakan nonaktifkan Ad-Blocker / VPN Anda atau gunakan jaringan internet yang stabil untuk memulai mining.");
+                return;
+            }
+
+            try {
+                btnTapToMine.innerText = "LOADING SECURE AD...";
+                btnTapToMine.disabled = true;
+
+                // FILTER 2: WAJIB SELESAI NONTON IKLAN (.then)
+                show_11226289().then(() => {
+                    console.log("Verifikasi Sukses. Tayangan iklan Monetag sah terhitung keuntungan.");
+                    
+                    // Core Mining dijalankan hanya jika iklan tuntas ditonton
                     prosesAktivasiMiner();
-                    prosesSistemValidasiStreak();
+                    alert('Sukses! Iklan tuntas diverifikasi. Sesi mining 2 jam dimulai.');
                 }).catch((error) => {
-                    console.error("Ad error:", error);
-                    // Jika gagal panggil script, sistem tetap mengizinkan user untuk melakukan mining
-                    prosesAktivasiMiner();
-                    prosesSistemValidasiStreak();
+                    // JIKA IKLAN DI-SKIP, DITUTUP PAKSA, ATAU ERROR DI TENGAH JALAN -> TOLAK MINING
+                    console.log("Iklan digagalkan pengguna:", error);
+                    btnTapToMine.disabled = false;
+                    btnTapToMine.innerText = "Tap to Mine";
+                    alert("Gagal: Anda wajib menyaksikan tayangan iklan sponsor tanpa dilewati untuk mendapatkan alokasi mining!");
                 });
-            } else {
-                prosesAktivasiMiner();
-                prosesSistemValidasiStreak();
+
+            } catch (err) {
+                // Jaring pengaman eror browser agar tidak force close
+                btnTapToMine.disabled = false;
+                btnTapToMine.innerText = "Tap to Mine";
+                alert("Saluran iklan sibuk. Silakan ketuk ulang dalam beberapa detik.");
             }
         }
 
+        // ==================== ENGINE PERMINTAAN ALOKASI MINING DIKECILKAN (MEMPERLAMBAT WD) ====================
         function prosesAktivasiMiner() {
-            const sekarang = Math.floor(Date.now() / 1000);
-            waktuSelesaiMining = sekarang + 7200; 
-            localStorage.setItem('sol_mine_end', waktuSelesaiMining);
-            updateEngineSistem();
-        }
-
-        function prosesSistemValidasiStreak() {
-            const sekarang = Math.floor(Date.now() / 1000);
-            const satuHariDetik = 86400;
-
-            if (terakhirClaimStreak === 0) {
-                terakhirClaimStreak = sekarang;
-                streakHarian = 1;
-            } else {
-                let selisihWaktu = sekarang - terakhirClaimStreak;
-                if (selisihWaktu <= satuHariDetik * 2) {
-                    if (streakHarian < 7) streakHarian += 1;
-                } else {
-                    streakHarian = 1;
-                }
-                terakhirClaimStreak = sekarang;
-            }
-            localStorage.setItem('sol_streak_count', streakHarian);
-            localStorage.setItem('sol_last_streak_time', terakhirClaimStreak);
-            updateSistemStreakUI();
-        }
-
-        function updateSistemStreakUI() {
-            for (let i = 1; i <= 7; i++) {
-                let dot = document.getElementById('streak-' + i);
-                if (dot) {
-                    if (i <= streakHarian) { dot.classList.add('active'); }
-                    else { dot.classList.remove('active'); }
-                }
-            }
-            let bonusPersen = 1 + ((streakHarian - 1) * 0.05);
-            document.getElementById('streak-multiplier-text').innerText = "Bonus: " + bonusPersen.toFixed(2) + "x";
-        }
-
-        function renderSaldo() {
-            document.getElementById('saldo-display').innerText = saldo.toFixed(6);
-            document.getElementById('header-balance').innerText = saldo.toFixed(6) + " SOL";
+            isMiningActive = true;
+            btnTapToMine.disabled = true;
+            btnTapToMine.innerText = "MINING IN PROGRESS";
+            btnTapToMine.className = "w-full bg-slate-800 text-teal-400 border border-teal-500/30 font-black tracking-wider text-sm py-4 rounded-2xl shadow-inner uppercase";
             
-            let ratePersen = (dapatkanMultiplierHalving() * 100).toFixed(0);
-            document.getElementById('halving-status-text').innerText = `Mining Speed: ${ratePersen}% (${ratePersen == 100 ? 'Normal Rate' : 'Halving Protected Mode'})`;
-        }
-
-        function bukaMisi(button, link, reward) {
-            window.open(link, '_blank');
-            button.disabled = true;
-            button.innerText = "Claiming...";
-            setTimeout(() => {
-                saldo += reward;
-                localStorage.setItem('sol_saldo', saldo);
-                renderSaldo();
-                button.innerText = "Done";
-            }, 5000);
-        }
-
-        function eksekusiWd() {
-            const nilaiWd = parseFloat(document.getElementById('wd-amount').value) || 0;
-            if (nilaiWd < 0.1) { alert("Minimal Penarikan: 0.1 SOL"); }
-            else if (nilaiWd > saldo) { alert("Saldo tidak mencukupi!"); }
-            else {
-                saldo -= nilaiWd;
-                localStorage.setItem('sol_saldo', saldo);
-                renderSaldo();
-                alert("Penarikan berhasil diajukan ke jaringan Solana.");
-            }
-        }
-
-        function eksekusiDeepLinkDeposit(koin, harga, speedBooster, durasiBaru, namaPaket) {
-            setTimeout(() => {
-                let alamatWallet = prompt("Masukkan alamat dompet " + koin + " Anda untuk " + namaPaket + ":");
-                if (alamatWallet) {
-                    window.open('solana:0xTargetWalletAddressAddressHere?amount=' + harga, '_blank');
-                    namaLevel = namaPaket;
-                    localStorage.setItem('sol_level_name', namaLevel);
-                    document.getElementById('user-level-badge').innerText = namaLevel;
-                    document.getElementById('prof-status').innerText = "Status: " + namaLevel;
-                    alert("Permintaan transfer dikirim. Status Anda diperbarui menjadi " + namaPaket);
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (countdownSeconds > 0) {
+                    countdownSeconds--;
+                    
+                    // NILAI DIPERLAMBAT: Hanya bertambah 0.000000002 SOL per detik!
+                    // Matematika: 1 Sesi (2 Jam = 7200 detik) hanya menghasilkan 0.000014400 SOL.
+                    // Untuk mencapai batas 2.5 SOL, user butuh sekitar 173.611 kali nonton iklan (Puluhan Tahun).
+                    solBalance += 0.000000002; 
+                    
+                    // Simpan permanen di memori lokal agar tidak bisa di-refresh untuk reset saldo
+                    localStorage.setItem('sol_secure_bal', solBalance);
+                    
+                    // Tampilkan ke layar desimal panjang
+                    balanceDisplay.innerText = solBalance.toFixed(9);
+                    timerDisplay.innerText = formatWaktuLengkap(countdownSeconds);
+                } else {
+                    // Sesi 2 Jam Berakhir
+                    clearInterval(timerInterval);
+                    isMiningActive = false;
+                    countdownSeconds = 7200;
+                    btnTapToMine.disabled = false;
+                    btnTapToMine.innerText = "Tap to Mine";
+                    btnTapToMine.className = "w-full bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 font-black tracking-wider text-sm py-4 rounded-2xl shadow-xl shadow-teal-500/20 transition-all uppercase";
+                    alert("Sesi mining Anda telah selesai. Tonton iklan baru untuk melanjutkan alokasi penambangan!");
                 }
             }, 1000);
         }
 
-        setInterval(updateEngineSistem, 1000);
+        // ==================== LOGIKA CEK PENARIKAN (WITHDRAW LOCKER) ====================
+        function prosesWithdrawSistem() {
+            if (solBalance < MINIMUM_WITHDRAW) {
+                alert(`⚠️ Penarikan Ditolak!\n\nBatas batas minimum pencairan adalah ${MINIMUM_WITHDRAW.toFixed(9)} SOL.\nSaldo Anda saat ini baru mencapai ${solBalance.toFixed(9)} SOL.\n\nKumpulkan saldo lebih banyak dengan melakukan mining harian!`);
+            } else {
+                alert("Permintaan penarikan dikirim. Sedang mengonfirmasi validitas blok jaringan (Estimasi proses: 14-30 Hari Kerja).");
+            }
+        }
+
+        function formatWaktuLengkap(totalDetik) {
+            let jam = Math.floor(totalDetik / 3600);
+            let menit = Math.floor((totalDetik % 3600) / 60);
+            let detik = totalDetik % 60;
+
+            if (jam < 10) jam = "0" + jam;
+            if (menit < 10) menit = "0" + menit;
+            if (detik < 10) detik = "0" + detik;
+
+            return jam + ":" + menit + ":" + detik;
+        }
     </script>
 </body>
 </html>
