@@ -293,4 +293,129 @@
             } else {
                 tombol.disabled = false;
                 tombol.className = "w-full py-4 bg-solana-gradient rounded-xl text-black font-black tracking-wide text-sm active:scale-95 transition-transform duration-100";
-             
+                tombol.innerText = "TAP TO MINE";
+                statusText.innerText = "00:00:00";
+                if (waktuSelesaiMining !== 0) {
+                    let baseReward = 0.025;
+                    let pengaliHalving = dapatkanMultiplierHalving();
+                    let pengaliStreak = 1 + ((streakHarian - 1) * 0.05); 
+                    
+                    saldo += (baseReward * pengaliHalving * pengaliStreak);
+                    localStorage.setItem('sol_saldo', saldo);
+                    
+                    waktuSelesaiMining = 0;
+                    localStorage.setItem('sol_mine_end', 0);
+                    renderSaldo();
+                }
+            }
+        }
+
+        // FUNGSI JALANKAN IKLAN MONETAG DISINKRONKAN DENGAN NAMA REKREASI FUNGSINYA (how_11226289)
+        function prosesAktivasiWithAd() {
+            if (typeof how_11226289 === "function") {
+                how_11226289().then(() => {
+                    prosesAktivasiMiner();
+                    prosesSistemValidasiStreak();
+                }).catch((error) => {
+                    console.error("Ad error:", error);
+                    alert("Please check internet/disable AdBlocker to start mining engine.");
+                });
+            } else {
+                // Jika iklan gagal memuat dari server Monetag, mining tetap bisa berjalan sebagai cadangan
+                prosesAktivasiMiner();
+                prosesSistemValidasiStreak();
+            }
+        }
+
+        function prosesAktivasiMiner() {
+            const sekarang = Math.floor(Date.now() / 1000);
+            waktuSelesaiMining = sekarang + 7200; 
+            localStorage.setItem('sol_mine_end', waktuSelesaiMining);
+            updateEngineSistem();
+        }
+
+        // SISTEM KENDALI LOYALITAS HARIAN STREAK
+        function prosesSistemValidasiStreak() {
+            const sekarang = Math.floor(Date.now() / 1000);
+            const satuHariDetik = 86400;
+
+            if (terakhirClaimStreak === 0) {
+                terakhirClaimStreak = machined_now = sekarang;
+                streakHarian = 1;
+            } else {
+                let selisihWaktu = sekarang - terakhirClaimStreak;
+                if (selisihWaktu <= satuHariDetik * 2) {
+                    if (streakHarian < 7) streakHarian += 1;
+                } else {
+                    streakHarian = 1;
+                }
+                terakhirClaimStreak = sekarang;
+            }
+            localStorage.setItem('sol_streak_count', streakHarian);
+            localStorage.setItem('sol_last_streak_time', terakhirClaimStreak);
+            updateSistemStreakUI();
+        }
+
+        function updateSistemStreakUI() {
+            for (let i = 1; i <= 7; i++) {
+                let dot = document.getElementById('streak-' + i);
+                if (dot) {
+                    if (i <= streakHarian) { dot.classList.add('active'); }
+                    else { dot.classList.remove('active'); }
+                }
+            }
+            let bonusPersen = 1 + ((streakHarian - 1) * 0.05);
+            document.getElementById('streak-multiplier-text').innerText = "Bonus: " + bonusPersen.toFixed(2) + "x";
+        }
+
+        function renderSaldo() {
+            document.getElementById('saldo-display').innerText = saldo.toFixed(6);
+            document.getElementById('header-balance').innerText = saldo.toFixed(6) + " SOL";
+            
+            let ratePersen = (dapatkanMultiplierHalving() * 100).toFixed(0);
+            document.getElementById('halving-status-text').innerText = `Mining Speed: ${ratePersen}% (${ratePersen == 100 ? 'Normal Rate' : 'Halving Protected Mode'})`;
+        }
+
+        function bukaMisi(button, link, reward) {
+            window.open(link, '_blank');
+            button.disabled = true;
+            button.innerText = "Claiming...";
+            setTimeout(() => {
+                saldo += reward;
+                localStorage.setItem('sol_saldo', saldo);
+                renderSaldo();
+                button.innerText = "Done";
+            }, 5000);
+        }
+
+        function eksekusiWd() {
+            const nilaiWd = parseFloat(document.getElementById('wd-amount').value) || 0;
+            if (nilaiWd < 0.1) { alert("Minimal Penarikan: 0.1 SOL"); }
+            else if (nilaiWd > saldo) { alert("Saldo tidak mencukupi!"); }
+            else {
+                saldo -= nilaiWd;
+                localStorage.setItem('sol_saldo', saldo);
+                renderSaldo();
+                alert("Penarikan berhasil diajukan ke jaringan Solana.");
+            }
+        }
+
+        function eksekusiDeepLinkDeposit(koin, harga, speedBooster, durasiBaru, namaPaket) {
+            setTimeout(() => {
+                let alamatWallet = prompt("Masukkan alamat dompet " + koin + " Anda untuk " + namaPaket + ":");
+                if (alamatWallet) {
+                    window.open('solana:0xTargetWalletAddressAddressHere?amount=' + harga, '_blank');
+                    namaLevel = namaPaket;
+                    localStorage.setItem('sol_level_name', namaLevel);
+                    document.getElementById('user-level-badge').innerText = namaLevel;
+                    document.getElementById('prof-status').innerText = "Status: " + namaLevel;
+                    alert("Permintaan transfer dikirim. Status Anda diperbarui menjadi " + namaPaket);
+                }
+            }, 1000);
+        }
+
+        setInterval(updateEngineSistem, 1000);
+    </script>
+</body>
+</html>
+                
