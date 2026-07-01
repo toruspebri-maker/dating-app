@@ -7,10 +7,10 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
+    <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='how_11226289'></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;700;800&family=JetBrains+Mono:wght=700&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; user-select: none; }
         body { background-color: #05070f; color: #f1f5f9; padding-bottom: 100px; overflow-x: hidden; }
@@ -196,22 +196,18 @@
     </nav>
 
     <script>
-        // State & LocalStorage Management
         let saldo = parseFloat(localStorage.getItem('sol_saldo')) || 0.000000;
         let waktuSelesaiMining = parseInt(localStorage.getItem('sol_mine_end')) || 0;
         let namaLevel = localStorage.getItem('sol_level_name') || 'LV 1 Standard';
 
-        // State Baru: Fitur Loyalitas Jangka Panjang & Pengaman Perusahaan
         let streakHarian = parseInt(localStorage.getItem('sol_streak_count')) || 1;
         let terakhirClaimStreak = parseInt(localStorage.getItem('sol_last_streak_time')) || 0;
 
-        // Penanganan SDK Telegram WebApp
         const tg = window.Telegram?.WebApp;
         if (tg) { tg.ready(); tg.expand(); }
         const userTg = tg?.initDataUnsafe?.user;
         const akunNama = userTg ? (userTg.username || userTg.first_name) : "SOL_OPERATOR";
 
-        // Setup Nilai UI Awal
         document.getElementById('username-display').innerText = akunNama;
         document.getElementById('prof-username').innerText = akunNama;
         document.getElementById('user-level-badge').innerText = namaLevel;
@@ -219,7 +215,6 @@
         updateSistemStreakUI();
         renderSaldo();
 
-        // Kamus Multi-Bahasa
         const bahasaKamus = {
             id: { wallet_bal: "Saldo Dompet Anda", menu_task: "Misi Harian", menu_ref: "Undang Teman", menu_dep: "Deposit & Upgrade", menu_wd: "Penarikan Saldo", menu_prof: "Profil & Pengaturan", ref_desc: "Dapatkan bonus 10% setiap kali teman klaim mining!", prof_lang_setting: "Pilih Bahasa (Language)", dep_global_info: "Sistem akan membuka gerbang wallet eksternal Anda otomatis." },
             en: { wallet_bal: "Your Wallet Balance", menu_task: "Daily Tasks", menu_ref: "Invite Friends", menu_dep: "Deposit & Upgrade", menu_wd: "Withdraw Balance", menu_prof: "Profile & Settings", ref_desc: "Get 10% bonus every time friend claims mining!", prof_lang_setting: "Select Language", dep_global_info: "The system will automatically open your external wallet gateway." }
@@ -236,7 +231,6 @@
         }
         function gantiBahasaManual(val) { bahasaAktif = val; localStorage.setItem('app_lang', val); terapkanBahasaUI(); }
 
-        // Fungsi Perpindahan Tab SPA Nyata
         function pindahTab(tabId, element) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -265,16 +259,14 @@
             }
         }
 
-        // FUNGSI UTAMA HITUNG HALVING
         function dapatkanMultiplierHalving() {
-            if (saldo >= 0.09) { return 0.05; }      
-            if (saldo >= 0.075) { return 0.15; }    
-            if (saldo >= 0.05) { return 0.40; }     
-            if (saldo >= 0.025) { return 0.70; }    
+            if (saldo >= 0.09) return 0.05;      
+            if (saldo >= 0.075) return 0.15;    
+            if (saldo >= 0.05) return 0.40;     
+            if (saldo >= 0.025) return 0.70;    
             return 1.0;                             
         }
 
-        // Real-time Engine Core
         function updateEngineSistem() {
             const sekarang = Math.floor(Date.now() / 1000);
             const tombol = document.getElementById('main-mine-btn');
@@ -283,7 +275,7 @@
             if (sekarang < waktuSelesaiMining) {
                 let sisaWaktu = waktuSelesaiMining - sekarang;
                 let jam = Math.floor(sisaWaktu / 3600);
-                let menit = Math.floor((wisaWaktu % 3600) / 60);
+                let menit = Math.floor((sisaWaktu % 3600) / 60);
                 let detik = sisaWaktu % 60;
                 
                 tombol.disabled = true;
@@ -310,7 +302,7 @@
             }
         }
 
-        // FUNGSI JALANKAN IKLAN MONETAG DISINKRONKAN DENGAN NAMA REKREASI FUNGSINYA (how_11226289)
+        // Penanganan Fungsi Utama Monetag Iklan yang Tepat (how_11226289)
         function prosesAktivasiWithAd() {
             if (typeof how_11226289 === "function") {
                 how_11226289().then(() => {
@@ -318,10 +310,11 @@
                     prosesSistemValidasiStreak();
                 }).catch((error) => {
                     console.error("Ad error:", error);
-                    alert("Please check internet/disable AdBlocker to start mining engine.");
+                    // Jika gagal panggil script, sistem tetap mengizinkan user untuk melakukan mining
+                    prosesAktivasiMiner();
+                    prosesSistemValidasiStreak();
                 });
             } else {
-                // Jika iklan gagal memuat dari server Monetag, mining tetap bisa berjalan sebagai cadangan
                 prosesAktivasiMiner();
                 prosesSistemValidasiStreak();
             }
@@ -334,13 +327,12 @@
             updateEngineSistem();
         }
 
-        // SISTEM KENDALI LOYALITAS HARIAN STREAK
         function prosesSistemValidasiStreak() {
             const sekarang = Math.floor(Date.now() / 1000);
             const satuHariDetik = 86400;
 
             if (terakhirClaimStreak === 0) {
-                terakhirClaimStreak = machined_now = sekarang;
+                terakhirClaimStreak = sekarang;
                 streakHarian = 1;
             } else {
                 let selisihWaktu = sekarang - terakhirClaimStreak;
@@ -418,4 +410,3 @@
     </script>
 </body>
 </html>
-                
