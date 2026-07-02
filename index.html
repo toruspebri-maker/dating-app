@@ -358,4 +358,91 @@
             list.innerHTML = '';
             tasks.forEach(task => {
                 list.innerHTML += `
-                    <div class="glass-panel p-4 rounded-xl flex justify-between items-center border-l-2 ${task.done ? 'bor
+                    <div class="glass-panel p-4 rounded-xl flex justify-between items-center border-l-2 ${task.done ? 'border-gray-600 opacity-50' : 'border-solPurple'}">
+                        <div>
+                            <div class="font-bold text-sm text-white">${task.title}</div>
+                            <div class="font-mono text-xs text-solPurple">+${task.reward} SOL</div>
+                        </div>
+                        <button onclick="claimTask(${task.id})" class="${task.done ? 'bg-gray-700 text-gray-400' : 'bg-solPurple text-white'} px-4 py-2 rounded text-xs font-bold" ${task.done ? 'disabled' : ''}>
+                            ${task.done ? 'Claimed' : 'Execute'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        window.claimTask = function(id) {
+            const task = tasks.find(t => t.id === id);
+            if(task && !task.done) {
+                task.done = true;
+                state.balance += task.reward;
+                elBalance.textContent = state.balance.toFixed(8);
+                renderTasks();
+                alert(`Task Completed! You received ${task.reward} SOL.`);
+            }
+        }
+        
+        renderTasks(); // init render
+
+        // --- Threat Map Canvas Animation ---
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let nodes = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            nodes = [];
+            for(let i=0; i<40; i++) {
+                nodes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
+        }
+
+        function drawMap() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.lineWidth = 1;
+            
+            for(let i=0; i<nodes.length; i++) {
+                let node = nodes[i];
+                node.x += node.vx;
+                node.y += node.vy;
+                
+                // Bounce edges
+                if(node.x < 0 || node.x > width) node.vx *= -1;
+                if(node.y < 0 || node.y > height) node.vy *= -1;
+                
+                // Draw Node
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#14F195';
+                ctx.fill();
+
+                // Connect nearby nodes
+                for(let j=i+1; j<nodes.length; j++) {
+                    let node2 = nodes[j];
+                    let dist = Math.hypot(node.x - node2.x, node.y - node2.y);
+                    if(dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(node2.x, node2.y);
+                        ctx.strokeStyle = `rgba(153, 69, 255, ${1 - dist/100})`; // Purple connecting lines
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawMap);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        drawMap();
+
+    </script>
+</body>
+</html>
