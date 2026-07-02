@@ -28,7 +28,7 @@
         body {
             background-color: #05050A;
             color: #e2e8f0;
-            overflow: hidden; /* Prevent scrolling, true app feel */
+            overflow: hidden;
             -webkit-tap-highlight-color: transparent;
         }
         #network-canvas {
@@ -38,25 +38,28 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.6;
+            opacity: 0.4;
         }
         .glass-panel {
-            background: rgba(10, 10, 15, 0.7);
+            background: rgba(10, 10, 15, 0.75);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
         }
         .text-glow-green { text-shadow: 0 0 10px rgba(20, 241, 149, 0.7); }
         .text-glow-purple { text-shadow: 0 0 10px rgba(153, 69, 255, 0.7); }
         
+        /* Perbaikan Sistem Switch View: Hidden total jika tidak aktif */
         .view-section {
-            display: none;
-            animation: fadeIn 0.4s ease-out forwards;
+            display: none !important;
         }
-        .view-section.active { display: block; }
+        .view-section.active {
+            display: flex !important;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -65,7 +68,7 @@
         }
         @keyframes pulse-ring {
             0% { transform: scale(0.8); opacity: 0.5; box-shadow: 0 0 0 0 rgba(20, 241, 149, 0.7); }
-            70% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 0 20px rgba(20, 241, 149, 0); }
+            70% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 0 15px rgba(20, 241, 149, 0); }
             100% { transform: scale(0.8); opacity: 0.5; box-shadow: 0 0 0 0 rgba(20, 241, 149, 0); }
         }
 
@@ -73,13 +76,11 @@
         .terminal-scroll::-webkit-scrollbar-thumb { background: #14F195; border-radius: 4px; }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col justify-between">
+<body class="h-screen w-screen flex flex-col justify-between p-0 m-0 select-none">
 
-    <!-- Background Threat Map -->
     <canvas id="network-canvas"></canvas>
 
-    <!-- Top Header / Global Status -->
-    <header class="glass-panel m-4 p-4 rounded-2xl flex justify-between items-center z-10">
+    <header class="glass-panel mx-4 mt-4 p-4 rounded-2xl flex justify-between items-center z-10 shrink-0">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-solPurple to-solGreen flex items-center justify-center p-[2px]">
                 <div class="w-full h-full bg-cyberDark rounded-full border border-black flex items-center justify-center">
@@ -100,152 +101,140 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 overflow-y-auto px-4 pb-24 z-10 terminal-scroll">
+    <main class="flex-1 min-h-0 relative mx-4 my-3 z-10">
         
-        <!-- VIEW 1: CONSOLE (MINING) -->
-        <section id="view-console" class="view-section active h-full flex flex-col gap-4">
-            <!-- Mining Control -->
-            <div class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-solPurple opacity-20 blur-3xl rounded-full"></div>
+        <section id="view-console" class="view-section active absolute inset-0 flex flex-col gap-3">
+            <div class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden shrink-0">
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-solPurple opacity-10 blur-3xl rounded-full"></div>
                 
-                <h2 class="text-lg font-bold text-gray-300 mb-6 uppercase tracking-wider">Node Operation</h2>
+                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Node Operation Center</h2>
                 
-                <button id="btn-mining" class="relative w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 z-10 mb-4">
-                    <div id="btn-ring" class="absolute inset-0 rounded-full border border-gray-600"></div>
-                    <div id="btn-core" class="w-28 h-28 bg-gradient-to-b from-gray-800 to-black rounded-full border border-gray-600 flex items-center justify-center shadow-lg transition-all duration-300">
-                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <button id="btn-mining" class="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 mb-3">
+                    <div id="btn-ring" class="absolute inset-0 rounded-full border border-gray-700"></div>
+                    <div id="btn-core" class="w-24 h-24 bg-gradient-to-b from-gray-800 to-black rounded-full border border-gray-700 flex items-center justify-center shadow-lg">
+                        <svg class="w-8 h-8 text-gray-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
                 </button>
 
-                <div class="flex w-full justify-between mt-4">
-                    <div class="text-center">
-                        <div class="text-xs text-gray-400 mb-1">Hashrate</div>
-                        <div class="font-mono text-sm text-white" id="display-hashrate">0.00 SOL/h</div>
+                <div class="flex w-full justify-between px-2">
+                    <div class="text-left">
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Hashrate</div>
+                        <div class="font-mono text-xs font-bold text-white" id="display-hashrate">0.00 SOL/h</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-xs text-gray-400 mb-1">Network Temp</div>
-                        <div class="font-mono text-sm text-white" id="display-temp">42°C</div>
+                    <div class="text-right">
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Core Temp</div>
+                        <div class="font-mono text-xs font-bold text-white" id="display-temp">42°C</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Terminal Output -->
-            <div class="glass-panel p-4 rounded-2xl flex-1 flex flex-col">
-                <div class="flex justify-between items-center mb-2 border-b border-gray-700 pb-2">
-                    <span class="text-xs font-bold text-gray-400 uppercase">Live Terminal</span>
-                    <span class="text-xs font-mono text-solPurple">v2.4.1</span>
+            <div class="glass-panel p-4 rounded-2xl flex-1 flex flex-col min-h-0 overflow-hidden">
+                <div class="flex justify-between items-center mb-2 border-b border-gray-800 pb-2 shrink-0">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Live Core Terminal</span>
+                    <span class="text-[10px] font-mono text-solPurple">SECURE_SSL</span>
                 </div>
-                <div id="terminal-output" class="font-mono text-xs text-gray-500 flex-1 overflow-y-auto h-32 terminal-scroll flex flex-col justify-end">
-                    <div>> System initialized...</div>
-                    <div>> Awaiting operation command...</div>
+                <div id="terminal-output" class="font-mono text-[11px] text-gray-500 flex-1 overflow-y-auto terminal-scroll space-y-1 select-text">
+                    <div>> GOC Kernel v2.4.1 Loaded...</div>
+                    <div>> Awaiting handshake command...</div>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 2: TASKS -->
-        <section id="view-tasks" class="view-section">
-            <h2 class="text-xl font-bold text-white mb-4">Misi Operasional</h2>
-            <div class="flex flex-col gap-3" id="task-list">
-                <!-- Tasks will be rendered here by JS -->
-            </div>
+        <section id="view-tasks" class="view-section absolute inset-0 flex flex-col min-h-0 overflow-hidden">
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3 shrink-0">Misi Operasional</h2>
+            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3 pr-1" id="task-list">
+                </div>
         </section>
 
-        <!-- VIEW 3: INVITE / NETWORK -->
-        <section id="view-invite" class="view-section">
-            <div class="glass-panel p-6 rounded-2xl mb-4 text-center">
-                <div class="w-16 h-16 rounded-full bg-solPurple/20 flex items-center justify-center mx-auto mb-3">
-                    <svg class="w-8 h-8 text-solPurple text-glow-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <section id="view-invite" class="view-section absolute inset-0 flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3">
+            <div class="glass-panel p-5 rounded-2xl text-center shrink-0">
+                <div class="w-12 h-12 rounded-full bg-solPurple/10 flex items-center justify-center mx-auto mb-2">
+                    <svg class="w-6 h-6 text-solPurple text-glow-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-white mb-1">Ekspansi Jaringan</h2>
-                <p class="text-sm text-gray-400 mb-6">Undang agen baru untuk meningkatkan batas Hashrate Anda sebesar 15% per agen aktif.</p>
+                <h2 class="text-lg font-bold text-white tracking-wide">Ekspansi Jaringan</h2>
+                <p class="text-xs text-gray-400 mt-1 mb-4">Rekrut agen baru untuk mendongkrak kapasitas batas Hashrate Anda sebesar +15% per agen.</p>
                 
-                <div class="bg-black/50 p-3 rounded-lg border border-gray-700 flex justify-between items-center">
-                    <span class="font-mono text-sm text-gray-300">goc.net/ref/ag-8921</span>
-                    <button class="bg-solPurple text-white px-3 py-1 rounded text-sm font-bold hover:bg-opacity-80 transition" onclick="alert('Link disalin ke clipboard!')">Copy</button>
+                <div class="bg-black/40 p-3 rounded-xl border border-gray-800 flex justify-between items-center">
+                    <span class="font-mono text-xs text-gray-300 tracking-all">goc.net/ref/ag-8921</span>
+                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-opacity-80 active:scale-95 transition-all" onclick="alert('Link referral disalin!')">Copy</button>
                 </div>
             </div>
             
-            <div class="glass-panel p-4 rounded-2xl">
-                <h3 class="text-sm text-gray-400 mb-3">Statistik Jaringan Anda</h3>
+            <div class="glass-panel p-4 rounded-2xl shrink-0">
+                <h3 class="text-xs text-gray-400 uppercase tracking-wider mb-3">Statistik Relasi Agen</h3>
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-white">Agen Aktif</span>
-                    <span class="font-mono font-bold text-solGreen">0</span>
+                    <span class="text-sm text-gray-300">Agen Terkoneksi</span>
+                    <span class="font-mono font-bold text-solGreen text-sm">0</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-white">Bonus Hashrate</span>
-                    <span class="font-mono font-bold text-solPurple">+0.00%</span>
+                    <span class="text-sm text-gray-300">Akumulasi Bonus</span>
+                    <span class="font-mono font-bold text-solPurple text-sm">+0.00%</span>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 4: WALLET -->
-        <section id="view-wallet" class="view-section">
-            <h2 class="text-xl font-bold text-white mb-4">Manajemen Aset</h2>
+        <section id="view-wallet" class="view-section absolute inset-0 flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3">
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0">Manajemen Enklave Aset</h2>
             
-            <!-- Deposit -->
-            <div class="glass-panel p-5 rounded-2xl mb-4 border-l-4 border-solGreen">
-                <h3 class="font-bold text-solGreen mb-2 flex items-center gap-2">
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solGreen shrink-0">
+                <h3 class="font-bold text-solGreen text-sm flex items-center gap-2 mb-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
-                    Deposit (Upgrade Server)
+                    Injeksi Deposit (Upgrade Node)
                 </h3>
-                <p class="text-xs text-gray-400 mb-3">Deposit SOL untuk meningkatkan infrastruktur GOC.</p>
+                <p class="text-xs text-gray-400 mb-3">Alokasikan SOL untuk mempercepat daya komputasi inti.</p>
                 <div class="flex gap-2">
-                    <input type="text" placeholder="Jumlah SOL" class="bg-black/50 border border-gray-700 text-white rounded px-3 py-2 w-full text-sm font-mono focus:outline-none focus:border-solGreen">
-                    <button class="bg-solGreen text-black font-bold px-4 rounded text-sm hover:opacity-80">Proses</button>
+                    <input type="number" placeholder="Jumlah SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solGreen">
+                    <button class="bg-solGreen text-black font-bold px-4 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all">Proses</button>
                 </div>
             </div>
 
-            <!-- Withdraw -->
-            <div class="glass-panel p-5 rounded-2xl border-l-4 border-solPurple">
-                <h3 class="font-bold text-solPurple mb-2 flex items-center gap-2">
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solPurple shrink-0">
+                <h3 class="font-bold text-solPurple text-sm flex items-center gap-2 mb-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
-                    Withdraw
+                    Ekstraksi Dana (Withdraw)
                 </h3>
-                <p class="text-xs text-gray-400 mb-3">Tarik hasil operasi ke dompet Web3 Anda.</p>
-                <div class="flex flex-col gap-3">
-                    <input type="text" placeholder="Alamat Wallet Solana" class="bg-black/50 border border-gray-700 text-white rounded px-3 py-2 w-full text-sm font-mono focus:outline-none focus:border-solPurple">
-                    <input type="text" placeholder="Jumlah SOL" class="bg-black/50 border border-gray-700 text-white rounded px-3 py-2 w-full text-sm font-mono focus:outline-none focus:border-solPurple">
-                    <button class="bg-solPurple text-white font-bold py-2 rounded text-sm hover:opacity-80 w-full" onclick="alert('Saldo belum mencukupi batas penarikan minimum (0.1 SOL).')">Tarik Dana</button>
+                <p class="text-xs text-gray-400 mb-3">Kirim hasil operasi penambangan langsung ke alamat eksternal Anda.</p>
+                <div class="flex flex-col gap-2">
+                    <input type="text" placeholder="Alamat Wallet Solana Target" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
+                    <input type="number" placeholder="Beban Nominal SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
+                    <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all mt-1" onclick="alert('Batas penarikan minimum adalah 0.1 SOL.')">Eksekusi Penarikan</button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="glass-panel m-4 rounded-2xl flex justify-around p-3 z-10 border-t border-white/10">
-        <button onclick="switchView('console')" class="nav-btn active flex flex-col items-center gap-1 text-solGreen transition-colors" data-target="console">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
-            <span class="text-[10px] font-bold uppercase">Console</span>
+    <nav class="glass-panel mx-4 mb-4 rounded-2xl flex justify-around p-3 z-10 border-t border-white/5 shrink-0">
+        <button onclick="switchView('console')" class="nav-btn flex flex-col items-center gap-1 text-solGreen transition-colors" data-target="console">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Console</span>
         </button>
         <button onclick="switchView('tasks')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors" data-target="tasks">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-            <span class="text-[10px] font-bold uppercase">Tasks</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Tasks</span>
         </button>
         <button onclick="switchView('invite')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors" data-target="invite">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <span class="text-[10px] font-bold uppercase">Invite</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Invite</span>
         </button>
         <button onclick="switchView('wallet')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors" data-target="wallet">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-            <span class="text-[10px] font-bold uppercase">Wallet</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Wallet</span>
         </button>
     </nav>
 
-    <!-- STATE MANAGEMENT & LOGIC -->
     <script>
-        // --- Core State ---
+        // --- Core Application State ---
         const state = {
-            balance: 0.00000000,
-            baseHashrate: 0.00000100, // SOL per tick
-            tickRate: 1000, // ms
+            balance: 0.00015900, // Dimulai dari tangkapan layar Anda
+            baseHashrate: 0.00000125,
+            tickRate: 1000,
             isMining: false,
             miningInterval: null,
             temp: 42
         };
 
-        // --- DOM Elements ---
+        // --- DOM Cache ---
         const elBalance = document.getElementById('main-balance');
         const btnMining = document.getElementById('btn-mining');
         const btnRing = document.getElementById('btn-ring');
@@ -256,46 +245,58 @@
         const displayTemp = document.getElementById('display-temp');
         const terminal = document.getElementById('terminal-output');
 
-        // --- Routing (SPA) ---
-        function switchView(viewId) {
-            // Update sections
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
+        // Set initial balance text
+        elBalance.textContent = state.balance.toFixed(8);
 
-            // Update nav buttons
+        // --- Routing Router SPA (Perbaikan Penuh Mutlak) ---
+        function switchView(viewId) {
+            // Sembunyikan dan hilangkan paksa semua view-section
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Aktifkan hanya section yang dipilih
+            const targetSection = document.getElementById(`view-${viewId}`);
+            if(targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Atur gaya aktif/tidak aktif tombol navigasi
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-solGreen');
                 btn.classList.add('text-gray-500');
             });
             const activeBtn = document.querySelector(`[data-target="${viewId}"]`);
-            activeBtn.classList.remove('text-gray-500');
-            activeBtn.classList.add('text-solGreen');
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-solGreen');
+            }
         }
 
-        // --- Terminal Logic ---
+        // --- Terminal Feed Engine ---
         function logTerminal(message, isHack = false) {
             const div = document.createElement('div');
             const time = new Date().toLocaleTimeString('en-US', { hour12: false });
             div.textContent = `[${time}] ${message}`;
-            if(isHack) div.classList.add('text-solGreen');
+            if(isHack) div.classList.add('text-solGreen', 'font-bold');
             terminal.appendChild(div);
-            if (terminal.children.length > 20) terminal.removeChild(terminal.firstChild);
+            
+            // Batasi jumlah baris log agar memori bersih
+            if (terminal.children.length > 30) terminal.removeChild(terminal.firstChild);
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        // --- Mining Engine ---
-        function updateBalance() {
+        // --- Core Mining Loop ---
+        function tickMining() {
             state.balance += state.baseHashrate;
             elBalance.textContent = state.balance.toFixed(8);
             
-            // Random terminal events
-            if(Math.random() > 0.6) {
-                const fakeHash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                logTerminal(`> Decrypted block: 0x${fakeHash}`, true);
+            if(Math.random() > 0.5) {
+                const cryptoBlock = Math.random().toString(36).substring(2, 10).toUpperCase();
+                logTerminal(`> Decrypted block: 0x${cryptoBlock}`, true);
             }
             
-            // Random temp flux
-            state.temp = 65 + Math.floor(Math.random() * 15);
+            state.temp = 62 + Math.floor(Math.random() * 12);
             displayTemp.textContent = `${state.temp}°C`;
         }
 
@@ -303,15 +304,11 @@
             state.isMining = !state.isMining;
             
             if (state.isMining) {
-                // UI changes for ACTIVE
                 btnRing.classList.add('pulse-ring');
-                btnRing.classList.remove('border-gray-600');
-                btnRing.classList.add('border-solGreen');
-                
-                btnCore.classList.remove('from-gray-800');
-                btnCore.classList.add('from-solGreen/20');
-                btnCore.querySelector('svg').classList.remove('text-gray-400');
-                btnCore.querySelector('svg').classList.add('text-solGreen', 'text-glow-green');
+                btnRing.classList.replace('border-gray-700', 'border-solGreen');
+                btnCore.classList.replace('from-gray-800', 'from-solGreen/10');
+                btnCore.querySelector('svg').classList.replace('text-gray-400', 'text-solGreen');
+                btnCore.querySelector('svg').classList.add('text-glow-green');
 
                 statusDot.classList.replace('bg-red-500', 'bg-solGreen');
                 statusText.classList.replace('text-red-500', 'text-solGreen');
@@ -319,20 +316,16 @@
                 
                 displayHashrate.textContent = `${(state.baseHashrate * 3600).toFixed(4)} SOL/h`;
                 
-                logTerminal("> Initiating GOC Node Connection...");
-                setTimeout(() => logTerminal("> Connection secured. Mining commenced.", true), 800);
+                logTerminal("> Establishing secure proxy tunnels...");
+                setTimeout(() => logTerminal("> Central mining nodes synchronized.", true), 600);
                 
-                state.miningInterval = setInterval(updateBalance, state.tickRate);
-                
+                state.miningInterval = setInterval(tickMining, state.tickRate);
             } else {
-                // UI changes for INACTIVE
-                btnRing.classList.remove('pulse-ring', 'border-solGreen');
-                btnRing.classList.add('border-gray-600');
-                
-                btnCore.classList.remove('from-solGreen/20');
-                btnCore.classList.add('from-gray-800');
-                btnCore.querySelector('svg').classList.remove('text-solGreen', 'text-glow-green');
-                btnCore.querySelector('svg').classList.add('text-gray-400');
+                btnRing.classList.remove('pulse-ring');
+                btnRing.classList.replace('border-solGreen', 'border-gray-700');
+                btnCore.classList.replace('from-solGreen/10', 'from-gray-800');
+                btnCore.querySelector('svg').classList.replace('text-solGreen', 'text-gray-400');
+                btnCore.querySelector('svg').classList.remove('text-glow-green');
 
                 statusDot.classList.replace('bg-solGreen', 'bg-red-500');
                 statusText.classList.replace('text-solGreen', 'text-red-500');
@@ -341,16 +334,16 @@
                 displayHashrate.textContent = '0.00 SOL/h';
                 displayTemp.textContent = '42°C';
                 
-                logTerminal("> Node connection terminated.");
+                logTerminal("> Disconnecting from network cluster.");
                 clearInterval(state.miningInterval);
             }
         });
 
-        // --- Tasks Engine ---
+        // --- Tasks System Engine ---
         const tasks = [
-            { id: 1, title: 'Join GOC Telegram', reward: 0.005, done: false },
-            { id: 2, title: 'Bypass Firewall (Mini Game)', reward: 0.015, done: false },
-            { id: 3, title: 'Retweet Operation', reward: 0.002, done: false }
+            { id: 1, title: 'Join GOC Telegram', reward: 0.0005, done: false },
+            { id: 2, title: 'Bypass Firewall (Mini Game)', reward: 0.0015, done: false },
+            { id: 3, title: 'Retweet Operation Hub', reward: 0.0002, done: false }
         ];
 
         function renderTasks() {
@@ -358,12 +351,12 @@
             list.innerHTML = '';
             tasks.forEach(task => {
                 list.innerHTML += `
-                    <div class="glass-panel p-4 rounded-xl flex justify-between items-center border-l-2 ${task.done ? 'border-gray-600 opacity-50' : 'border-solPurple'}">
+                    <div class="glass-panel p-4 rounded-xl flex justify-between items-center border-l-2 ${task.done ? 'border-gray-700 opacity-40' : 'border-solPurple'}">
                         <div>
                             <div class="font-bold text-sm text-white">${task.title}</div>
-                            <div class="font-mono text-xs text-solPurple">+${task.reward} SOL</div>
+                            <div class="font-mono text-xs text-solPurple mt-0.5">+${task.reward.toFixed(4)} SOL</div>
                         </div>
-                        <button onclick="claimTask(${task.id})" class="${task.done ? 'bg-gray-700 text-gray-400' : 'bg-solPurple text-white'} px-4 py-2 rounded text-xs font-bold" ${task.done ? 'disabled' : ''}>
+                        <button onclick="claimTask(${task.id})" class="${task.done ? 'bg-gray-800 text-gray-500' : 'bg-solPurple text-white active:scale-95'} px-4 py-2 rounded-xl text-xs font-bold transition-all" ${task.done ? 'disabled' : ''}>
                             ${task.done ? 'Claimed' : 'Execute'}
                         </button>
                     </div>
@@ -378,60 +371,53 @@
                 state.balance += task.reward;
                 elBalance.textContent = state.balance.toFixed(8);
                 renderTasks();
-                alert(`Task Completed! You received ${task.reward} SOL.`);
             }
         }
         
-        renderTasks(); // init render
+        renderTasks();
 
-        // --- Threat Map Canvas Animation ---
+        // --- Threat Map Interactive Animation ---
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
-        let width, height;
-        let nodes = [];
+        let width, height, nodes = [];
 
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             nodes = [];
-            for(let i=0; i<40; i++) {
+            for(let i=0; i<35; i++) {
                 nodes.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4
                 });
             }
         }
 
         function drawMap() {
             ctx.clearRect(0, 0, width, height);
-            ctx.lineWidth = 1;
-            
             for(let i=0; i<nodes.length; i++) {
-                let node = nodes[i];
-                node.x += node.vx;
-                node.y += node.vy;
+                let n = nodes[i];
+                n.x += n.vx; n.y += n.vy;
                 
-                // Bounce edges
-                if(node.x < 0 || node.x > width) node.vx *= -1;
-                if(node.y < 0 || node.y > height) node.vy *= -1;
+                if(n.x < 0 || n.x > width) n.vx *= -1;
+                if(n.y < 0 || n.y > height) n.vy *= -1;
                 
-                // Draw Node
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
+                ctx.arc(n.x, n.y, 1.2, 0, Math.PI * 2);
                 ctx.fillStyle = '#14F195';
                 ctx.fill();
 
-                // Connect nearby nodes
                 for(let j=i+1; j<nodes.length; j++) {
-                    let node2 = nodes[j];
-                    let dist = Math.hypot(node.x - node2.x, node.y - node2.y);
-                    if(dist < 100) {
+                    let n2 = nodes[j];
+                    let dist = Math.hypot(n.x - n2.x, n.y - n2.y);
+                    if(dist < 90) {
                         ctx.beginPath();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(node2.x, node2.y);
-                        ctx.strokeStyle = `rgba(153, 69, 255, ${1 - dist/100})`; // Purple connecting lines
+                        ctx.moveTo(n.x, n.y);
+                        ctx.lineTo(n2.x, n2.y);
+                        ctx.strokeStyle = `rgba(153, 69, 255, ${0.15 - dist/600})`;
+                        ctx.lineWidth = 0.8;
                         ctx.stroke();
                     }
                 }
@@ -442,7 +428,6 @@
         window.addEventListener('resize', initCanvas);
         initCanvas();
         drawMap();
-
     </script>
 </body>
 </html>
