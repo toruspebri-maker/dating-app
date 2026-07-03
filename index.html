@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GOC | Solana Network</title>
+    <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -230,15 +231,28 @@
             lastDaily: parseFloat(localStorage.getItem('lastDaily')) || 0
         };
 
-        // --- Fungsi Iklan SDK ---
-        function runAd(callback) {
-            if (typeof show_11226289 !== 'undefined') {
-                show_11226289({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }});
-                setTimeout(callback, 2000);
-            } else {
-                callback();
+        // --- Fungsi In-App Interstitial yang Lengkap ---
+function runAd(callback) {
+    if (typeof show_11226289 !== 'undefined') {
+        show_11226289({
+            type: 'inApp',
+            inAppSettings: {
+                frequency: 2,
+                capping: 0.1,
+                interval: 30,
+                timeout: 5,
+                everyPage: false
             }
-        }
+        });
+        
+        // Callback dijalankan setelah 2 detik agar iklan punya waktu untuk muncul
+        setTimeout(callback, 2000);
+    } else {
+        // Jika SDK belum siap, langsung jalankan fungsi agar tidak error
+        console.warn("Iklan belum dimuat, lanjut ke fungsi utama.");
+        callback();
+    }
+}
 
         const elBalance = document.getElementById('main-balance');
         const btnMining = document.getElementById('btn-mining');
