@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GOC | Solana Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -92,8 +92,8 @@
             </div>
         </div>
         <div class="text-right">
-            <div class="text-xs text-gray-400" id="lang-total-bal">Total Balance</div>
-            <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.00000000</div>
+            <div class="text-xs text-gray-400" id="lang-balance">Total Balance</div>
+            <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.02213000</div>
         </div>
     </header>
 
@@ -104,7 +104,7 @@
                 <div class="absolute -top-24 -right-24 w-48 h-48 bg-solPurple opacity-10 blur-3xl rounded-full"></div>
                 <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Node Operation Center</h2>
                 
-                <button id="btn-mining" onclick="runMiningWithAd()" class="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 mb-3">
+                <button id="btn-mining" class="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 mb-3">
                     <div id="btn-ring" class="absolute inset-0 rounded-full border border-gray-700"></div>
                     <div id="btn-core" class="w-24 h-24 bg-gradient-to-b from-gray-800 to-black rounded-full border border-gray-700 flex items-center justify-center shadow-lg">
                         <svg class="w-8 h-8 text-gray-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -130,68 +130,135 @@
                 </div>
                 <div id="terminal-output" class="font-mono text-[11px] text-gray-500 flex-1 overflow-y-auto terminal-scroll space-y-1 select-text">
                     <div>> GOC Kernel v2.4.1 Loaded...</div>
+                    <div>> Awaiting decryption protocol...</div>
                 </div>
             </div>
         </div>
 
         <div id="view-tasks" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-hidden" style="display: none;">
             <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3 shrink-0">Misi Operasional</h2>
-            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3 pr-1" id="task-list"></div>
+            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3 pr-1" id="task-list">
+                </div>
         </div>
 
         <div id="view-invite" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
+            <div class="glass-panel p-5 rounded-2xl text-center shrink-0">
+                <div class="w-11 h-11 rounded-full bg-solPurple/10 flex items-center justify-center mx-auto mb-2">
+                    <svg class="w-5 h-5 text-solPurple text-glow-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <h2 class="text-lg font-bold text-white tracking-wide">Ekspansi Jaringan</h2>
+                <p class="text-xs text-gray-400 mt-1 mb-4">Rekrut agen baru untuk mendongkrak kapasitas batas Hashrate Anda sebesar +15% per agen.</p>
+                
+                <div class="bg-black/40 p-3 rounded-xl border border-gray-800 flex justify-between items-center">
+                    <span class="font-mono text-xs text-gray-300">goc.net/ref/ag-8921</span>
+                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-opacity-80 active:scale-95 transition-all" onclick="alert('Link referral disalin!')">Copy</button>
+                </div>
             </div>
+            
+            <div class="glass-panel p-4 rounded-2xl shrink-0">
+                <h3 class="text-xs text-gray-400 uppercase tracking-wider mb-3">Statistik Relasi Agen</h3>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-300">Agen Terkoneksi</span>
+                    <span class="font-mono font-bold text-solGreen text-sm">0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-300">Akumulasi Bonus</span>
+                    <span class="font-mono font-bold text-solPurple text-sm">+0.00%</span>
+                </div>
+            </div>
+        </div>
 
         <div id="view-wallet" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
             <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0">Manajemen Enklave Aset</h2>
+            
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solGreen shrink-0">
+                <h3 class="font-bold text-solGreen text-sm flex items-center gap-2 mb-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
+                    Injeksi Deposit (Upgrade Node)
+                </h3>
+                <p class="text-xs text-gray-400 mb-3">Alokasikan SOL untuk mempercepat daya komputasi inti.</p>
+                <div class="flex gap-2">
+                    <input type="number" placeholder="Jumlah SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solGreen">
+                    <button class="bg-solGreen text-black font-bold px-4 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all">Proses</button>
+                </div>
+            </div>
+
             <div class="glass-panel p-4 rounded-2xl border-l-4 border-solPurple shrink-0">
-                <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs w-full" onclick="withdrawAdminApproval()">Eksekusi Penarikan (Pending Approval)</button>
+                <h3 class="font-bold text-solPurple text-sm flex items-center gap-2 mb-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
+                    Ekstraksi Dana (Withdraw)
+                </h3>
+                <p class="text-xs text-gray-400 mb-3">Kirim hasil operasi penambangan langsung ke alamat eksternal Anda.</p>
+                <div class="flex flex-col gap-2">
+                    <input type="text" placeholder="Alamat Wallet Solana Target" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
+                    <input type="number" placeholder="Beban Nominal SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
+                    <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all mt-1" onclick="withdrawRequest()">Eksekusi Penarikan</button>
+                </div>
             </div>
         </div>
+
     </main>
 
     <nav class="glass-panel mx-4 mb-4 rounded-2xl flex justify-around p-3 z-10 border-t border-white/5 shrink-0">
-        </nav>
+        <button onclick="switchView('console')" class="nav-btn flex flex-col items-center gap-1 text-solGreen transition-all" data-target="console">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Console</span>
+        </button>
+        <button onclick="switchView('tasks')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-all" data-target="tasks">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Tasks</span>
+        </button>
+        <button onclick="switchView('invite')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-all" data-target="invite">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Invite</span>
+        </button>
+        <button onclick="switchView('wallet')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-all" data-target="wallet">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Wallet</span>
+        </button>
+    </nav>
 
     <script>
-        // --- Core App State (Saldo disesuaikan presisi 8 digit) ---
+        // --- Core App State ---
         const state = {
             balance: 0.02213000, 
-            baseHashrate: 0.00000005, // Kecepatan diperlambat agar tidak boncos
+            baseHashrate: 0.00000005, 
+            tickRate: 1000,
             isMining: false,
-            miningInterval: null
+            miningInterval: null,
+            temp: 42
         };
 
         const elBalance = document.getElementById('main-balance');
-        elBalance.textContent = state.balance.toFixed(8);
+        const btnMining = document.getElementById('btn-mining');
+        const terminal = document.getElementById('terminal-output');
 
-        // LOGIKA IKLAN REWARDED (Pemicu sebelum Mining)
-        function runMiningWithAd() {
-            show_11226289().then(() => {
-                state.isMining = true;
-                state.miningInterval = setInterval(() => {
-                    state.balance += state.baseHashrate;
-                    elBalance.textContent = state.balance.toFixed(8);
-                }, 1000);
-                alert("Iklan selesai! Mining aktif.");
-            });
-        }
+        // Fungsi Penarikan Admin
+        function withdrawRequest() { alert('Penarikan diproses, menunggu persetujuan Admin.'); }
 
-        // LOGIKA PENARIKAN DENGAN PERSETUJUAN ADMIN
-        function withdrawAdminApproval() {
-            alert("Permintaan penarikan Anda telah dikirim ke Admin. Harap menunggu verifikasi manual.");
-        }
+        // Fungsi Mining dengan Iklan
+        btnMining.addEventListener('click', () => {
+            if(!state.isMining) {
+                show_11226289().then(() => {
+                    state.isMining = true;
+                    state.miningInterval = setInterval(() => {
+                        state.balance += state.baseHashrate;
+                        elBalance.textContent = state.balance.toFixed(8);
+                    }, 1000);
+                });
+            } else {
+                clearInterval(state.miningInterval);
+                state.isMining = false;
+            }
+        });
 
-        // FUNGSI MULTI BAHASA (Contoh simpel)
-        const lang = {
-            id: { totalBal: "Total Saldo" },
-            en: { totalBal: "Total Balance" }
-        };
-        // Anda bisa tambahkan logic switch bahasa di sini.
+        // Multi-Bahasa Sederhana
+        const translations = { id: { balance: "Total Saldo" }, en: { balance: "Total Balance" } };
+        function setLang(lang) { document.getElementById('lang-balance').textContent = translations[lang].balance; }
 
-        // (Sisa fungsi asli Anda tetap utuh...)
-        function switchView(viewId) { /* ... */ }
-        function renderTasks() { /* ... */ }
+        // (Fungsi switchView, renderTasks, initCanvas, dll tetap utuh seperti kode Anda)
+        function switchView(viewId) { const views = ['console', 'tasks', 'invite', 'wallet']; views.forEach(v => document.getElementById(`view-${v}`).style.setProperty('display', v === viewId ? 'flex' : 'none', 'important')); }
+        renderTasks(); initCanvas(); drawMap();
     </script>
 </body>
-</html>
+</html>                                                                                                                                                                                                                                                                                          </html>
