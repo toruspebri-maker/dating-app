@@ -219,41 +219,30 @@
     </nav>
 
     <script>
-        // --- Core App State (Final Terintegrasi) ---
+        // --- Fungsi Iklan Aman ---
+        function runAd(callback) {
+            if (typeof show_11226289 !== 'undefined') {
+                show_11226289({
+                    type: 'inApp',
+                    inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
+                });
+                setTimeout(callback, 2000);
+            } else {
+                callback();
+            }
+        }
+
+        // --- Core App State ---
         const state = {
-            balance: 0.0221300000, 
+            balance: 0.02213000,
             baseHashrate: 0.00000125,
             tickRate: 1000,
             isMining: false,
             miningInterval: null,
-            temp: 42,
-            lastMine: parseFloat(localStorage.getItem('lastMine')) || 0,
-            lastDaily: parseFloat(localStorage.getItem('lastDaily')) || 0
+            temp: 42
         };
 
-        // --- Fungsi In-App Interstitial yang Lengkap ---
-function runAd(callback) {
-    if (typeof show_11226289 !== 'undefined') {
-        show_11226289({
-            type: 'inApp',
-            inAppSettings: {
-                frequency: 2,
-                capping: 0.1,
-                interval: 30,
-                timeout: 5,
-                everyPage: false
-            }
-        });
-        
-        // Callback dijalankan setelah 2 detik agar iklan punya waktu untuk muncul
-        setTimeout(callback, 2000);
-    } else {
-        // Jika SDK belum siap, langsung jalankan fungsi agar tidak error
-        console.warn("Iklan belum dimuat, lanjut ke fungsi utama.");
-        callback();
-    }
-}
-
+        // --- DOM Cache Elements ---
         const elBalance = document.getElementById('main-balance');
         const btnMining = document.getElementById('btn-mining');
         const btnRing = document.getElementById('btn-ring');
@@ -264,7 +253,26 @@ function runAd(callback) {
         const displayTemp = document.getElementById('display-temp');
         const terminal = document.getElementById('terminal-output');
 
-        elBalance.textContent = state.balance.toFixed(10); // Saldo 10 Digit
+        elBalance.textContent = state.balance.toFixed(8);
+
+        function switchView(viewId) {
+            const views = ['console', 'tasks', 'invite', 'wallet'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) el.style.setProperty('display', 'none', 'important');
+            });
+            const activeEl = document.getElementById(`view-${viewId}`);
+            if (activeEl) activeEl.style.setProperty('display', 'flex', 'important');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-solGreen');
+                btn.classList.add('text-gray-500');
+            });
+            const activeBtn = document.querySelector(`[data-target="${viewId}"]`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-solGreen');
+            }
+        }
 
         function logTerminal(message, isHack = false) {
             const div = document.createElement('div');
@@ -276,98 +284,108 @@ function runAd(callback) {
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        // --- Mining Tick Engine ---
         function tickMining() {
             state.balance += state.baseHashrate;
-            elBalance.textContent = state.balance.toFixed(10);
+            elBalance.textContent = state.balance.toFixed(8);
+            if(Math.random() > 0.4) {
+                const cryptoBlock = Math.random().toString(36).substring(2, 12).toLowerCase();
+                logTerminal(`> Decrypted block: 0x${cryptoBlock}`, true);
+            }
             state.temp = 60 + Math.floor(Math.random() * 15);
             displayTemp.textContent = `${state.temp}°C`;
         }
 
-        // --- Event Listener Mining dengan Cooldown 10 Jam ---
         btnMining.addEventListener('click', () => {
-            const now = Date.now();
-            if (!state.isMining && (now - state.lastMine < 36000000)) {
-                alert("Mining Cooldown: Silakan tunggu 10 jam.");
-                return;
-            }
-
             runAd(() => {
-                if (!state.isMining) {
-                    state.lastMine = Date.now();
-                    localStorage.setItem('lastMine', state.lastMine);
-                }
                 state.isMining = !state.isMining;
-                
                 if (state.isMining) {
                     btnRing.classList.add('pulse-ring');
+                    btnRing.classList.replace('border-gray-700', 'border-solGreen');
+                    btnCore.classList.replace('from-gray-800', 'from-solGreen/10');
+                    btnCore.querySelector('svg').classList.replace('text-gray-400', 'text-solGreen');
+                    btnCore.querySelector('svg').classList.add('text-glow-green');
+                    statusDot.classList.replace('bg-red-500', 'bg-solGreen');
+                    statusText.classList.replace('text-red-500', 'text-solGreen');
                     statusText.textContent = 'ONLINE';
+                    displayHashrate.textContent = `${(state.baseHashrate * 3600).toFixed(4)} SOL/h`;
+                    logTerminal("> Connection established via secure RPC tunnels.");
                     state.miningInterval = setInterval(tickMining, state.tickRate);
                 } else {
                     btnRing.classList.remove('pulse-ring');
+                    btnRing.classList.replace('border-solGreen', 'border-gray-700');
+                    btnCore.classList.replace('from-solGreen/10', 'from-gray-800');
+                    btnCore.querySelector('svg').classList.replace('text-solGreen', 'text-gray-400');
+                    btnCore.querySelector('svg').classList.remove('text-glow-green');
+                    statusDot.classList.replace('bg-solGreen', 'bg-red-500');
+                    statusText.classList.replace('text-solGreen', 'text-red-500');
                     statusText.textContent = 'OFFLINE';
+                    displayHashrate.textContent = '0.00 SOL/h';
+                    displayTemp.textContent = '42°C';
+                    logTerminal("> Mining nodes gracefully paused.");
                     clearInterval(state.miningInterval);
                 }
             });
-        });
+        }); 
 
-        // --- Tasks & Daily Reward 24 Jam ---
         const tasks = [
-            { id: 1, title: 'Join GOC Telegram', reward: 0.0005, done: false },
-            { id: 2, title: 'Daily Login Reward', reward: 0.0010, done: false } // Contoh Daily
+            { id: 1, title: 'Join GOC Telegram Community', reward: 0.0005, done: false },
+            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0015, done: false },
+            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.0002, done: false }
         ];
 
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            tasks.forEach(task => {
+                list.innerHTML += `
+                    <div class="glass-panel p-4 rounded-xl flex justify-between items-center border-l-2 ${task.done ? 'border-gray-700 opacity-40' : 'border-solPurple'}">
+                        <div>
+                            <div class="font-bold text-sm text-white">${task.title}</div>
+                            <div class="font-mono text-xs text-solPurple mt-0.5">+${task.reward.toFixed(4)} SOL</div>
+                        </div>
+                        <button onclick="claimTask(${task.id})" class="${task.done ? 'bg-gray-800 text-gray-500' : 'bg-solPurple text-white active:scale-95'} px-4 py-2 rounded-xl text-xs font-bold transition-all" ${task.done ? 'disabled' : ''}>
+                            ${task.done ? 'Claimed' : 'Execute'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
         window.claimTask = function(id) {
-            const now = Date.now();
-            if(id === 2 && (now - state.lastDaily < 86400000)) {
-                alert("Daily Reward sudah diklaim, tunggu 24 jam.");
-                return;
-            }
             runAd(() => {
                 const task = tasks.find(t => t.id === id);
                 if(task && !task.done) {
                     task.done = true;
                     state.balance += task.reward;
-                    if(id === 2) { state.lastDaily = now; localStorage.setItem('lastDaily', now); }
-                    elBalance.textContent = state.balance.toFixed(10);
+                    elBalance.textContent = state.balance.toFixed(8);
+                    renderTasks();
                 }
             });
-                                                  }
+        }
         renderTasks();
 
-        // --- Background Network Cyber Node Map Graph ---
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, nodes = [];
-
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             nodes = [];
             for(let i=0; i<30; i++) {
-                nodes.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3
-                });
+                nodes.push({ x: Math.random() * width, y: Math.random() * height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3 });
             }
         }
-
         function drawMap() {
             ctx.clearRect(0, 0, width, height);
             for(let i=0; i<nodes.length; i++) {
                 let n = nodes[i];
                 n.x += n.vx; n.y += n.vy;
-                
                 if(n.x < 0 || n.x > width) n.vx *= -1;
                 if(n.y < 0 || n.y > height) n.vy *= -1;
-                
                 ctx.beginPath();
                 ctx.arc(n.x, n.y, 1, 0, Math.PI * 2);
                 ctx.fillStyle = '#14F195';
                 ctx.fill();
-
                 for(let j=i+1; j<nodes.length; j++) {
                     let n2 = nodes[j];
                     let dist = Math.hypot(n.x - n2.x, n.y - n2.y);
@@ -383,7 +401,6 @@ function runAd(callback) {
             }
             requestAnimationFrame(drawMap);
         }
-
         window.addEventListener('resize', initCanvas);
         initCanvas();
         drawMap();
