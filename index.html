@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div>
-                <h1 id="lang-title" class="text-sm font-bold text-gray-400 uppercase tracking-widest">GOC Server</h1>
+                <h1 class="text-sm font-bold text-gray-400 uppercase tracking-widest">GOC Server</h1>
                 <div class="flex items-center gap-2">
                     <div id="status-dot" class="w-2 h-2 rounded-full bg-red-500"></div>
                     <span id="status-text" class="text-xs text-red-500 font-mono">OFFLINE</span>
@@ -67,7 +67,6 @@
         
         <div id="view-console" class="fade-in-view w-full h-full flex flex-col gap-3" style="display: flex;">
             <div class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden shrink-0">
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-solPurple opacity-10 blur-3xl rounded-full"></div>
                 <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Node Operation Center</h2>
                 <button id="btn-mining" class="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 mb-3">
                     <div id="btn-ring" class="absolute inset-0 rounded-full border border-gray-700"></div>
@@ -76,137 +75,124 @@
                     </div>
                 </button>
                 <div class="flex w-full justify-between px-2">
-                    <div class="text-left">
-                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Hashrate</div>
-                        <div class="font-mono text-xs font-bold text-white" id="display-hashrate">0.00 SOL/h</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Core Temp</div>
-                        <div class="font-mono text-xs font-bold text-white" id="display-temp">42°C</div>
-                    </div>
+                    <div class="text-left"><div class="text-[10px] text-gray-500 uppercase tracking-wider">Hashrate</div><div class="font-mono text-xs font-bold text-white" id="display-hashrate">0.00 SOL/h</div></div>
+                    <div class="text-right"><div class="text-[10px] text-gray-500 uppercase tracking-wider">Core Temp</div><div class="font-mono text-xs font-bold text-white" id="display-temp">42°C</div></div>
                 </div>
             </div>
-
             <div class="glass-panel p-4 rounded-2xl flex-1 flex flex-col min-h-0 overflow-hidden">
-                <div class="flex justify-between items-center mb-2 border-b border-gray-800 pb-2 shrink-0">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Live Core Terminal</span>
-                    <span class="text-[10px] font-mono text-solPurple">SECURE_SSL</span>
-                </div>
-                <div id="terminal-output" class="font-mono text-[11px] text-gray-500 flex-1 overflow-y-auto terminal-scroll space-y-1 select-text"></div>
+                <div id="terminal-output" class="font-mono text-[11px] text-gray-500 flex-1 overflow-y-auto terminal-scroll space-y-1"></div>
             </div>
         </div>
 
         <div id="view-tasks" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-hidden" style="display: none;">
-            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3 shrink-0">Misi Operasional</h2>
-            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3 pr-1" id="task-list"></div>
-        </div>
-
-        <div id="view-invite" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
-            <div class="glass-panel p-5 rounded-2xl text-center shrink-0">
-                <h2 class="text-lg font-bold text-white tracking-wide">Ekspansi Jaringan</h2>
-                <select onchange="changeLang(this.value)" class="mt-2 bg-black text-white p-2 rounded-lg text-xs w-full border border-gray-700">
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="en">English</option>
-                </select>
-                <div class="bg-black/40 p-3 mt-4 rounded-xl border border-gray-800 flex justify-between items-center">
-                    <span class="font-mono text-xs text-gray-300">goc.net/ref/ag-8921</span>
-                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold" onclick="alert('Link disalin!')">Copy</button>
-                </div>
-            </div>
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3">Misi & Daily Reward</h2>
+            <button onclick="claimDailyReward()" class="bg-solGreen text-black font-bold py-2 px-4 rounded-xl mb-4 text-xs">Klaim Daily Reward (1x sehari)</button>
+            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3" id="task-list"></div>
         </div>
 
         <div id="view-wallet" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
-            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0">Manajemen Aset</h2>
-            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solGreen shrink-0">
-                <h3 class="font-bold text-solGreen text-sm mb-1">Deposit (Min 2 USDT)</h3>
-                <input type="number" id="depo-val" placeholder="Jumlah USDT" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs mb-2">
-                <button onclick="processDepo()" class="bg-solGreen text-black font-bold w-full py-2 rounded-xl text-xs">Proses Deposit</button>
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1">Manajemen Aset</h2>
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solGreen">
+                <h3 class="font-bold text-solGreen text-sm mb-2">Deposit (USDT/SOL SPL)</h3>
+                <p class="text-[10px] text-gray-400 bg-black p-2 rounded break-all">GqncwViYoWEUieXTribdaMbsvp6r772TM5uCeVyZW2QE</p>
+                <p class="text-[10px] text-gray-500 mt-2">Min. Deposit: 2 USDT</p>
             </div>
-            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solPurple shrink-0">
-                <h3 class="font-bold text-solPurple text-sm mb-1">Withdraw (Min 0.1 SOL)</h3>
-                <button onclick="processWithdraw()" class="bg-solPurple text-white font-bold w-full py-2 rounded-xl text-xs">Eksekusi Penarikan</button>
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-solPurple">
+                <h3 class="font-bold text-solPurple text-sm mb-2">Withdraw (Min 0.1 SOL)</h3>
+                <input type="number" id="wd-amount" placeholder="Jumlah SOL" class="w-full bg-black p-2 rounded text-xs mb-2">
+                <button onclick="handleWithdraw()" class="w-full bg-solPurple text-white py-2 rounded-xl text-xs">Eksekusi</button>
+            </div>
+        </div>
+
+        <div id="view-profile" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto gap-3" style="display: none;">
+            <h2 class="text-white font-bold">Profil</h2>
+            <div class="glass-panel p-4 rounded-2xl">
+                <p class="text-xs text-gray-400 mb-2">Pilih Bahasa:</p>
+                <select class="w-full bg-black p-2 rounded text-white text-xs">
+                    <option>Bahasa Indonesia</option>
+                    <option>English</option>
+                </select>
             </div>
         </div>
     </main>
 
-    <nav class="glass-panel mx-4 mb-4 rounded-2xl flex justify-around p-3 z-10 border-t border-white/5 shrink-0">
-        <button onclick="switchView('console')" class="nav-btn flex flex-col items-center gap-1 text-solGreen" data-target="console"><span class="text-[9px] font-bold">Console</span></button>
-        <button onclick="switchView('tasks')" class="nav-btn flex flex-col items-center gap-1 text-gray-500" data-target="tasks"><span class="text-[9px] font-bold">Tasks</span></button>
-        <button onclick="switchView('invite')" class="nav-btn flex flex-col items-center gap-1 text-gray-500" data-target="invite"><span class="text-[9px] font-bold">Invite</span></button>
-        <button onclick="switchView('wallet')" class="nav-btn flex flex-col items-center gap-1 text-gray-500" data-target="wallet"><span class="text-[9px] font-bold">Wallet</span></button>
+    <nav class="glass-panel mx-4 mb-4 rounded-2xl flex justify-around p-3 z-10 border-t border-white/5">
+        <button onclick="switchView('console')" class="nav-btn text-solGreen" data-target="console">Console</button>
+        <button onclick="switchView('tasks')" class="nav-btn" data-target="tasks">Tasks</button>
+        <button onclick="switchView('wallet')" class="nav-btn" data-target="wallet">Wallet</button>
+        <button onclick="switchView('profile')" class="nav-btn" data-target="profile">Profil</button>
     </nav>
 
     <script>
         const state = {
-            balance: parseFloat(localStorage.getItem('balance')) || 0.0000000000,
+            balance: parseFloat(localStorage.getItem('goc_balance')) || 0.0000000000,
             baseHashrate: 0.0000000001,
             isMining: false,
-            lastMine: parseFloat(localStorage.getItem('lastMine')) || 0
+            lastDaily: parseInt(localStorage.getItem('goc_lastDaily')) || 0
         };
-
-        const elBalance = document.getElementById('main-balance');
-        elBalance.textContent = state.balance.toFixed(10);
 
         function runAd(callback) {
             if (typeof show_11226289 !== 'undefined') {
-                show_11226289({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }});
+                show_11226289({ type: 'inApp' });
                 setTimeout(callback, 2000);
             } else { callback(); }
         }
 
+        function saveState() {
+            localStorage.setItem('goc_balance', state.balance);
+            localStorage.setItem('goc_lastDaily', state.lastDaily);
+        }
+
         function switchView(viewId) {
-            document.querySelectorAll('[id^="view-"]').forEach(el => el.style.display = 'none');
-            document.getElementById('view-' + viewId).style.display = 'flex';
+            ['console', 'tasks', 'wallet', 'profile'].forEach(v => {
+                document.getElementById(`view-${v}`).style.display = (v === viewId) ? 'flex' : 'none';
+            });
         }
 
-        function tickMining() {
-            state.balance += state.baseHashrate;
-            elBalance.textContent = state.balance.toFixed(10);
-            localStorage.setItem('balance', state.balance);
+        function claimDailyReward() {
+            const now = Date.now();
+            if (now - state.lastDaily > 86400000) {
+                runAd(() => {
+                    state.balance += 0.0001;
+                    state.lastDaily = now;
+                    saveState();
+                    document.getElementById('main-balance').textContent = state.balance.toFixed(10);
+                    alert("Berhasil klaim Daily Reward!");
+                });
+            } else { alert("Tunggu 24 jam untuk klaim berikutnya."); }
         }
 
-        document.getElementById('btn-mining').addEventListener('click', () => {
-            if (Date.now() - state.lastMine < 36000000) { alert("Mining Cooldown: 10 jam."); return; }
+        function handleWithdraw() {
+            const amt = parseFloat(document.getElementById('wd-amount').value);
+            if(amt < 0.1) alert("Batas penarikan minimum adalah 0.1 SOL");
+            else alert("Permintaan penarikan diproses.");
+        }
+
+        // Logic mining dipertahankan dari kode asli namun dengan hashrate yang diperlambat
+        btnMining.addEventListener('click', () => {
             runAd(() => {
                 state.isMining = !state.isMining;
                 if(state.isMining) {
-                    state.lastMine = Date.now();
-                    localStorage.setItem('lastMine', state.lastMine);
-                    state.interval = setInterval(tickMining, 1000);
-                } else { clearInterval(state.interval); }
+                    state.miningInterval = setInterval(() => {
+                        state.balance += state.baseHashrate;
+                        document.getElementById('main-balance').textContent = state.balance.toFixed(10);
+                        saveState();
+                    }, 1000);
+                } else {
+                    clearInterval(state.miningInterval);
+                }
             });
         });
 
-        function processDepo() {
-            const v = document.getElementById('depo-val').value;
-            if(v < 2) { alert("Min deposit 2 USDT"); return; }
-            alert("Deposit diproses otomatis ke alamat wallet.");
-        }
-
-        function processWithdraw() {
-            if(state.balance < 0.1) { alert("Min withdraw 0.1 SOL"); return; }
-            alert("Penarikan diproses.");
-        }
-
-        function changeLang(l) {
-            document.getElementById('lang-title').textContent = (l === 'en') ? "GOC Node" : "GOC Server";
-        }
-
-        // Render Tasks
-        function renderTasks() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = `<div class="glass-panel p-4 rounded-xl border-l-2 border-solPurple">
-                <div class="text-sm font-bold">Daily Reward</div>
-                <button onclick="runAd(() => {state.balance += 0.001; localStorage.setItem('balance', state.balance); elBalance.textContent = state.balance.toFixed(10);})" class="bg-solPurple text-white px-4 py-2 mt-2 rounded-lg text-xs">Claim 0.001</button>
-            </div>`;
-        }
-        renderTasks();
-
-        // Canvas background
+        // Inisialisasi Canvas (kode asli)
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
-        function draw() { requestAnimationFrame(draw); ctx.clearRect(0,0,window.innerWidth, window.innerHeight); }
-        draw();
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
     </script>
 </body>
 </html>
