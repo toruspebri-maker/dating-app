@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="text-right">
-            <div class="text-xs text-gray-400">Total Balance</div>
+            <div class="text-xs text-gray-400" id="lang-total-balance">Total Balance</div>
             <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.02213000</div>
         </div>
     </header>
@@ -102,7 +102,7 @@
         <div id="view-console" class="fade-in-view w-full h-full flex flex-col gap-3" style="display: flex;">
             <div class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden shrink-0">
                 <div class="absolute -top-24 -right-24 w-48 h-48 bg-solPurple opacity-10 blur-3xl rounded-full"></div>
-                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Node Operation Center</h2>
+                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4" id="lang-node-center">Node Operation Center</h2>
                 
                 <button id="btn-mining" class="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 mb-3">
                     <div id="btn-ring" class="absolute inset-0 rounded-full border border-gray-700"></div>
@@ -113,11 +113,11 @@
 
                 <div class="flex w-full justify-between px-2">
                     <div class="text-left">
-                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Hashrate</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider" id="lang-hashrate">Hashrate</div>
                         <div class="font-mono text-xs font-bold text-white" id="display-hashrate">0.00 SOL/h</div>
                     </div>
                     <div class="text-right">
-                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Core Temp</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider" id="lang-core-temp">Core Temp</div>
                         <div class="font-mono text-xs font-bold text-white" id="display-temp">42°C</div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
 
             <div class="glass-panel p-4 rounded-2xl flex-1 flex flex-col min-h-0 overflow-hidden">
                 <div class="flex justify-between items-center mb-2 border-b border-gray-800 pb-2 shrink-0">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Live Core Terminal</span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest" id="lang-live-terminal">Live Core Terminal</span>
                     <span class="text-[10px] font-mono text-solPurple">SECURE_SSL</span>
                 </div>
                 <div id="terminal-output" class="font-mono text-[11px] text-gray-500 flex-1 overflow-y-auto terminal-scroll space-y-1 select-text">
@@ -136,9 +136,23 @@
         </div>
 
         <div id="view-tasks" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-hidden" style="display: none;">
-            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3 shrink-0">Misi Operasional</h2>
-            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3 pr-1" id="task-list">
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3 shrink-0" id="lang-tasks-title">Misi Operasional</h2>
+            
+            <!-- Daily Reward Section -->
+            <div class="glass-panel p-4 rounded-xl border-l-2 border-solGreen mb-3 shrink-0">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-sm text-white" id="lang-daily-reward-title">Klaim Reward Harian</div>
+                        <div class="font-mono text-xs text-solGreen mt-0.5">+0.0025 SOL</div>
+                    </div>
+                    <button id="btn-daily-reward" onclick="claimDailyReward()" class="bg-solGreen text-black px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95">
+                        Claim
+                    </button>
                 </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto terminal-scroll space-y-3 pr-1" id="task-list">
+            </div>
         </div>
 
         <div id="view-invite" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
@@ -146,53 +160,78 @@
                 <div class="w-11 h-11 rounded-full bg-solPurple/10 flex items-center justify-center mx-auto mb-2">
                     <svg class="w-5 h-5 text-solPurple text-glow-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
-                <h2 class="text-lg font-bold text-white tracking-wide">Ekspansi Jaringan</h2>
-                <p class="text-xs text-gray-400 mt-1 mb-4">Rekrut agen baru untuk mendongkrak kapasitas batas Hashrate Anda sebesar +15% per agen.</p>
+                <h2 class="text-lg font-bold text-white tracking-wide" id="lang-invite-title">Ekspansi Jaringan</h2>
+                <p class="text-xs text-gray-400 mt-1 mb-4" id="lang-invite-desc">Rekrut agen baru untuk mendongkrak kapasitas batas Hashrate Anda sebesar +15% per agen.</p>
                 
                 <div class="bg-black/40 p-3 rounded-xl border border-gray-800 flex justify-between items-center">
                     <span class="font-mono text-xs text-gray-300">goc.net/ref/ag-8921</span>
-                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-opacity-80 active:scale-95 transition-all" onclick="alert('Link referral disalin!')">Copy</button>
+                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-opacity-80 active:scale-95 transition-all" id="btn-copy-ref" onclick="alert('Link referral disalin!')">Copy</button>
                 </div>
             </div>
             
             <div class="glass-panel p-4 rounded-2xl shrink-0">
-                <h3 class="text-xs text-gray-400 uppercase tracking-wider mb-3">Statistik Relasi Agen</h3>
+                <h3 class="text-xs text-gray-400 uppercase tracking-wider mb-3" id="lang-invite-stats">Statistik Relasi Agen</h3>
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm text-gray-300">Agen Terkoneksi</span>
+                    <span class="text-sm text-gray-300" id="lang-connected-agents">Agen Terkoneksi</span>
                     <span class="font-mono font-bold text-solGreen text-sm">0</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-300">Akumulasi Bonus</span>
+                    <span class="text-sm text-gray-300" id="lang-accumulated-bonus">Akumulasi Bonus</span>
                     <span class="font-mono font-bold text-solPurple text-sm">+0.00%</span>
                 </div>
             </div>
         </div>
 
         <div id="view-wallet" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
-            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0">Manajemen Enklave Aset</h2>
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0" id="lang-wallet-title">Manajemen Enklave Aset</h2>
             
             <div class="glass-panel p-4 rounded-2xl border-l-4 border-solGreen shrink-0">
-                <h3 class="font-bold text-solGreen text-sm flex items-center gap-2 mb-1">
+                <h3 class="font-bold text-solGreen text-sm flex items-center gap-2 mb-1" id="lang-deposit-title">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
                     Injeksi Deposit (Upgrade Node)
                 </h3>
-                <p class="text-xs text-gray-400 mb-3">Alokasikan SOL untuk mempercepat daya komputasi inti.</p>
+                <p class="text-xs text-gray-400 mb-3" id="lang-deposit-desc">Alokasikan SOL untuk mempercepat daya komputasi inti.</p>
                 <div class="flex gap-2">
-                    <input type="number" placeholder="Jumlah SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solGreen">
-                    <button class="bg-solGreen text-black font-bold px-4 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all">Proses</button>
+                    <input type="number" id="input-deposit-amount" placeholder="Jumlah SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solGreen">
+                    <button class="bg-solGreen text-black font-bold px-4 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all" id="btn-deposit-process">Proses</button>
                 </div>
             </div>
 
             <div class="glass-panel p-4 rounded-2xl border-l-4 border-solPurple shrink-0">
-                <h3 class="font-bold text-solPurple text-sm flex items-center gap-2 mb-1">
+                <h3 class="font-bold text-solPurple text-sm flex items-center gap-2 mb-1" id="lang-withdraw-title">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
                     Ekstraksi Dana (Withdraw)
                 </h3>
-                <p class="text-xs text-gray-400 mb-3">Kirim hasil operasi penambangan langsung ke alamat eksternal Anda.</p>
+                <p class="text-xs text-gray-400 mb-3" id="lang-withdraw-desc">Kirim hasil operasi penambangan langsung ke alamat eksternal Anda.</p>
                 <div class="flex flex-col gap-2">
-                    <input type="text" placeholder="Alamat Wallet Solana Target" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
-                    <input type="number" placeholder="Beban Nominal SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
-                    <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all mt-1" onclick="alert('Batas penarikan minimum adalah 0.1 SOL.')">Eksekusi Penarikan</button>
+                    <input type="text" id="input-withdraw-address" placeholder="Alamat Wallet Solana Target" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
+                    <input type="number" id="input-withdraw-amount" placeholder="Beban Nominal SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
+                    <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all mt-1" id="btn-withdraw-execute" onclick="alert('Batas penarikan minimum adalah 0.1 SOL.')">Eksekusi Penarikan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Profile & Multi Bahasa Baru -->
+        <div id="view-profile" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
+            <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0" id="lang-profile-title">Profil Pengguna</h2>
+            
+            <div class="glass-panel p-5 rounded-2xl text-center shrink-0">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-solPurple to-solGreen flex items-center justify-center p-[2px] mx-auto mb-3">
+                    <div class="w-full h-full bg-cyberDark rounded-full border border-black flex items-center justify-center">
+                        <span class="font-bold text-white text-xl">USER</span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-bold text-white tracking-wide">Anonymous Agent</h3>
+                <p class="text-xs text-solGreen font-mono mt-1">ID: GOC-99812-SOL</p>
+            </div>
+
+            <div class="glass-panel p-4 rounded-2xl shrink-0">
+                <h3 class="text-xs text-gray-400 uppercase tracking-wider mb-3" id="lang-select-language">Pilih Bahasa / Select Language</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="changeLanguage('id')" class="lang-option-btn border border-gray-800 bg-black/20 text-white p-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 hover:border-solGreen">Indonesia</button>
+                    <button onclick="changeLanguage('en')" class="lang-option-btn border border-gray-800 bg-black/20 text-white p-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 hover:border-solGreen">English</button>
+                    <button onclick="changeLanguage('es')" class="lang-option-btn border border-gray-800 bg-black/20 text-white p-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 hover:border-solGreen">Español</button>
+                    <button onclick="changeLanguage('zh')" class="lang-option-btn border border-gray-800 bg-black/20 text-white p-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 hover:border-solGreen">简体中文</button>
                 </div>
             </div>
         </div>
@@ -216,6 +255,10 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
             <span class="text-[9px] font-bold uppercase tracking-wider">Wallet</span>
         </button>
+        <button onclick="switchView('profile')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-all" data-target="profile">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <span class="text-[9px] font-bold uppercase tracking-wider" id="nav-profile-text">Profile</span>
+        </button>
     </nav>
 
     <script>
@@ -232,15 +275,82 @@
             }
         }
 
-        // --- Core App State ---
+        // --- Data Multi Bahasa ---
+        const translations = {
+            id: {
+                totalBalance: "Total Saldo", nodeCenter: "Pusat Operasi Node", hashrate: "Daya Hash", coreTemp: "Suhu Inti",
+                liveTerminal: "Terminal Inti Langsung", tasksTitle: "Misi Operasional", dailyRewardTitle: "Klaim Reward Harian",
+                inviteTitle: "Ekspansi Jaringan", inviteDesc: "Rekrut agen baru untuk mendongkrak kapasitas batas Hashrate Anda sebesar +15% per agen.",
+                inviteStats: "Statistik Relasi Agen", connectedAgents: "Agen Terkoneksi", accumulatedBonus: "Akumulasi Bonus",
+                walletTitle: "Manajemen Enklave Aset", depositTitle: "Injeksi Deposit (Upgrade Node)", depositDesc: "Alokasikan SOL untuk mempercepat daya komputasi inti.",
+                withdrawTitle: "Ekstraksi Dana (Withdraw)", withdrawDesc: "Kirim hasil operasi penambangan langsung ke alamat eksternal Anda.",
+                profileTitle: "Profil Pengguna", selectLanguage: "Pilih Bahasa", executeText: "Eksekusi", claimedText: "Selesai",
+                copyText: "Salin", placeholderDeposit: "Jumlah SOL", placeholderAddress: "Alamat Wallet Solana Target", placeholderWithdrawAmount: "Beban Nominal SOL",
+                btnWithdraw: "Eksekusi Penarikan", btnDeposit: "Proses", alertDailySuccess: "Reward harian berhasil diklaim!", alertDailyAlready: "Anda sudah mengklaim reward hari ini. Kembali lagi besok!",
+                alertRefCopy: "Link referral disalin!", alertWithdrawLimit: "Batas penarikan minimum adalah 0.1 SOL."
+            },
+            en: {
+                totalBalance: "Total Balance", nodeCenter: "Node Operation Center", hashrate: "Hashrate", coreTemp: "Core Temp",
+                liveTerminal: "Live Core Terminal", tasksTitle: "Operational Missions", dailyRewardTitle: "Claim Daily Reward",
+                inviteTitle: "Network Expansion", inviteDesc: "Recruit new agents to boost your Hashrate limit capacity by +15% per agent.",
+                inviteStats: "Agent Relation Statistics", connectedAgents: "Connected Agents", accumulatedBonus: "Accumulated Bonus",
+                walletTitle: "Asset Enclave Management", depositTitle: "Deposit Injection (Node Upgrade)", depositDesc: "Allocate SOL to accelerate core computational power.",
+                withdrawTitle: "Fund Extraction (Withdraw)", withdrawDesc: "Send mining operation results directly to your external address.",
+                profileTitle: "User Profile", selectLanguage: "Select Language", executeText: "Execute", claimedText: "Claimed",
+                copyText: "Copy", placeholderDeposit: "SOL Amount", placeholderAddress: "Target Solana Wallet Address", placeholderWithdrawAmount: "SOL Nominal Burden",
+                btnWithdraw: "Execute Withdrawal", btnDeposit: "Process", alertDailySuccess: "Daily reward claimed successfully!", alertDailyAlready: "You have already claimed today's reward. Come back tomorrow!",
+                alertRefCopy: "Referral link copied!", alertWithdrawLimit: "Minimum withdrawal limit is 0.1 SOL."
+            },
+            es: {
+                totalBalance: "Saldo Total", nodeCenter: "Centro de Operación de Nodo", hashrate: "Tasa de Hash", coreTemp: "Temp del Núcleo",
+                liveTerminal: "Terminal de Núcleo en Vivo", tasksTitle: "Misiones Operativas", dailyRewardTitle: "Recompensa Diaria",
+                inviteTitle: "Expansión de la Red", inviteDesc: "Reclute nuevos agentes para aumentar su capacidad límite de Hashrate en un +15% por agente.",
+                inviteStats: "Estadísticas de Relación de Agentes", connectedAgents: "Agentes Conectados", accumulatedBonus: "Bono Acumulado",
+                walletTitle: "Gestión del Enclave de Activos", depositTitle: "Inyección de Depósito (Mejora de Nodo)", depositDesc: "Asigne SOL para acelerar la potencia informática central.",
+                withdrawTitle: "Extracción de Fondos (Retiro)", withdrawDesc: "Envíe los resultados de la operación de minería directamente a su dirección externa.",
+                profileTitle: "Perfil de Usuario", selectLanguage: "Seleccionar Idioma", executeText: "Ejecutar", claimedText: "Reclamado",
+                copyText: "Copiar", placeholderDeposit: "Cantidad de SOL", placeholderAddress: "Dirección de Billetera Solana Destino", placeholderWithdrawAmount: "Carga Nominal de SOL",
+                btnWithdraw: "Ejecutar Retiro", btnDeposit: "Procesar", alertDailySuccess: "¡Recompensa diaria reclamada con éxito!", alertDailyAlready: "Ya has reclamado la recompensa de hoy. ¡Vuelve mañana!",
+                alertRefCopy: "¡Enlace de referencia copiado!", alertWithdrawLimit: "El límite mínimo de retiro es 0.1 SOL."
+            },
+            zh: {
+                totalBalance: "总余额", nodeCenter: "节点操作中心", hashrate: "算力", coreTemp: "核心温度",
+                liveTerminal: "实时核心终端", tasksTitle: "操作任务", dailyRewardTitle: "领取每日奖励",
+                inviteTitle: "网络扩张", inviteDesc: "招募新代理，每位代理可提升+15%的算力上限容量。",
+                inviteStats: "代理关系统计", connectedAgents: "已连接代理", accumulatedBonus: "累计红利",
+                walletTitle: "资产管理", depositTitle: "注入存款（节点升级）", depositDesc: "分配 SOL 以加速核心计算能力。",
+                withdrawTitle: "资金提取（提现）", withdrawDesc: "将挖矿操作结果直接发送到您的外部地址。",
+                profileTitle: "用户资料", selectLanguage: "选择语言", executeText: "执行", claimedText: "已领取",
+                copyText: "复制", placeholderDeposit: "SOL 数量", placeholderAddress: "目标 Solana 钱包地址", placeholderWithdrawAmount: "SOL 名义负荷",
+                btnWithdraw: "执行提现", btnDeposit: "处理", alertDailySuccess: "每日奖励领取成功！", alertDailyAlready: "您今天已经领取过奖励了。明天再来吧！",
+                alertRefCopy: "推荐链接已复制！", alertWithdrawLimit: "最低提现限制为 0.1 SOL。"
+            }
+        };
+
+        // --- Core App State & LocalStorage ---
+        const savedBalance = localStorage.getItem('goc_balance');
+        const savedTasks = localStorage.getItem('goc_tasks');
+        const savedLanguage = localStorage.getItem('goc_lang') || 'id';
+        const savedDailyClaim = localStorage.getItem('goc_daily_claim');
+
         const state = {
-            balance: 0.02213000,
+            balance: savedBalance ? parseFloat(savedBalance) : 0.02213000,
             baseHashrate: 0.00000125,
             tickRate: 1000,
             isMining: false,
             miningInterval: null,
-            temp: 42
+            temp: 42,
+            currentLanguage: savedLanguage,
+            lastDailyClaimDate: savedDailyClaim ? savedDailyClaim : ""
         };
+
+        const defaultTasks = [
+            { id: 1, title: 'Join GOC Telegram Community', reward: 0.0005, done: false },
+            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0015, done: false },
+            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.0002, done: false }
+        ];
+        
+        let tasks = savedTasks ? JSON.parse(savedTasks) : defaultTasks;
 
         // --- DOM Cache Elements ---
         const elBalance = document.getElementById('main-balance');
@@ -255,8 +365,103 @@
 
         elBalance.textContent = state.balance.toFixed(8);
 
+        function updateStorage() {
+            localStorage.setItem('goc_balance', state.balance.toString());
+            localStorage.setItem('goc_tasks', JSON.stringify(tasks));
+            localStorage.setItem('goc_lang', state.currentLanguage);
+            localStorage.setItem('goc_daily_claim', state.lastDailyClaimDate);
+        }
+
+        function applyLanguage(lang) {
+            state.currentLanguage = lang;
+            const t = translations[lang];
+            
+            document.getElementById('lang-total-balance').textContent = t.totalBalance;
+            document.getElementById('lang-node-center').textContent = t.nodeCenter;
+            document.getElementById('lang-hashrate').textContent = t.hashrate;
+            document.getElementById('lang-core-temp').textContent = t.coreTemp;
+            document.getElementById('lang-live-terminal').textContent = t.liveTerminal;
+            document.getElementById('lang-tasks-title').textContent = t.tasksTitle;
+            document.getElementById('lang-daily-reward-title').textContent = t.dailyRewardTitle;
+            document.getElementById('lang-invite-title').textContent = t.inviteTitle;
+            document.getElementById('lang-invite-desc').textContent = t.inviteDesc;
+            document.getElementById('lang-invite-stats').textContent = t.inviteStats;
+            document.getElementById('lang-connected-agents').textContent = t.connectedAgents;
+            document.getElementById('lang-accumulated-bonus').textContent = t.accumulatedBonus;
+            document.getElementById('lang-wallet-title').textContent = t.walletTitle;
+            document.getElementById('lang-deposit-title').innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg> ${t.depositTitle}`;
+            document.getElementById('lang-deposit-desc').textContent = t.depositDesc;
+            document.getElementById('lang-withdraw-title').innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg> ${t.withdrawTitle}`;
+            document.getElementById('lang-withdraw-desc').textContent = t.withdrawDesc;
+            document.getElementById('lang-profile-title').textContent = t.profileTitle;
+            document.getElementById('lang-select-language').textContent = t.selectLanguage;
+            
+            document.getElementById('input-deposit-amount').placeholder = t.placeholderDeposit;
+            document.getElementById('input-withdraw-address').placeholder = t.placeholderAddress;
+            document.getElementById('input-withdraw-amount').placeholder = t.placeholderWithdrawAmount;
+            
+            document.getElementById('btn-withdraw-execute').textContent = t.btnWithdraw;
+            document.getElementById('btn-withdraw-execute').setAttribute('onclick', `alert('${t.alertWithdrawLimit}')`);
+            document.getElementById('btn-deposit-process').textContent = t.btnDeposit;
+            document.getElementById('btn-copy-ref').textContent = t.copyText;
+            document.getElementById('btn-copy-ref').setAttribute('onclick', `alert('${t.alertRefCopy}')`);
+            
+            document.getElementById('nav-profile-text').textContent = (lang === 'id') ? 'Profil' : 'Profile';
+
+            updateDailyRewardButton();
+            renderTasks();
+            updateStorage();
+        }
+
+        function changeLanguage(lang) {
+            applyLanguage(lang);
+        }
+
+        function getTodayDateString() {
+            const today = new Date();
+            return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        }
+
+        function updateDailyRewardButton() {
+            const todayStr = getTodayDateString();
+            const btn = document.getElementById('btn-daily-reward');
+            const t = translations[state.currentLanguage];
+            
+            if (state.lastDailyClaimDate === todayStr) {
+                btn.textContent = t.claimedText;
+                btn.className = "bg-gray-800 text-gray-500 px-4 py-2 rounded-xl text-xs font-bold cursor-not-allowed";
+                btn.disabled = true;
+            } else {
+                btn.textContent = "Claim";
+                btn.className = "bg-solGreen text-black px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95";
+                btn.disabled = false;
+            }
+        }
+
+        function claimDailyReward() {
+            const todayStr = getTodayDateString();
+            const t = translations[state.currentLanguage];
+            
+            if (state.lastDailyClaimDate === todayStr) {
+                alert(t.alertDailyAlready);
+                return;
+            }
+
+            // Kode iklan dimasukkan dan dipicu langsung saat mulai claim
+            runAd(() => {
+                state.lastDailyClaimDate = todayStr;
+                state.balance += 0.0025;
+                elBalance.textContent = state.balance.toFixed(8);
+                
+                updateDailyRewardButton();
+                updateStorage();
+                alert(t.alertDailySuccess);
+                logTerminal(`> Daily reward claimed: +0.0025 SOL`, true);
+            });
+        }
+
         function switchView(viewId) {
-            const views = ['console', 'tasks', 'invite', 'wallet'];
+            const views = ['console', 'tasks', 'invite', 'wallet', 'profile'];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (el) el.style.setProperty('display', 'none', 'important');
@@ -287,6 +492,7 @@
         function tickMining() {
             state.balance += state.baseHashrate;
             elBalance.textContent = state.balance.toFixed(8);
+            updateStorage();
             if(Math.random() > 0.4) {
                 const cryptoBlock = Math.random().toString(36).substring(2, 12).toLowerCase();
                 logTerminal(`> Decrypted block: 0x${cryptoBlock}`, true);
@@ -327,14 +533,10 @@
             });
         });
 
-        const tasks = [
-            { id: 1, title: 'Join GOC Telegram Community', reward: 0.0005, done: false },
-            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0015, done: false },
-            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.0002, done: false }
-        ];
-
         function renderTasks() {
             const list = document.getElementById('task-list');
+            if (!list) return;
+            const t = translations[state.currentLanguage];
             list.innerHTML = '';
             tasks.forEach(task => {
                 list.innerHTML += `
@@ -344,7 +546,7 @@
                             <div class="font-mono text-xs text-solPurple mt-0.5">+${task.reward.toFixed(4)} SOL</div>
                         </div>
                         <button onclick="claimTask(${task.id})" class="${task.done ? 'bg-gray-800 text-gray-500' : 'bg-solPurple text-white active:scale-95'} px-4 py-2 rounded-xl text-xs font-bold transition-all" ${task.done ? 'disabled' : ''}>
-                            ${task.done ? 'Claimed' : 'Execute'}
+                            ${task.done ? t.claimedText : t.executeText}
                         </button>
                     </div>
                 `;
@@ -359,11 +561,12 @@
                     state.balance += task.reward;
                     elBalance.textContent = state.balance.toFixed(8);
                     renderTasks();
+                    updateStorage();
                 }
             });
         }
-        renderTasks();
 
+        // --- Inisialisasi Canvas Animasi Jaringan ---
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, nodes = [];
@@ -402,8 +605,11 @@
             requestAnimationFrame(drawMap);
         }
         window.addEventListener('resize', initCanvas);
+        
+        // --- Booting / Start Application ---
         initCanvas();
         drawMap();
+        applyLanguage(state.currentLanguage);
     </script>
 </body>
 </html>
