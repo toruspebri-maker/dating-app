@@ -586,7 +586,7 @@
         function switchView(viewId) {
             const views = ['console', 'tasks', 'invite', 'wallet', 'profile'];
             views.forEach(v => {
-                const el = document.getElementByld(`view-${v}`);
+                const el = document.getElementById(`view-${v}`);
                 if (el) el.style.setProperty('display', 'none', 'important');
             });
             const activeEl = document.getElementById(`view-${viewId}`);
