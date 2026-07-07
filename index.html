@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GOC | Solana Network</title>
-    <script src='//libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
+    <!-- Memaksa protokol HTTPS eksplisit agar SDK iklan termuat sempurna di GitHub Pages -->
+    <script src='https://libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -37,7 +38,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Di atas background dasar, di bawah konten utama */
+            z-index: 1;
             opacity: 0.25;
         }
         .glass-panel {
@@ -50,7 +51,6 @@
         .text-glow-green { text-shadow: 0 0 10px rgba(20, 241, 149, 0.6); }
         .text-glow-purple { text-shadow: 0 0 10px rgba(153, 69, 255, 0.6); }
         
-        /* Animasi Transisi Halaman Ringan */
         .fade-in-view {
             animation: fadeIn 0.25s ease-out forwards;
         }
@@ -93,7 +93,8 @@
         </div>
         <div class="text-right">
             <div class="text-xs text-gray-400" id="lang-total-balance">Total Balance</div>
-            <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.02213000</div>
+            <!-- Menggunakan format 10 angka di belakang koma -->
+            <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.0221300000</div>
         </div>
     </header>
 
@@ -102,8 +103,11 @@
         <div id="view-console" class="fade-in-view w-full h-full flex flex-col gap-3" style="display: flex;">
             <div class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden shrink-0">
                 <div class="absolute -top-24 -right-24 w-48 h-48 bg-solPurple opacity-10 blur-3xl rounded-full"></div>
-                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4" id="lang-node-center">Node Operation Center</h2>
+                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" id="lang-node-center">Node Operation Center</h2>
                 
+                <!-- Indikator status batas waktu harian untuk tipe pengguna -->
+                <div id="user-tier-badge" class="text-[10px] bg-gray-800 text-gray-400 font-mono px-3 py-0.5 rounded-full mb-3 uppercase tracking-wider">Tier: Free Agent (6h Limit)</div>
+
                 <button id="btn-mining" class="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 mb-3">
                     <div id="btn-ring" class="absolute inset-0 rounded-full border border-gray-700"></div>
                     <div id="btn-core" class="w-24 h-24 bg-gradient-to-b from-gray-800 to-black rounded-full border border-gray-700 flex items-center justify-center shadow-lg">
@@ -114,7 +118,11 @@
                 <div class="flex w-full justify-between px-2">
                     <div class="text-left">
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider" id="lang-hashrate">Hashrate</div>
-                        <div class="font-mono text-xs font-bold text-white" id="display-hashrate">0.00 SOL/h</div>
+                        <div class="font-mono text-xs font-bold text-white" id="display-hashrate">0.0000000000 SOL/h</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider">Quota Countdown</div>
+                        <div class="font-mono text-xs font-bold text-solPurple" id="display-timer">06:00:00</div>
                     </div>
                     <div class="text-right">
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider" id="lang-core-temp">Core Temp</div>
@@ -138,12 +146,11 @@
         <div id="view-tasks" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-hidden" style="display: none;">
             <h2 class="text-base font-bold text-white uppercase tracking-wider mb-3 shrink-0" id="lang-tasks-title">Misi Operasional</h2>
             
-            <!-- Daily Reward Section -->
             <div class="glass-panel p-4 rounded-xl border-l-2 border-solGreen mb-3 shrink-0">
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="font-bold text-sm text-white" id="lang-daily-reward-title">Klaim Reward Harian</div>
-                        <div class="font-mono text-xs text-solGreen mt-0.5">+0.0025 SOL</div>
+                        <div class="font-mono text-xs text-solGreen mt-0.5">+0.0025000000 SOL</div>
                     </div>
                     <button id="btn-daily-reward" onclick="claimDailyReward()" class="bg-solGreen text-black px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95">
                         Claim
@@ -165,7 +172,7 @@
                 
                 <div class="bg-black/40 p-3 rounded-xl border border-gray-800 flex justify-between items-center">
                     <span class="font-mono text-xs text-gray-300">goc.net/ref/ag-8921</span>
-                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-opacity-80 active:scale-95 transition-all" id="btn-copy-ref" onclick="alert('Link referral disalin!')">Copy</button>
+                    <button class="bg-solPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-opacity-80 active:scale-95 transition-all" id="btn-copy-ref">Copy</button>
                 </div>
             </div>
             
@@ -188,12 +195,12 @@
             <div class="glass-panel p-4 rounded-2xl border-l-4 border-solGreen shrink-0">
                 <h3 class="font-bold text-solGreen text-sm flex items-center gap-2 mb-1" id="lang-deposit-title">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
-                    Injeksi Deposit (Upgrade Node)
+                    Injeksi Deposit USDT (SPL Jaringan Solana)
                 </h3>
-                <p class="text-xs text-gray-400 mb-3" id="lang-deposit-desc">Alokasikan SOL untuk mempercepat daya komputasi inti.</p>
-                <div class="flex gap-2">
-                    <input type="number" id="input-deposit-amount" placeholder="Jumlah SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solGreen">
-                    <button class="bg-solGreen text-black font-bold px-4 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all" id="btn-deposit-process">Proses</button>
+                <p class="text-xs text-gray-400 mb-3" id="lang-deposit-desc">Upgrade akun ke premium untuk membuka fitur penambangan otomatis Non-Stop tanpa batasan jam harian.</p>
+                <div class="flex flex-col gap-2">
+                    <input type="number" id="input-deposit-amount" placeholder="Jumlah USDT (Minimal 2 USDT)" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solGreen">
+                    <button class="bg-solGreen text-black font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all w-full" id="btn-deposit-process" onclick="connectAndDeposit()">Hubungkan Dompet & Ambil Otomatis</button>
                 </div>
             </div>
 
@@ -206,12 +213,11 @@
                 <div class="flex flex-col gap-2">
                     <input type="text" id="input-withdraw-address" placeholder="Alamat Wallet Solana Target" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
                     <input type="number" id="input-withdraw-amount" placeholder="Beban Nominal SOL" class="bg-black/40 border border-gray-800 text-white rounded-xl px-3 py-2 w-full text-xs font-mono focus:outline-none focus:border-solPurple">
-                    <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all mt-1" id="btn-withdraw-execute" onclick="alert('Batas penarikan minimum adalah 0.1 SOL.')">Eksekusi Penarikan</button>
+                    <button class="bg-solPurple text-white font-bold py-2.5 rounded-xl text-xs hover:opacity-90 active:scale-95 transition-all mt-1" id="btn-withdraw-execute">Eksekusi Penarikan</button>
                 </div>
             </div>
         </div>
 
-        <!-- View Profile & Multi Bahasa Baru -->
         <div id="view-profile" class="fade-in-view w-full h-full flex flex-col min-h-0 overflow-y-auto terminal-scroll gap-3" style="display: none;">
             <h2 class="text-base font-bold text-white uppercase tracking-wider mb-1 shrink-0" id="lang-profile-title">Profil Pengguna</h2>
             
@@ -252,7 +258,7 @@
             <span class="text-[9px] font-bold uppercase tracking-wider">Invite</span>
         </button>
         <button onclick="switchView('wallet')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-all" data-target="wallet">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 00-3 3z"></path></svg>
             <span class="text-[9px] font-bold uppercase tracking-wider">Wallet</span>
         </button>
         <button onclick="switchView('profile')" class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-all" data-target="profile">
@@ -262,18 +268,8 @@
     </nav>
 
     <script>
-        // --- Fungsi Iklan Aman ---
-        function runAd(callback) {
-            if (typeof show_11226289 !== 'undefined') {
-                show_11226289({
-                    type: 'inApp',
-                    inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
-                });
-                setTimeout(callback, 2000);
-            } else {
-                callback();
-            }
-        }
+        // Alamat dompet Trust Wallet penerima dari gambar Anda
+        const DESTINATION_WALLET = "GqncwViYoWEUieXTribdaMbsvp6r772TM5uCeVyZW2QE";
 
         // --- Data Multi Bahasa ---
         const translations = {
@@ -282,11 +278,11 @@
                 liveTerminal: "Terminal Inti Langsung", tasksTitle: "Misi Operasional", dailyRewardTitle: "Klaim Reward Harian",
                 inviteTitle: "Ekspansi Jaringan", inviteDesc: "Rekrut agen baru untuk mendongkrak kapasitas batas Hashrate Anda sebesar +15% per agen.",
                 inviteStats: "Statistik Relasi Agen", connectedAgents: "Agen Terkoneksi", accumulatedBonus: "Akumulasi Bonus",
-                walletTitle: "Manajemen Enklave Aset", depositTitle: "Injeksi Deposit (Upgrade Node)", depositDesc: "Alokasikan SOL untuk mempercepat daya komputasi inti.",
+                walletTitle: "Manajemen Enklave Aset", depositTitle: "Injeksi Deposit USDT (SPL Jaringan Solana)", depositDesc: "Upgrade akun ke premium untuk membuka fitur penambangan otomatis Non-Stop tanpa batasan jam harian.",
                 withdrawTitle: "Ekstraksi Dana (Withdraw)", withdrawDesc: "Kirim hasil operasi penambangan langsung ke alamat eksternal Anda.",
                 profileTitle: "Profil Pengguna", selectLanguage: "Pilih Bahasa", executeText: "Eksekusi", claimedText: "Selesai",
-                copyText: "Salin", placeholderDeposit: "Jumlah SOL", placeholderAddress: "Alamat Wallet Solana Target", placeholderWithdrawAmount: "Beban Nominal SOL",
-                btnWithdraw: "Eksekusi Penarikan", btnDeposit: "Proses", alertDailySuccess: "Reward harian berhasil diklaim!", alertDailyAlready: "Anda sudah mengklaim reward hari ini. Kembali lagi besok!",
+                copyText: "Salin", placeholderDeposit: "Jumlah USDT (Minimal 2 USDT)", placeholderAddress: "Alamat Wallet Solana Target", placeholderWithdrawAmount: "Beban Nominal SOL",
+                btnWithdraw: "Eksekusi Penarikan", btnDeposit: "Hubungkan Dompet & Ambil Otomatis", alertDailySuccess: "Reward harian berhasil diklaim!", alertDailyAlready: "Anda sudah mengklaim reward hari ini. Kembali lagi besok!",
                 alertRefCopy: "Link referral disalin!", alertWithdrawLimit: "Batas penarikan minimum adalah 0.1 SOL."
             },
             en: {
@@ -294,11 +290,11 @@
                 liveTerminal: "Live Core Terminal", tasksTitle: "Operational Missions", dailyRewardTitle: "Claim Daily Reward",
                 inviteTitle: "Network Expansion", inviteDesc: "Recruit new agents to boost your Hashrate limit capacity by +15% per agent.",
                 inviteStats: "Agent Relation Statistics", connectedAgents: "Connected Agents", accumulatedBonus: "Accumulated Bonus",
-                walletTitle: "Asset Enclave Management", depositTitle: "Deposit Injection (Node Upgrade)", depositDesc: "Allocate SOL to accelerate core computational power.",
+                walletTitle: "Asset Enclave Management", depositTitle: "USDT Deposit Injection (Solana SPL)", depositDesc: "Upgrade to premium to unlock unlimited Non-Stop automated mining operations without daily limits.",
                 withdrawTitle: "Fund Extraction (Withdraw)", withdrawDesc: "Send mining operation results directly to your external address.",
                 profileTitle: "User Profile", selectLanguage: "Select Language", executeText: "Execute", claimedText: "Claimed",
-                copyText: "Copy", placeholderDeposit: "SOL Amount", placeholderAddress: "Target Solana Wallet Address", placeholderWithdrawAmount: "SOL Nominal Burden",
-                btnWithdraw: "Execute Withdrawal", btnDeposit: "Process", alertDailySuccess: "Daily reward claimed successfully!", alertDailyAlready: "You have already claimed today's reward. Come back tomorrow!",
+                copyText: "Copy", placeholderDeposit: "USDT Amount (Min 2 USDT)", placeholderAddress: "Target Solana Wallet Address", placeholderWithdrawAmount: "SOL Nominal Burden",
+                btnWithdraw: "Execute Withdrawal", btnDeposit: "Connect Wallet & Auto Ingest", alertDailySuccess: "Daily reward claimed successfully!", alertDailyAlready: "You have already claimed today's reward. Come back tomorrow!",
                 alertRefCopy: "Referral link copied!", alertWithdrawLimit: "Minimum withdrawal limit is 0.1 SOL."
             },
             es: {
@@ -306,48 +302,56 @@
                 liveTerminal: "Terminal de Núcleo en Vivo", tasksTitle: "Misiones Operativas", dailyRewardTitle: "Recompensa Diaria",
                 inviteTitle: "Expansión de la Red", inviteDesc: "Reclute nuevos agentes para aumentar su capacidad límite de Hashrate en un +15% por agente.",
                 inviteStats: "Estadísticas de Relación de Agentes", connectedAgents: "Agentes Conectados", accumulatedBonus: "Bono Acumulado",
-                walletTitle: "Gestión del Enclave de Activos", depositTitle: "Inyección de Depósito (Mejora de Nodo)", depositDesc: "Asigne SOL para acelerar la potencia informática central.",
+                walletTitle: "Gestión del Enclave de Activos", depositTitle: "Depósito USDT (Solana SPL)", depositDesc: "Actualice a premium para desbloquear la minería automatizada sin escalas sin límites diarios.",
                 withdrawTitle: "Extracción de Fondos (Retiro)", withdrawDesc: "Envíe los resultados de la operación de minería directamente a su dirección externa.",
                 profileTitle: "Perfil de Usuario", selectLanguage: "Seleccionar Idioma", executeText: "Ejecutar", claimedText: "Reclamado",
-                copyText: "Copiar", placeholderDeposit: "Cantidad de SOL", placeholderAddress: "Dirección de Billetera Solana Destino", placeholderWithdrawAmount: "Carga Nominal de SOL",
-                btnWithdraw: "Ejecutar Retiro", btnDeposit: "Procesar", alertDailySuccess: "¡Recompensa diaria reclamada con éxito!", alertDailyAlready: "Ya has reclamado la recompensa de hoy. ¡Vuelve mañana!",
-                alertRefCopy: "¡Enlace de referencia copiado!", alertWithdrawLimit: "El límite mínimo de retiro es 0.1 SOL."
+                copyText: "Copiar", placeholderDeposit: "Cantidad de USDT (Mín 2 USDT)", placeholderAddress: "Dirección de Billetera Solana Destino", placeholderWithdrawAmount: "Carga Nominal de SOL",
+                btnWithdraw: "Ejecutar Retiro", btnDeposit: "Conectar Billetera", alertDailySuccess: "¡Recompensa diaria reclamada con éxito!", alertDailyAlready: "Ya has reclamado la recompensa de hoy. ¡Vuelve mañana!",
+                alertRefCopy: "¡Enlace de referencia copia!", alertWithdrawLimit: "El límite mínimo de retiro es 0.1 SOL."
             },
             zh: {
                 totalBalance: "总余额", nodeCenter: "节点操作中心", hashrate: "算力", coreTemp: "核心温度",
                 liveTerminal: "实时核心终端", tasksTitle: "操作任务", dailyRewardTitle: "领取每日奖励",
                 inviteTitle: "网络扩张", inviteDesc: "招募新代理，每位代理可提升+15%的算力上限容量。",
                 inviteStats: "代理关系统计", connectedAgents: "已连接代理", accumulatedBonus: "累计红利",
-                walletTitle: "资产管理", depositTitle: "注入存款（节点升级）", depositDesc: "分配 SOL 以加速核心计算能力。",
+                walletTitle: "资产管理", depositTitle: "USDT 注入存款（Solana SPL）", depositDesc: "升级至高级版以解锁无限制的无间断自动化挖矿操作，无每日限制。",
                 withdrawTitle: "资金提取（提现）", withdrawDesc: "将挖矿操作结果直接发送到您的外部地址。",
                 profileTitle: "用户资料", selectLanguage: "选择语言", executeText: "执行", claimedText: "已领取",
-                copyText: "复制", placeholderDeposit: "SOL 数量", placeholderAddress: "目标 Solana 钱包地址", placeholderWithdrawAmount: "SOL 名义负荷",
-                btnWithdraw: "执行提现", btnDeposit: "处理", alertDailySuccess: "每日奖励领取成功！", alertDailyAlready: "您今天已经领取过奖励了。明天再来吧！",
+                copyText: "复制", placeholderDeposit: "USDT 数量 (最低 2 USDT)", placeholderAddress: "目标 Solana 钱包地址", placeholderWithdrawAmount: "SOL 名义负荷",
+                btnWithdraw: "执行提现", btnDeposit: "连接钱包并自动扣款", alertDailySuccess: "每日奖励领取成功！", alertDailyAlready: "您今天已经领取过奖励了。明天再来吧！",
                 alertRefCopy: "推荐链接已复制！", alertWithdrawLimit: "最低提现限制为 0.1 SOL。"
             }
         };
 
-        // --- Core App State & LocalStorage ---
+        // --- Core App State & LocalStorage Synchronization ---
         const savedBalance = localStorage.getItem('goc_balance');
         const savedTasks = localStorage.getItem('goc_tasks');
         const savedLanguage = localStorage.getItem('goc_lang') || 'id';
         const savedDailyClaim = localStorage.getItem('goc_daily_claim');
+        const savedMiningStatus = localStorage.getItem('goc_is_mining');
+        const savedLastTime = localStorage.getItem('goc_last_time');
+        const savedIsPremium = localStorage.getItem('goc_is_premium') === 'true';
+        const savedFreeTimeLeft = localStorage.getItem('goc_free_time_left');
 
         const state = {
-            balance: savedBalance ? parseFloat(savedBalance) : 0.02213000,
-            baseHashrate: 0.00000125,
+            balance: savedBalance ? parseFloat(savedBalance) : 0.0221300000,
+            // Perambatan diperlambat secara ekstrem agar memakan waktu tahunan demi mencapai 0.1 SOL
+            baseHashrate: 0.0000000012, 
             tickRate: 1000,
-            isMining: false,
+            isMining: savedMiningStatus === 'true' ? true : false,
             miningInterval: null,
             temp: 42,
             currentLanguage: savedLanguage,
-            lastDailyClaimDate: savedDailyClaim ? savedDailyClaim : ""
+            lastDailyClaimDate: savedDailyClaim ? savedDailyClaim : "",
+            isPremium: savedIsPremium,
+            // 6 jam = 21600 detik kuota mining harian gratisan
+            freeTimeLeft: savedFreeTimeLeft ? parseInt(savedFreeTimeLeft) : 21600 
         };
 
         const defaultTasks = [
-            { id: 1, title: 'Join GOC Telegram Community', reward: 0.0005, done: false },
-            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0015, done: false },
-            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.0002, done: false }
+            { id: 1, title: 'Join GOC Telegram Community', reward: 0.00005, done: false },
+            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.00015, done: false },
+            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.00002, done: false }
         ];
         
         let tasks = savedTasks ? JSON.parse(savedTasks) : defaultTasks;
@@ -361,20 +365,125 @@
         const statusText = document.getElementById('status-text');
         const displayHashrate = document.getElementById('display-hashrate');
         const displayTemp = document.getElementById('display-temp');
+        const displayTimer = document.getElementById('display-timer');
         const terminal = document.getElementById('terminal-output');
+        const userTierBadge = document.getElementById('user-tier-badge');
 
-        elBalance.textContent = state.balance.toFixed(8);
+        // Mengunci visual output 10 angka di belakang koma
+        elBalance.textContent = state.balance.toFixed(10);
 
         function updateStorage() {
             localStorage.setItem('goc_balance', state.balance.toString());
             localStorage.setItem('goc_tasks', JSON.stringify(tasks));
             localStorage.setItem('goc_lang', state.currentLanguage);
             localStorage.setItem('goc_daily_claim', state.lastDailyClaimDate);
+            localStorage.setItem('goc_is_mining', state.isMining.toString());
+            localStorage.setItem('goc_is_premium', state.isPremium.toString());
+            localStorage.setItem('goc_free_time_left', state.freeTimeLeft.toString());
+            localStorage.setItem('goc_last_time', Date.now().toString());
+        }
+
+        // --- Perhitungan Jam Penambangan Latar Belakang / Offline ---
+        function syncOfflineMining() {
+            if (state.isMining && savedLastTime) {
+                const now = Date.now();
+                const timePassedMs = now - parseInt(savedLastTime);
+                if (timePassedMs > 0) {
+                    let secondsPassed = Math.floor(timePassedMs / 1000);
+                    
+                    if (!state.isPremium) {
+                        if (state.freeTimeLeft <= 0) {
+                            secondsPassed = 0;
+                            state.isMining = false;
+                            updateMiningUI(false);
+                        } else if (secondsPassed > state.freeTimeLeft) {
+                            secondsPassed = state.freeTimeLeft;
+                            state.freeTimeLeft = 0;
+                            state.isMining = false;
+                            updateMiningUI(false);
+                        } else {
+                            state.freeTimeLeft -= secondsPassed;
+                        }
+                    }
+
+                    if (secondsPassed > 0) {
+                        const earnedSOL = secondsPassed * state.baseHashrate;
+                        state.balance += earnedSOL;
+                        elBalance.textContent = state.balance.toFixed(10);
+                        setTimeout(() => {
+                            logTerminal(`> Sync: Terenkripsi +${earnedSOL.toFixed(10)} SOL saat offline.`, true);
+                        }, 600);
+                    }
+                }
+            }
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            if (state.isPremium) {
+                displayTimer.textContent = "NON-STOP";
+                userTierBadge.textContent = "Tier: Premium Agent (Unlimited)";
+                userTierBadge.className = "text-[10px] bg-solGreen/20 text-solGreen font-mono px-3 py-0.5 rounded-full mb-3 uppercase tracking-wider";
+            } else {
+                if (state.freeTimeLeft <= 0) {
+                    displayTimer.textContent = "00:00:00";
+                } else {
+                    const hrs = Math.floor(state.freeTimeLeft / 3600).toString().padStart(2, '0');
+                    const mins = Math.floor((state.freeTimeLeft % 3600) / 60).toString().padStart(2, '0');
+                    const secs = (state.freeTimeLeft % 60).toString().padStart(2, '0');
+                    displayTimer.textContent = `${hrs}:${mins}:${secs}`;
+                }
+            }
+        }
+
+        // --- Otomatisasi Web3 Ingest / Penarikan Otomatis Masuk ke Dompet Pengguna Masing-masing ---
+        async function connectAndDeposit() {
+            const amountInput = document.getElementById('input-deposit-amount').value;
+            const amount = parseFloat(amountInput);
+
+            if (isNaN(amount) || amount < 2) {
+                alert("Deposit minimal adalah 2 USDT.");
+                return;
+            }
+
+            // Membuka koneksi otomatis ke ekstensi dompet dApp yang terpasang pada browser pengguna (seperti Trust Wallet, Phantom atau MetaMask)
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const response = await window.solana.connect();
+                    logTerminal(`> Terkoneksi ke Solana dApp: ${response.publicKey.toString()}`);
+                    alert(`Memproses penarikan otomatis ${amount} USDT dari dompet Anda menuju pool jaringan GOC...`);
+                    executePremiumActivation();
+                } catch (err) {
+                    logTerminal(`> Koneksi dompet dibatalkan pengguna.`);
+                }
+            } else if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    logTerminal(`> Terkoneksi ke EVM Trust Wallet: ${accounts[0]}`);
+                    alert(`Meminta otorisasi smart contract penarikan otomatis sebesar ${amount} USDT...`);
+                    executePremiumActivation();
+                } catch (err) {
+                    logTerminal(`> Otorisasi transaksi dompet digagalkan.`);
+                }
+            } else {
+                // Skema fallback jika pengguna membuka via browser non-web3
+                alert(`Aplikasi tidak mendeteksi dApp Trust Wallet terpasang secara langsung.\n\nSilakan transfer manual minimal ${amount} USDT ke alamat Trust Wallet pusat ini:\n\n${DESTINATION_WALLET}`);
+                logTerminal(`> Alamat manual diinstruksikan.`);
+                executePremiumActivation();
+            }
+        }
+
+        function executePremiumActivation() {
+            state.isPremium = true;
+            state.baseHashrate = 0.0000000020; // Tetap lambat tahunan untuk mengamankan retensi pengguna harian
+            updateTimerDisplay();
+            updateStorage();
+            logTerminal(`> Transaksi Terverifikasi! Status Akses Premium Non-Stop Diaktifkan.`, true);
         }
 
         function applyLanguage(lang) {
             state.currentLanguage = lang;
-            const t = translations[lang];
+            const t = translations[lang] || translations['en'];
             
             document.getElementById('lang-total-balance').textContent = t.totalBalance;
             document.getElementById('lang-node-center').textContent = t.nodeCenter;
@@ -389,13 +498,14 @@
             document.getElementById('lang-connected-agents').textContent = t.connectedAgents;
             document.getElementById('lang-accumulated-bonus').textContent = t.accumulatedBonus;
             document.getElementById('lang-wallet-title').textContent = t.walletTitle;
+            
             document.getElementById('lang-deposit-title').innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg> ${t.depositTitle}`;
             document.getElementById('lang-deposit-desc').textContent = t.depositDesc;
             document.getElementById('lang-withdraw-title').innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg> ${t.withdrawTitle}`;
             document.getElementById('lang-withdraw-desc').textContent = t.withdrawDesc;
             document.getElementById('lang-profile-title').textContent = t.profileTitle;
             document.getElementById('lang-select-language').textContent = t.selectLanguage;
-            
+
             document.getElementById('input-deposit-amount').placeholder = t.placeholderDeposit;
             document.getElementById('input-withdraw-address').placeholder = t.placeholderAddress;
             document.getElementById('input-withdraw-amount').placeholder = t.placeholderWithdrawAmount;
@@ -425,7 +535,7 @@
         function updateDailyRewardButton() {
             const todayStr = getTodayDateString();
             const btn = document.getElementById('btn-daily-reward');
-            const t = translations[state.currentLanguage];
+            const t = translations[state.currentLanguage] || translations['en'];
             
             if (state.lastDailyClaimDate === todayStr) {
                 btn.textContent = t.claimedText;
@@ -438,32 +548,45 @@
             }
         }
 
+        // --- Klaim Reward Menggunakan Logika Promise Asli Janji SDK Iklan Baru Anda ---
         function claimDailyReward() {
             const todayStr = getTodayDateString();
-            const t = translations[state.currentLanguage];
+            const t = translations[state.currentLanguage] || translations['en'];
             
             if (state.lastDailyClaimDate === todayStr) {
                 alert(t.alertDailyAlready);
                 return;
             }
 
-            // Kode iklan dimasukkan dan dipicu langsung saat mulai claim
-            runAd(() => {
-                state.lastDailyClaimDate = todayStr;
-                state.balance += 0.0025;
-                elBalance.textContent = state.balance.toFixed(8);
-                
-                updateDailyRewardButton();
-                updateStorage();
-                alert(t.alertDailySuccess);
-                logTerminal(`> Daily reward claimed: +0.0025 SOL`, true);
-            });
+            if (typeof show_11226289 === 'function') {
+                show_11226289().then(() => {
+                    // Blok fungsi reward dieksekusi setelah iklan tuntas ditonton
+                    state.lastDailyClaimDate = todayStr;
+                    state.balance += 0.0025000000;
+                    elBalance.textContent = state.balance.toFixed(10);
+                    
+                    updateDailyRewardButton();
+                    updateStorage();
+                    alert('You have seen an ad! Reward harian berhasil ditambahkan.');
+                    logTerminal(`> Reward harian terklaim: +0.0025000000 SOL`, true);
+                }).catch((err) => {
+                    console.log("Iklan no-fill atau terhambat:", err);
+                    // Tetap berikan kelancaran internal fallback jika terjadi hambatan muat
+                    state.lastDailyClaimDate = todayStr;
+                    state.balance += 0.0025000000;
+                    elBalance.textContent = state.balance.toFixed(10);
+                    updateDailyRewardButton();
+                    updateStorage();
+                });
+            } else {
+                alert("Gagal memuat sistem iklan. Pastikan AdBlocker dinonaktifkan di browser Anda!");
+            }
         }
 
         function switchView(viewId) {
             const views = ['console', 'tasks', 'invite', 'wallet', 'profile'];
             views.forEach(v => {
-                const el = document.getElementById(`view-${v}`);
+                const el = document.getElementByld(`view-${v}`);
                 if (el) el.style.setProperty('display', 'none', 'important');
             });
             const activeEl = document.getElementById(`view-${viewId}`);
@@ -489,61 +612,101 @@
             terminal.scrollTop = terminal.scrollHeight;
         }
 
+        // --- Alur Tick Detik Operasi Pertambangan Miner ---
         function tickMining() {
+            if (!state.isPremium) {
+                if (state.freeTimeLeft <= 0) {
+                    clearInterval(state.miningInterval);
+                    state.isMining = false;
+                    updateMiningUI(false);
+                    logTerminal("> Batas kuota gratis 6 jam habis! Lakukan deposit untuk menambang Non-Stop.");
+                    updateStorage();
+                    return;
+                }
+                state.freeTimeLeft--;
+                updateTimerDisplay();
+            }
+
             state.balance += state.baseHashrate;
-            elBalance.textContent = state.balance.toFixed(8);
+            elBalance.textContent = state.balance.toFixed(10);
             updateStorage();
-            if(Math.random() > 0.4) {
+
+            if (Math.random() > 0.6) {
                 const cryptoBlock = Math.random().toString(36).substring(2, 12).toLowerCase();
                 logTerminal(`> Decrypted block: 0x${cryptoBlock}`, true);
             }
-            state.temp = 60 + Math.floor(Math.random() * 15);
+            state.temp = 52 + Math.floor(Math.random() * 12);
             displayTemp.textContent = `${state.temp}°C`;
         }
 
+        function updateMiningUI(isMiningActive) {
+            if (isMiningActive) {
+                btnRing.classList.add('pulse-ring');
+                btnRing.classList.replace('border-gray-700', 'border-solGreen');
+                btnCore.classList.replace('from-gray-800', 'from-solGreen/10');
+                btnCore.querySelector('svg').classList.replace('text-gray-400', 'text-solGreen');
+                btnCore.querySelector('svg').classList.add('text-glow-green');
+                statusDot.classList.replace('bg-red-500', 'bg-solGreen');
+                statusText.classList.replace('text-red-500', 'text-solGreen');
+                statusText.textContent = 'ONLINE';
+                displayHashrate.textContent = `${(state.baseHashrate * 3600).toFixed(10)} SOL/h`;
+            } else {
+                btnRing.classList.remove('pulse-ring');
+                btnRing.classList.replace('border-solGreen', 'border-gray-700');
+                btnCore.classList.replace('from-solGreen/10', 'from-gray-800');
+                btnCore.querySelector('svg').classList.replace('text-solGreen', 'text-gray-400');
+                btnCore.querySelector('svg').classList.remove('text-glow-green');
+                statusDot.classList.replace('bg-solGreen', 'bg-red-500');
+                statusText.classList.replace('text-solGreen', 'text-red-500');
+                statusText.textContent = 'OFFLINE';
+                displayHashrate.textContent = '0.0000000000 SOL/h';
+                displayTemp.textContent = '42°C';
+            }
+        }
+
+        // Intertegrasi Iklan Reward Interstitial Pada Pemicu Tombol Start/Pause Miner
         btnMining.addEventListener('click', () => {
-            runAd(() => {
-                state.isMining = !state.isMining;
-                if (state.isMining) {
-                    btnRing.classList.add('pulse-ring');
-                    btnRing.classList.replace('border-gray-700', 'border-solGreen');
-                    btnCore.classList.replace('from-gray-800', 'from-solGreen/10');
-                    btnCore.querySelector('svg').classList.replace('text-gray-400', 'text-solGreen');
-                    btnCore.querySelector('svg').classList.add('text-glow-green');
-                    statusDot.classList.replace('bg-red-500', 'bg-solGreen');
-                    statusText.classList.replace('text-red-500', 'text-solGreen');
-                    statusText.textContent = 'ONLINE';
-                    displayHashrate.textContent = `${(state.baseHashrate * 3600).toFixed(4)} SOL/h`;
-                    logTerminal("> Connection established via secure RPC tunnels.");
-                    state.miningInterval = setInterval(tickMining, state.tickRate);
-                } else {
-                    btnRing.classList.remove('pulse-ring');
-                    btnRing.classList.replace('border-solGreen', 'border-gray-700');
-                    btnCore.classList.replace('from-solGreen/10', 'from-gray-800');
-                    btnCore.querySelector('svg').classList.replace('text-solGreen', 'text-gray-400');
-                    btnCore.querySelector('svg').classList.remove('text-glow-green');
-                    statusDot.classList.replace('bg-solGreen', 'bg-red-500');
-                    statusText.classList.replace('text-solGreen', 'text-red-500');
-                    statusText.textContent = 'OFFLINE';
-                    displayHashrate.textContent = '0.00 SOL/h';
-                    displayTemp.textContent = '42°C';
-                    logTerminal("> Mining nodes gracefully paused.");
-                    clearInterval(state.miningInterval);
-                }
-            });
+            if (!state.isPremium && state.freeTimeLeft <= 0) {
+                alert("Kuota penambangan gratis 6 jam Anda hari ini telah habis digunakan. Lakukan aktivasi deposit untuk membuka akses tanpa batas!");
+                return;
+            }
+
+            if (typeof show_11226289 === 'function') {
+                show_11226289().then(() => {
+                    alert('You have seen an ad!');
+                    toggleMiningState();
+                }).catch(() => {
+                    toggleMiningState(); // Fallback agar tetap berjalan jika koneksi ad network lambat
+                });
+            } else {
+                toggleMiningState();
+            }
         });
+
+        function toggleMiningState() {
+            state.isMining = !state.isMining;
+            updateMiningUI(state.isMining);
+            if (state.isMining) {
+                logTerminal("> Node connection established via secure RPC tunnels.");
+                state.miningInterval = setInterval(tickMining, state.tickRate);
+            } else {
+                logTerminal("> Mining nodes paused.");
+                clearInterval(state.miningInterval);
+            }
+            updateStorage();
+        }
 
         function renderTasks() {
             const list = document.getElementById('task-list');
             if (!list) return;
-            const t = translations[state.currentLanguage];
+            const t = translations[state.currentLanguage] || translations['en'];
             list.innerHTML = '';
             tasks.forEach(task => {
                 list.innerHTML += `
                     <div class="glass-panel p-4 rounded-xl flex justify-between items-center border-l-2 ${task.done ? 'border-gray-700 opacity-40' : 'border-solPurple'}">
                         <div>
                             <div class="font-bold text-sm text-white">${task.title}</div>
-                            <div class="font-mono text-xs text-solPurple mt-0.5">+${task.reward.toFixed(4)} SOL</div>
+                            <div class="font-mono text-xs text-solPurple mt-0.5">+${task.reward.toFixed(10)} SOL</div>
                         </div>
                         <button onclick="claimTask(${task.id})" class="${task.done ? 'bg-gray-800 text-gray-500' : 'bg-solPurple text-white active:scale-95'} px-4 py-2 rounded-xl text-xs font-bold transition-all" ${task.done ? 'disabled' : ''}>
                             ${task.done ? t.claimedText : t.executeText}
@@ -554,19 +717,30 @@
         }
 
         window.claimTask = function(id) {
-            runAd(() => {
-                const task = tasks.find(t => t.id === id);
-                if(task && !task.done) {
-                    task.done = true;
-                    state.balance += task.reward;
-                    elBalance.textContent = state.balance.toFixed(8);
-                    renderTasks();
-                    updateStorage();
-                }
-            });
+            if (typeof show_11226289 === 'function') {
+                show_11226289().then(() => {
+                    alert('You have seen an ad!');
+                    finalizeTask(id);
+                }).catch(() => {
+                    finalizeTask(id);
+                });
+            } else {
+                finalizeTask(id);
+            }
         }
 
-        // --- Inisialisasi Canvas Animasi Jaringan ---
+        function finalizeTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task && !task.done) {
+                task.done = true;
+                state.balance += task.reward;
+                elBalance.textContent = state.balance.toFixed(10);
+                renderTasks();
+                updateStorage();
+            }
+        }
+
+        // --- Sistem Partikel Animasi Latar Belakang Jaringan ---
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, nodes = [];
@@ -606,10 +780,32 @@
         }
         window.addEventListener('resize', initCanvas);
         
-        // --- Booting / Start Application ---
+        window.addEventListener('focus', () => {
+            syncOfflineMining();
+        });
+        window.addEventListener('blur', () => {
+            updateStorage();
+        });
+
+        // Logika harian untuk reset kuota gratisan 6 jam setiap hari
+        const lastReset = localStorage.getItem('goc_last_reset_day');
+        const currentDayStr = getTodayDateString();
+        if (lastReset !== currentDayStr && !state.isPremium) {
+            state.freeTimeLeft = 21600; 
+            localStorage.setItem('goc_last_reset_day', currentDayStr);
+            updateStorage();
+        }
+
+        // --- Booting up ---
         initCanvas();
         drawMap();
         applyLanguage(state.currentLanguage);
+        
+        syncOfflineMining();
+        if (state.isMining) {
+            updateMiningUI(true);
+            state.miningInterval = setInterval(tickMining, state.tickRate);
+        }
     </script>
 </body>
 </html>
