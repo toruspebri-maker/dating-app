@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GOC | Solana Network</title>
     <!-- Memaksa protokol HTTPS eksplisit agar SDK iklan termuat sempurna di GitHub Pages -->
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <script src='https://libtl.com/sdk.js' data-zone='11226289' data-sdk='show_11226289'></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
-        const AdController = window.Adsgram.init({ blockId: "36435" });
         tailwind.config = {
             theme: {
                 extend: {
@@ -559,30 +558,29 @@
                 return;
             }
 
-            AdController.show().then((result) => {
-    if (result.done) {
-        // Blok fungsi reward dieksekusi setelah iklan video tuntas ditonton
-        state.lastDailyClaimDate = todayStr;
-        state.balance += 0.0025000000;
-        elBalance.textContent = state.balance.toFixed(10);
-
-        updateDailyRewardButton();
-        updateStorage();
-        alert('Selamat! Anda telah menyelesaikan video dan reward harian berhasil ditambahkan.');
-        logTerminal('> Reward harian terklaim: +0.0025000000 SOL', true);
-    } else {
-        alert('Anda harus menonton video sampai selesai untuk mendapatkan klaim.');
-    }
-}).catch((error) => {
-    console.error("Iklan gagal dimuat:", error);
-    
-    // Tetap berikan kelancaran internal fallback jika terjadi hambatan muat iklan
-    state.lastDailyClaimDate = todayStr;
-    state.balance += 0.0025000000;
-    elBalance.textContent = state.balance.toFixed(10);
-    updateDailyRewardButton();
-    updateStorage();
-});     
+            if (typeof show_11226289 === 'function') {
+                show_11226289().then(() => {
+                    // Blok fungsi reward dieksekusi setelah iklan tuntas ditonton
+                    state.lastDailyClaimDate = todayStr;
+                    state.balance += 0.0025000000;
+                    elBalance.textContent = state.balance.toFixed(10);
+                    
+                    updateDailyRewardButton();
+                    updateStorage();
+                    alert('You have seen an ad! Reward harian berhasil ditambahkan.');
+                    logTerminal(`> Reward harian terklaim: +0.0025000000 SOL`, true);
+                }).catch((err) => {
+                    console.log("Iklan no-fill atau terhambat:", err);
+                    // Tetap berikan kelancaran internal fallback jika terjadi hambatan muat
+                    state.lastDailyClaimDate = todayStr;
+                    state.balance += 0.0025000000;
+                    elBalance.textContent = state.balance.toFixed(10);
+                    updateDailyRewardButton();
+                    updateStorage();
+                });
+            } else {
+                alert("Gagal memuat sistem iklan. Pastikan AdBlocker dinonaktifkan di browser Anda!");
+            }
         }
 
         function switchView(viewId) {
@@ -673,16 +671,16 @@
                 return;
             }
 
-                    AdController.show().then((result) => {
-            if (result.done) {
-                alert('Selamat! Anda telah menonton video dan status penambangan diperbarui.');
-                toggleMiningState();
+            if (typeof show_11226289 === 'function') {
+                show_11226289().then(() => {
+                    alert('You have seen an ad!');
+                    toggleMiningState();
+                }).catch(() => {
+                    toggleMiningState(); // Fallback agar tetap berjalan jika koneksi ad network lambat
+                });
             } else {
-                alert('Anda harus menonton video sampai selesai untuk melanjutkan.');
+                toggleMiningState();
             }
-        }).catch((error) => {
-            console.error("Iklan gagal dimuat:", error);
-            toggleMiningState();
         });
 
         function toggleMiningState() {
@@ -719,17 +717,16 @@
         }
 
         window.claimTask = function(id) {
-                AdController.show().then((result) => {
-        if (result.done) {
-            alert('Selamat! Anda telah menyelesaikan video dan tugas berhasil diklaim.');
-            finalizeTask(id);
-        } else {
-            alert('Anda harus menonton video sampai selesai untuk klaim tugas.');
-        }
-    }).catch((error) => {
-        console.error("Iklan gagal dimuat:", error);
-        finalizeTask(id);
-    });
+            if (typeof show_11226289 === 'function') {
+                show_11226289().then(() => {
+                    alert('You have seen an ad!');
+                    finalizeTask(id);
+                }).catch(() => {
+                    finalizeTask(id);
+                });
+            } else {
+                finalizeTask(id);
+            }
         }
 
         function finalizeTask(id) {
