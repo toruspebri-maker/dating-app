@@ -94,7 +94,7 @@
         <div class="text-right">
             <div class="text-xs text-gray-400" id="lang-total-balance">Total Balance</div>
             <!-- Menggunakan format 10 angka di belakang koma -->
-            <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.0221300000</div>
+            <div class="font-mono text-xl font-bold text-solGreen text-glow-green" id="main-balance">0.0000000001</div>
         </div>
     </header>
 
@@ -334,7 +334,7 @@
         const savedFreeTimeLeft = localStorage.getItem('goc_free_time_left');
 
         const state = {
-            balance: savedBalance ? parseFloat(savedBalance) : 0.0221300000,
+            balance: savedBalance ? parseFloat(savedBalance) : 0.0000000001,
             // Perambatan diperlambat secara ekstrem agar memakan waktu tahunan demi mencapai 0.1 SOL
             baseHashrate: 0.0000000012, 
             tickRate: 1000,
@@ -349,9 +349,9 @@
         };
 
         const defaultTasks = [
-            { id: 1, title: 'Join GOC Telegram Community', reward: 0.00005, done: false },
-            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.00015, done: false },
-            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.00002, done: false }
+            { id: 1, title: 'Join GOC Telegram Community', reward: 0.0000005000, done: false },
+            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0000001500, done: false },
+            { id: 3, title: 'Retweet Central Operation Feed', reward: 0.0000002000, done: false }
         ];
         
         let tasks = savedTasks ? JSON.parse(savedTasks) : defaultTasks;
@@ -562,18 +562,18 @@
                 show_11226289().then(() => {
                     // Blok fungsi reward dieksekusi setelah iklan tuntas ditonton
                     state.lastDailyClaimDate = todayStr;
-                    state.balance += 0.0025000000;
+                    state.balance += 0.0000000001;
                     elBalance.textContent = state.balance.toFixed(10);
                     
                     updateDailyRewardButton();
                     updateStorage();
                     alert('You have seen an ad! Reward harian berhasil ditambahkan.');
-                    logTerminal(`> Reward harian terklaim: +0.0025000000 SOL`, true);
+                    logTerminal(`> Reward harian terklaim: +0.0000008000 SOL`, true);
                 }).catch((err) => {
                     console.log("Iklan no-fill atau terhambat:", err);
                     // Tetap berikan kelancaran internal fallback jika terjadi hambatan muat
                     state.lastDailyClaimDate = todayStr;
-                    state.balance += 0.0025000000;
+                    state.balance += 0.0000000001;
                     elBalance.textContent = state.balance.toFixed(10);
                     updateDailyRewardButton();
                     updateStorage();
