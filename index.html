@@ -150,7 +150,7 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="font-bold text-sm text-white" id="lang-daily-reward-title">Klaim Reward Harian</div>
-                        <div class="font-mono text-xs text-solGreen mt-0.5">+0.0000008000 SOL</div>
+                        <div class="font-mono text-xs text-solGreen mt-0.5">+0.0000005000 SOL</div>
                     </div>
                     <button id="btn-daily-reward" onclick="claimDailyReward()" class="bg-solGreen text-black px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95">
                         Claim
@@ -350,7 +350,7 @@
 
         const defaultTasks = [
             { id: 1, title: 'Join GOC Telegram Community', reward: 0.0000005000, done: false },
-            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0000001500, done: false },
+            { id: 2, title: 'Bypass Firewall Breach (Mini Game)', reward: 0.0000015000, done: false },
             { id: 3, title: 'Retweet Central Operation Feed', reward: 0.0000002000, done: false }
         ];
         
@@ -562,18 +562,18 @@
                 show_11226289().then(() => {
                     // Blok fungsi reward dieksekusi setelah iklan tuntas ditonton
                     state.lastDailyClaimDate = todayStr;
-                    state.balance += 0.0000000001;
+                    state.balance += 0.0000005000;
                     elBalance.textContent = state.balance.toFixed(10);
                     
                     updateDailyRewardButton();
                     updateStorage();
                     alert('You have seen an ad! Reward harian berhasil ditambahkan.');
-                    logTerminal(`> Reward harian terklaim: +0.0000008000 SOL`, true);
+                    logTerminal(`> Reward harian terklaim: +0.0000005000 SOL`, true);
                 }).catch((err) => {
                     console.log("Iklan no-fill atau terhambat:", err);
                     // Tetap berikan kelancaran internal fallback jika terjadi hambatan muat
                     state.lastDailyClaimDate = todayStr;
-                    state.balance += 0.0000000001;
+                    state.balance += 0.0000005000;
                     elBalance.textContent = state.balance.toFixed(10);
                     updateDailyRewardButton();
                     updateStorage();
