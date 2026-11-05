@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator 30 Detik</title>
+    <!-- Tailwind CSS untuk Desain Mewah -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                ⚡ AI Video 30s
+            </h1>
+            <a href="#pricing" class="bg-purple-600 hover:bg-purple-700 text-xs px-4 py-2 rounded-full font-semibold transition">
+                Langganan
+            </a>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        
+        <!-- Bagian Hero / Judul -->
+        <div class="text-center space-y-3">
+            <span class="bg-purple-950 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-800">
+                Pencipta Konten Otomatis
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Buat Video AI 30 Detik <br>Siap Posting ke Facebook Reels
+            </h2>
+            <p class="text-slate-400 text-sm max-w-lg mx-auto">
+                Ketik ide kontenmu, biarkan sistem AI meraciknya menjadi video pendek pas 30 detik secara instan.
+            </p>
+        </div>
+
+        <!-- Kotak Generator (Tampilan Aplikasi) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
+            <label class="block text-sm font-semibold text-slate-300">Masukkan Ide / Prompt Konten Anda:</label>
+            <textarea id="promptInput" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-purple-500" placeholder="Contoh: Buat video motivasi bisnis online dengan gaya sinematik..."></textarea>
+            
+            <button onclick="generateVideo()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-purple-900/40">
+                🚀 Generate Video 30 Detik
+            </button>
+
+            <!-- Status Hasil -->
+            <div id="resultBox" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 text-center space-y-2">
+                <p class="text-xs text-purple-400 font-semibold">✨ Berhasil Merender Video!</p>
+                <div class="h-32 bg-slate-900 rounded-lg flex items-center justify-center border border-slate-800 text-xs text-slate-400">
+                    [Pratinjau Video 30 Detik Siap Unduh]
+                </div>
+                <button class="bg-emerald-600 hover:bg-emerald-700 text-xs px-4 py-2 rounded-lg font-bold w-full">
+                    📥 Download Video (MP4)
+                </button>
+            </div>
+        </div>
+
+        <!-- Bagian Harga / Pricing (Letak Keuntungan Anda) -->
+        <div id="pricing" class="space-y-4 pt-6">
+            <div class="text-center">
+                <h3 class="text-xl font-bold">Pilih Paket Akses Bulanan</h3>
+                <p class="text-xs text-slate-400">Buka akses tanpa batas sepuasnya setiap bulan.</p>
+            </div>
+
+            <div class="bg-gradient-to-b from-purple-950/40 to-slate-900 border border-purple-800/60 rounded-2xl p-6 text-center space-y-4 max-w-sm mx-auto">
+                <div>
+                    <span class="text-xs uppercase tracking-wider text-purple-400 font-bold">Paket Kreator Pro</span>
+                    <div class="text-3xl font-extrabold mt-1">Rp 150.000 <span class="text-xs text-slate-400 font-normal">/bulan</span></div>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-2 text-left max-w-xs mx-auto">
+                    <li>✔️ Bebas buat video AI 30 detik sepuasnya</li>
+                    <li>✔️ Resolusi HD siap upload ke Facebook Reels</li>
+                    <li>✔️ Akses fitur prioritas server</li>
+                </ul>
+                <a href="#payment" class="block bg-white text-slate-950 hover:bg-slate-200 font-bold text-xs py-3 rounded-xl transition">
+                    Pilih Paket Ini
+                </a>
+            </div>
+        </div>
+
+        <!-- Bagian Pembayaran QR DANA -->
+        <div id="payment" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-3 max-w-sm mx-auto">
+            <h4 class="font-bold text-sm">Metode Pembayaran (Scan DANA)</h4>
+            <p class="text-xs text-slate-400">Scan QR Code di bawah ini menggunakan akun DANA pribadi Anda, lalu kirim bukti transfer ke WhatsApp Admin.</p>
+            
+            <!-- Kotak Tempat QR Code DANA Anda -->
+            <div class="bg-white p-3 rounded-xl inline-block">
+                <!-- Ganti link gambar di bawah dengan gambar QR Code DANA Anda nanti -->
+                <img src="https://via.placeholder.com/150" alt="QR Code DANA" class="w-36 h-36 mx-auto object-contain">
+            </div>
+
+            <p class="text-[10px] text-purple-400 font-mono">No. DANA: 08xx-xxxx-xxxx (Nama Anda)</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        &copy; 2026 AI Video Generator. All rights reserved.
+    </footer>
+
+    <!-- Skrip Simulasi Tombol -->
+    <script>
+        function generateVideo() {
+            const prompt = document.getElementById('promptInput').value;
+            if(!prompt.trim()) {
+                alert('Silakan ketik prompt terlebih dahulu!');
+                return;
+            }
+            // Simulasi proses loading sebentar lalu munculkan hasil
+            alert('Memproses video 30 detik via server AI...');
+            document.getElementById('resultBox').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
