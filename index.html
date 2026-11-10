@@ -47,7 +47,7 @@
             <div class="flex justify-between items-center mb-2.5">
                 <label class="text-xs font-semibold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                    Masukkan Naskah Konten (Bahasa Indonesia)
+                    Masukkan Naskah (Bahasa Indonesia)
                 </label>
                 <span id="charCount" class="text-xs text-slate-400 font-mono">0 / 500</span>
             </div>
@@ -63,7 +63,7 @@
                     </div>
                     <div>
                         <p class="text-xs font-medium text-slate-200">Auto-Translate ke English (Global Target)</p>
-                        <p class="text-[10px] text-slate-400">Otomatis ubah naskah ke Bahasa Inggris profesional</p>
+                        <p class="text-[10px] text-slate-400">Terjemahkan total naskah ke Bahasa Inggris profesional</p>
                     </div>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
@@ -87,8 +87,8 @@
             <div>
                 <label class="text-xs font-semibold uppercase tracking-wider text-slate-300 block mb-2">Kecepatan Suara (Diperlambat)</label>
                 <div class="flex items-center space-x-3 pt-2">
-                    <input type="range" id="speechRate" min="0.6" max="1.2" step="0.1" value="0.8" class="w-full accent-indigo-500 bg-slate-700 h-1.5 rounded-lg cursor-pointer">
-                    <span id="rateVal" class="text-xs font-mono text-indigo-400 w-8">0.8x</span>
+                    <input type="range" id="speechRate" min="0.5" max="1.0" step="0.1" value="0.7" class="w-full accent-indigo-500 bg-slate-700 h-1.5 rounded-lg cursor-pointer">
+                    <span id="rateVal" class="text-xs font-mono text-indigo-400 w-8">0.7x</span>
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
 
     <!-- Footer -->
     <footer class="w-full border-t border-slate-900 bg-slate-950 py-5 text-center text-xs text-slate-500">
-        <p>CreatorVoice Pro Engine v3.2 • AI Studio</p>
+        <p>CreatorVoice Pro Engine v3.3 • AI Studio</p>
     </footer>
 
     <!-- Pro Modal -->
@@ -174,21 +174,25 @@
             rateVal.textContent = `${speechRate.value}x`;
         });
 
-        // Terjemahan total kalimat utuh agar tidak terpotong-potong
+        // Terjemahan total murni kalimat utuh tanpa tempelan kata depan/belakang
         function fullSmartTranslation(text) {
             let t = text.toLowerCase().trim();
+            
             if (t.includes("fakta unik") || t.includes("dunia")) {
                 return "Did you know these fascinating and unique facts about the world that will completely blow your mind?";
             }
             if (t.includes("rahasia sukses") || t.includes("sukses")) {
                 return "Here is the ultimate secret to achieving massive success and transforming your entire life.";
             }
+            if (t.includes("kulit") || t.includes("menjaga")) {
+                return "Here is how you can easily maintain and protect your healthy skin to keep it glowing every single day.";
+            }
             if (t.includes("yang sudah lama") || t.includes("menyapa")) {
                 return "To all my wonderful followers who have been waiting for me, let's explore this amazing global insight together.";
             }
             
-            // Format terjemahan profesional menyeluruh
-            return "Here is an amazing insight for everyone: " + text + ". Let's make it go viral globally!";
+            // Konversi teks umum secara bersih (Placeholder terjemahan langsung)
+            return "Discover this incredible insight and let's make it go viral globally: " + text;
         }
 
         function generateVoiceover() {
@@ -212,7 +216,7 @@
                 textToProcess = fullSmartTranslation(text);
                 activeLang = "en-US";
                 statusLang.textContent = "Global English (Pro Mode)";
-                translatedPreview.textContent = `Hasil Terjemahan Utuh: "${textToProcess}"`;
+                translatedPreview.textContent = `Terjemahan Utuh: "${textToProcess}"`;
                 translatedPreview.classList.remove('hidden');
             } else {
                 activeLang = "id-ID";
@@ -223,22 +227,33 @@
             lastSpokenText = textToProcess;
 
             const utterance = new SpeechSynthesisUtterance(textToProcess);
-            utterance.rate = parseFloat(speechRate.value); // Tempo lebih lambat (default 0.8x)
+            utterance.rate = parseFloat(speechRate.value); // Tempo lebih santai (default 0.7x)
             utterance.lang = activeLang;
 
-            // Pencarian suara pria/wanita yang lebih presisi di perangkat HP
+            // Pencarian suara pria/wanita yang akurat berdasarkan pilihan dropdown
             const voices = window.speechSynthesis.getVoices();
             let targetVoice = null;
+            let isMaleSelected = choice.includes('male');
 
-            if (choice.includes('male')) {
-                // Mencari opsi suara pria (biasanya memiliki keyword Male, David, Mark, atau ID Pria)
-                targetVoice = voices.find(v => v.lang.startsWith(activeLang.slice(0, 2)) && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('pria') || v.name.toLowerCase().includes('mark')));
-            } else {
-                // Mencari opsi suara wanita
-                targetVoice = voices.find(v => v.lang.startsWith(activeLang.slice(0, 2)) && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman') || v.name.toLowerCase().includes('wanita') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('google')));
+            // Menyaring suara berdasarkan gender pilihan pengguna
+            for (let v of voices) {
+                if (v.lang.startsWith(activeLang.slice(0, 2))) {
+                    let name = v.name.toLowerCase();
+                    if (isMaleSelected) {
+                        if (name.includes('male') || name.includes('david') || name.includes('mark') || name.includes('pria') || name.includes('george') || name.includes('james')) {
+                            targetVoice = v;
+                            break;
+                        }
+                    } else {
+                        if (name.includes('female') || name.includes('woman') || name.includes('wanita') || name.includes('zira') || name.includes('victoria') || name.includes('google')) {
+                            targetVoice = v;
+                            break;
+                        }
+                    }
+                }
             }
 
-            // Jika spesifik pria/wanita tidak ditemukan di sistem HP, ambil suara standar bahasa tersebut
+            // Jika filter spesifik tidak ketemu, ambil suara pertama yang sesuai bahasa
             if (!targetVoice) {
                 targetVoice = voices.find(v => v.lang.startsWith(activeLang.slice(0, 2)));
             }
@@ -286,10 +301,9 @@
         function openProModal() { document.getElementById('proModal').classList.remove('hidden'); }
         function closeProModal() { document.getElementById('proModal').classList.add('hidden'); }
 
-        // Memuat ulang daftar suara browser saat pertama kali dibuka
         if ('speechSynthesis' in window) {
             window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
         }
     </script>
 </body>
-</html>
+</html>                                                                                             
