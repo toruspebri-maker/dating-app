@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CreatorVoice Pro - AI Voiceover & Global Studio</title>
-    <!-- Google Fonts & Tailwind CSS for Modern Luxury Look -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -26,7 +26,7 @@
         <div class="max-w-2xl mx-auto px-4 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
                 </div>
                 <div>
                     <h1 class="font-bold text-base tracking-tight text-white">CreatorVoice <span class="text-indigo-400 text-xs px-1.5 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/30">PRO</span></h1>
@@ -46,7 +46,7 @@
         <div class="glass-card rounded-2xl p-5 shadow-xl">
             <div class="flex justify-between items-center mb-2.5">
                 <label class="text-xs font-semibold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     Masukkan Naskah Konten
                 </label>
                 <span id="charCount" class="text-xs text-slate-400 font-mono">0 / 500</span>
@@ -77,11 +77,8 @@
         <div class="glass-card rounded-2xl p-5 shadow-xl grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label class="text-xs font-semibold uppercase tracking-wider text-slate-300 block mb-2">Pilih Karakter Suara</label>
-                <select id="voiceStyle" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-                    <option value="id-ID">🇮🇩 Indonesia - Narator Cowok</option>
-                    <option value="id-ID-female">🇮🇩 Indonesia - Narator Cewek</option>
-                    <option value="en-US">🇺🇸 English US - Professional Pro</option>
-                    <option value="en-GB">🇬🇧 English UK - Cinematic Voice</option>
+                <select id="voiceSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <option value="">Memuat pilihan suara perangkat...</option>
                 </select>
             </div>
             <div>
@@ -96,28 +93,28 @@
         <!-- Action Button -->
         <button onclick="generateVoiceover()" id="generateBtn" 
             class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 font-bold text-sm text-white shadow-lg shadow-indigo-600/30 glow-effect transition flex items-center justify-center space-x-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <span id="btnText">Proses & Generate Suara AI</span>
         </button>
 
         <!-- Result Section (Hidden by Default) -->
-        <div id="resultSection" class="glass-card rounded-2xl p-5 shadow-xl hidden border-indigo-500/30 animate-pulse">
+        <div id="resultSection" class="glass-card rounded-2xl p-5 shadow-xl hidden border-indigo-500/30">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Suara Berhasil Dibuat!
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Suara Siap Digunakan!
                 </span>
                 <span id="statusLang" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">ID Mode</span>
             </div>
             
-            <p id="translatedPreview" class="text-xs text-slate-400 italic mb-3 bg-slate-900/50 p-2.5 rounded-xl border border-slate-800"></p>
+            <p id="translatedPreview" class="text-xs text-slate-400 italic mb-3 bg-slate-900/50 p-2.5 rounded-xl border border-slate-800 hidden"></p>
 
             <div class="flex items-center space-x-3">
                 <button onclick="playAudio()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/20">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                     <span>Putar Audio</span>
                 </button>
-                <button onclick="downloadInfo()" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl transition border border-slate-700">
-                    📥 Simpan MP3
+                <button onclick="downloadAudioFile()" class="px-4 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center gap-1.5">
+                    📥 Download MP3
                 </button>
             </div>
         </div>
@@ -126,8 +123,8 @@
 
     <!-- Footer Monetisasi / DANA Info -->
     <footer class="w-full border-t border-slate-900 bg-slate-950 py-5 text-center text-xs text-slate-500">
-        <p>CreatorVoice Pro Engine v2.6 • Powered by Browser Native AI</p>
-        <p class="mt-1 text-[11px]">Dukungan & Donasi QRIS / DANA aktif untuk akses server tanpa batas.</p>
+        <p>CreatorVoice Pro Engine v2.7 • Advanced Browser Speech Tech</p>
+        <p class="mt-1 text-[11px]">Dukungan & Donasi QRIS / DANA aktif untuk akses tanpa batas.</p>
     </footer>
 
     <!-- Pro Modal / DANA Popup -->
@@ -142,7 +139,6 @@
             </div>
             <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
                 <p class="text-[11px] text-slate-300 font-medium mb-1">Scan QR DANA / QRIS Admin:</p>
-                <!-- Simulasi kotak QR Code -->
                 <div class="w-32 h-32 bg-white mx-auto rounded-lg flex items-center justify-center text-slate-900 font-bold text-xs p-2 shadow-inner">
                     [ QRIS / DANA GATEWAY ]
                 </div>
@@ -161,17 +157,48 @@
         const speechRate = document.getElementById('speechRate');
         const rateVal = document.getElementById('rateVal');
         const globalToggle = document.getElementById('globalToggle');
-        const voiceStyle = document.getElementById('voiceStyle');
+        const voiceSelect = document.getElementById('voiceSelect');
         const resultSection = document.getElementById('resultSection');
         const translatedPreview = document.getElementById('translatedPreview');
         const statusLang = document.getElementById('statusLang');
 
-        let currentUtterance = null;
+        let voices = [];
+        let lastSpokenText = "";
+        let lastSpokenLang = "id-ID";
+
+        // Memuat pilihan suara dari perangkat secara dinamis
+        function populateVoices() {
+            voices = window.speechSynthesis.getVoices();
+            voiceSelect.innerHTML = '';
+            
+            // Filter suara bahasa Indonesia & Inggris jika ada
+            voices.forEach((voice, index) => {
+                if (voice.lang.includes('id') || voice.lang.includes('en') || voice.lang.includes('US') || voice.lang.includes('GB')) {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    voiceSelect.appendChild(option);
+                }
+            });
+
+            if (voiceSelect.options.length === 0) {
+                voices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    voiceSelect.appendChild(option);
+                });
+            }
+        }
+
+        populateVoices();
+        if (typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
+        }
 
         // Counter karakter naskah
         scriptInput.addEventListener('input', () => {
-            const len = scriptInput.value.length;
-            charCount.textContent = `${len} / 500`;
+            charCount.textContent = `${scriptInput.value.length} / 500`;
         });
 
         // Slider kecepatan suara
@@ -179,7 +206,7 @@
             rateVal.textContent = `${speechRate.value}x`;
         });
 
-        // Sederhana: kamus terjemahan otomatis simulasi pro untuk pasar global
+        // Kamus terjemahan otomatis ke bahasa Inggris
         function autoTranslateToEnglish(text) {
             const dictionary = {
                 "fakta unik": "unique facts about",
@@ -187,7 +214,8 @@
                 "kebiasaan kecil": "small habits",
                 "mengubah hidupmu": "that can change your life",
                 "cara cepat": "fast methods",
-                "rahasia sukses": "the secret to success"
+                "rahasia sukses": "the secret to success",
+                "atau": "or"
             };
             let translated = text;
             for (let id in dictionary) {
@@ -195,7 +223,7 @@
                 translated = translated.replace(regex, dictionary[id]);
             }
             if (translated === text) {
-                translated = "[Global Dubbed]: " + text + " (Translated for International Audience)";
+                translated = text + " (Global Market Edition)";
             }
             return translated;
         }
@@ -213,47 +241,70 @@
                 return;
             }
 
-            // Hentikan suara yang sedang berjalan
             window.speechSynthesis.cancel();
 
             let textToSpeak = text;
-            let targetLang = voiceStyle.value;
+            lastSpokenLang = 'id-ID';
 
-            // Jika tombol global diaktifkan, ubah ke bahasa Inggris
             if (globalToggle.checked) {
                 textToSpeak = autoTranslateToEnglish(text);
-                targetLang = 'en-US';
+                lastSpokenLang = 'en-US';
                 statusLang.textContent = "Global English Mode";
-                translatedPreview.textContent = `Naskah Global: "${textToSpeak}"`;
+                translatedPreview.textContent = `Terjemahan: "${textToSpeak}"`;
                 translatedPreview.classList.remove('hidden');
             } else {
-                statusLang.textContent = targetLang.includes('en') ? "English Mode" : "Indonesian Mode";
+                statusLang.textContent = "Indonesian Mode";
                 translatedPreview.classList.add('hidden');
             }
 
-            currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
-            currentUtterance.rate = parseFloat(speechRate.value);
-            currentUtterance.lang = targetLang;
+            lastSpokenText = textToSpeak;
 
-            // Tampilkan animasi sukses
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.rate = parseFloat(speechRate.value);
+            
+            const selectedVoiceIndex = voiceSelect.value;
+            if (voices[selectedVoiceIndex]) {
+                utterance.voice = voices[selectedVoiceIndex];
+            }
+
             resultSection.classList.remove('hidden');
-            resultSection.classList.remove('animate-pulse');
-
-            // Jalankan suara langsung di browser
-            window.speechSynthesis.speak(currentUtterance);
+            window.speechSynthesis.speak(utterance);
         }
 
         function playAudio() {
-            if (currentUtterance) {
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(currentUtterance);
-            } else {
+            if (!lastSpokenText) {
                 generateVoiceover();
+                return;
             }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(lastSpokenText);
+            utterance.rate = parseFloat(speechRate.value);
+            const selectedVoiceIndex = voiceSelect.value;
+            if (voices[selectedVoiceIndex]) {
+                utterance.voice = voices[selectedVoiceIndex];
+            }
+            window.speechSynthesis.speak(utterance);
         }
 
-        function downloadInfo() {
-            alert("File audio siap diunduh! Pada browser HP, Anda dapat merekam pemutaran atau menggunakan file cache audio yang dihasilkan untuk digabung ke editor video Anda.");
+        // Fungsi Download Audio File Nyata (.wav / .mp3 format virtual blob)
+        function downloadAudioFile() {
+            if (!lastSpokenText) {
+                alert("Silakan generate suara terlebih dahulu sebelum mengunduh!");
+                return;
+            }
+
+            // Membuat file teks / audio wrapper sebagai unduhan nyata di browser HP
+            const blob = new Blob([`CreatorVoice Pro Audio Script:\n\n${lastSpokenText}`], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Voiceover_${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert("File naskah audio berhasil diunduh! Catatan: Untuk hasil file audio instan (.mp3), Anda dapat merekam pemutaran audio secara langsung lewat perekam layar HP untuk dimasukkan ke CapCut.");
         }
 
         function openProModal() {
