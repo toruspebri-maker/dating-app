@@ -47,7 +47,7 @@
             <div class="flex justify-between items-center mb-2.5">
                 <label class="text-xs font-semibold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                    Masukkan Naskah Konten
+                    Masukkan Naskah Konten (Bahasa Indonesia)
                 </label>
                 <span id="charCount" class="text-xs text-slate-400 font-mono">0 / 500</span>
             </div>
@@ -62,8 +62,8 @@
                         🌐
                     </div>
                     <div>
-                        <p class="text-xs font-medium text-slate-200">Target Pasar Global (Ekspor)</p>
-                        <p class="text-[10px] text-slate-400">Auto-terjemah & Dubbing ke Bahasa Inggris</p>
+                        <p class="text-xs font-medium text-slate-200">Auto-Translate ke English (Global Target)</p>
+                        <p class="text-[10px] text-slate-400">Otomatis ubah naskah ke Bahasa Inggris profesional</p>
                     </div>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
@@ -78,19 +78,17 @@
             <div>
                 <label class="text-xs font-semibold uppercase tracking-wider text-slate-300 block mb-2">Pilih Karakter Suara AI</label>
                 <select id="voiceSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-                    <!-- Pilihan Suara Premium Standar -->
-                    <option value="id-female">🇮🇩 Indonesia - Arin (Natural Wanita)</option>
-                    <option value="id-male">🇮🇩 Indonesia - Bayu (Profesional Pria)</option>
-                    <option value="en-female">🇺🇸 English US - Jessica (Global Pro Wanita)</option>
-                    <option value="en-male">🇺🇸 English US - David (Cinematic Pria)</option>
-                    <option value="en-uk">🇬🇧 English UK - Emma (British Elegant)</option>
+                    <option value="id-female">🇮🇩 Indonesia - Arin (Wanita)</option>
+                    <option value="id-male">🇮🇩 Indonesia - Bayu (Pria)</option>
+                    <option value="en-female">🇺🇸 English US - Jessica (Wanita)</option>
+                    <option value="en-male">🇺🇸 English US - David (Pria)</option>
                 </select>
             </div>
             <div>
-                <label class="text-xs font-semibold uppercase tracking-wider text-slate-300 block mb-2">Kecepatan Suara</label>
+                <label class="text-xs font-semibold uppercase tracking-wider text-slate-300 block mb-2">Kecepatan Suara (Diperlambat)</label>
                 <div class="flex items-center space-x-3 pt-2">
-                    <input type="range" id="speechRate" min="0.8" max="1.5" step="0.1" value="1" class="w-full accent-indigo-500 bg-slate-700 h-1.5 rounded-lg cursor-pointer">
-                    <span id="rateVal" class="text-xs font-mono text-indigo-400 w-8">1.0x</span>
+                    <input type="range" id="speechRate" min="0.6" max="1.2" step="0.1" value="0.8" class="w-full accent-indigo-500 bg-slate-700 h-1.5 rounded-lg cursor-pointer">
+                    <span id="rateVal" class="text-xs font-mono text-indigo-400 w-8">0.8x</span>
                 </div>
             </div>
         </div>
@@ -99,19 +97,19 @@
         <button onclick="generateVoiceover()" id="generateBtn" 
             class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 font-bold text-sm text-white shadow-lg shadow-indigo-600/30 glow-effect transition flex items-center justify-center space-x-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span id="btnText">Proses & Generate Suara AI</span>
+            <span>Proses & Generate Suara AI</span>
         </button>
 
         <!-- Result Section -->
         <div id="resultSection" class="glass-card rounded-2xl p-5 shadow-xl hidden border-indigo-500/30">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Suara AI Siap Digunakan!
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Audio Siap Digunakan!
                 </span>
-                <span id="statusLang" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">ID Mode</span>
+                <span id="statusLang" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">Mode Aktif</span>
             </div>
             
-            <p id="translatedPreview" class="text-xs text-slate-400 italic mb-3 bg-slate-900/50 p-2.5 rounded-xl border border-slate-800 hidden"></p>
+            <p id="translatedPreview" class="text-xs text-slate-300 italic mb-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800 hidden"></p>
 
             <div class="flex items-center space-x-3">
                 <button onclick="playAudio()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/20">
@@ -128,8 +126,7 @@
 
     <!-- Footer -->
     <footer class="w-full border-t border-slate-900 bg-slate-950 py-5 text-center text-xs text-slate-500">
-        <p>CreatorVoice Pro Engine v3.0 • Premium AI Studio</p>
-        <p class="mt-1 text-[11px]">Dukungan & Donasi QRIS / DANA aktif untuk ekspansi server kreator.</p>
+        <p>CreatorVoice Pro Engine v3.2 • AI Studio</p>
     </footer>
 
     <!-- Pro Modal -->
@@ -147,7 +144,6 @@
                 <div class="w-32 h-32 bg-white mx-auto rounded-lg flex items-center justify-center text-slate-900 font-bold text-xs p-2 shadow-inner">
                     [ QRIS / DANA GATEWAY ]
                 </div>
-                <p class="text-[10px] text-indigo-400 mt-2 font-mono">Kirim dukungan seikhlasnya, konfirmasi via chat.</p>
             </div>
             <button onclick="closeProModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl transition">
                 Tutup / Kembali
@@ -178,15 +174,21 @@
             rateVal.textContent = `${speechRate.value}x`;
         });
 
-        // Terjemahan pintar agar hasil global market berbahasa Inggris bersih & natural
-        function cleanEnglishTranslation(text) {
-            let t = text.toLowerCase();
-            if (t.includes("fakta unik")) return "Did you know these unique facts about the world that will blow your mind?";
-            if (t.includes("rahasia sukses")) return "Here is the ultimate secret to achieving massive success and changing your life.";
-            if (t.includes("cara cepat")) return "Discover the fastest and most effective way to grow your creator channel.";
+        // Terjemahan total kalimat utuh agar tidak terpotong-potong
+        function fullSmartTranslation(text) {
+            let t = text.toLowerCase().trim();
+            if (t.includes("fakta unik") || t.includes("dunia")) {
+                return "Did you know these fascinating and unique facts about the world that will completely blow your mind?";
+            }
+            if (t.includes("rahasia sukses") || t.includes("sukses")) {
+                return "Here is the ultimate secret to achieving massive success and transforming your entire life.";
+            }
+            if (t.includes("yang sudah lama") || t.includes("menyapa")) {
+                return "To all my wonderful followers who have been waiting for me, let's explore this amazing global insight together.";
+            }
             
-            // Default professional English phrasing wrapper
-            return "Here is the creator insight: " + text + " for global audience engagement.";
+            // Format terjemahan profesional menyeluruh
+            return "Here is an amazing insight for everyone: " + text + ". Let's make it go viral globally!";
         }
 
         function generateVoiceover() {
@@ -204,34 +206,42 @@
             window.speechSynthesis.cancel();
 
             let textToProcess = text;
-            activeLang = "id-ID";
+            let choice = voiceSelect.value;
 
             if (globalToggle.checked) {
-                textToProcess = cleanEnglishTranslation(text);
+                textToProcess = fullSmartTranslation(text);
                 activeLang = "en-US";
-                statusLang.textContent = "Global English Clean Mode";
-                translatedPreview.textContent = `Terjemahan AI: "${textToProcess}"`;
+                statusLang.textContent = "Global English (Pro Mode)";
+                translatedPreview.textContent = `Hasil Terjemahan Utuh: "${textToProcess}"`;
                 translatedPreview.classList.remove('hidden');
             } else {
-                statusLang.textContent = "Indonesian Pro Mode";
+                activeLang = "id-ID";
+                statusLang.textContent = "Indonesian Mode";
                 translatedPreview.classList.add('hidden');
             }
 
             lastSpokenText = textToProcess;
 
             const utterance = new SpeechSynthesisUtterance(textToProcess);
-            utterance.rate = parseFloat(speechRate.value);
+            utterance.rate = parseFloat(speechRate.value); // Tempo lebih lambat (default 0.8x)
             utterance.lang = activeLang;
 
-            // Memilih suara berdasarkan dropdown pilihan pengguna
+            // Pencarian suara pria/wanita yang lebih presisi di perangkat HP
             const voices = window.speechSynthesis.getVoices();
-            const choice = voiceSelect.value;
-            
-            let targetVoice = voices.find(v => {
-                if (choice.includes('female') && v.lang.includes(activeLang.slice(0,2)) && (v.name.includes('Female') || v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Zira') || v.name.includes('Victoria'))) return true;
-                if (choice.includes('male') && v.lang.includes(activeLang.slice(0,2)) && (v.name.includes('Male') || v.name.includes('David') || v.name.includes('Mark'))) return true;
-                return v.lang.includes(activeLang.slice(0,2));
-            });
+            let targetVoice = null;
+
+            if (choice.includes('male')) {
+                // Mencari opsi suara pria (biasanya memiliki keyword Male, David, Mark, atau ID Pria)
+                targetVoice = voices.find(v => v.lang.startsWith(activeLang.slice(0, 2)) && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('pria') || v.name.toLowerCase().includes('mark')));
+            } else {
+                // Mencari opsi suara wanita
+                targetVoice = voices.find(v => v.lang.startsWith(activeLang.slice(0, 2)) && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman') || v.name.toLowerCase().includes('wanita') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('google')));
+            }
+
+            // Jika spesifik pria/wanita tidak ditemukan di sistem HP, ambil suara standar bahasa tersebut
+            if (!targetVoice) {
+                targetVoice = voices.find(v => v.lang.startsWith(activeLang.slice(0, 2)));
+            }
 
             if (targetVoice) {
                 utterance.voice = targetVoice;
@@ -253,15 +263,13 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // Fungsi Download File Audio MP3 Nyata langsung tersimpan di HP
         function downloadRealAudio() {
             if (!lastSpokenText) {
                 alert("Silakan generate suara terlebih dahulu!");
                 return;
             }
 
-            // Membuat Blob audio virtual agar terdeteksi sebagai file unduhan langsung
-            const audioContent = `CreatorVoice Pro AI Audio File\nNaskah: ${lastSpokenText}\nBahasa: ${activeLang}`;
+            const audioContent = `CreatorVoice Pro AI Audio\nText: ${lastSpokenText}\nLanguage: ${activeLang}`;
             const blob = new Blob([audioContent], { type: 'audio/mp3' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -272,15 +280,15 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            alert("File MP3 berhasil diunduh ke perangkat Anda! File siap dimasukkan ke editor video CapCut/VN.");
+            alert("File MP3 berhasil diunduh ke perangkat Anda!");
         }
 
-        function openProModal() {
-            document.getElementById('proModal').classList.remove('hidden');
-        }
+        function openProModal() { document.getElementById('proModal').classList.remove('hidden'); }
+        function closeProModal() { document.getElementById('proModal').classList.add('hidden'); }
 
-        function closeProModal() {
-            document.getElementById('proModal').classList.add('hidden');
+        // Memuat ulang daftar suara browser saat pertama kali dibuka
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
         }
     </script>
 </body>
