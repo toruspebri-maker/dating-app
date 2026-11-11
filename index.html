@@ -3,108 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real AI Video Subtitle & Translator Pro</title>
-    <!-- Tailwind CSS -->
+    <title>Global Creator Video Subtitle Translator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-box {
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .subtitle-style {
-            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0px 4px 8px rgba(0,0,0,0.9);
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #090d16; color: #f8fafc; }
+        .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
     <!-- Header -->
-    <header class="w-full border-b border-slate-800/80 bg-slate-900/40 sticky top-0 z-50 backdrop-blur-md">
+    <header class="w-full border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-xl mx-auto px-4 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-2.5">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-sm">
-                    🌐
-                </div>
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-sm shadow-lg">🌐</div>
                 <div>
-                    <h1 class="font-bold text-sm tracking-tight text-white">GlobalSub <span class="text-indigo-400 text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/30">AI Live</span></h1>
-                    <p class="text-[10px] text-slate-400">ID Speech to EN Subtitles Generator</p>
+                    <h1 class="font-bold text-sm text-white">Global Creator <span class="text-indigo-400 text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20">Studio</span></h1>
+                    <p class="text-[10px] text-slate-400">ID Video to EN Subtitle Translation</p>
                 </div>
             </div>
-            <span id="statusBadge" class="text-[11px] font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Ready
+            <span class="text-[10px] font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Connected
             </span>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-xl w-full mx-auto px-4 py-5 flex-grow space-y-4">
+    <main class="max-w-xl w-full mx-auto px-4 py-6 flex-grow space-y-4">
         
-        <!-- Step 1: Upload Video Mentah -->
-        <div class="glass-box rounded-2xl p-4 shadow-xl space-y-3">
-            <label class="text-xs font-semibold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
-                📹 1. Masukkan Video Pendek Anda (Bahasa Indonesia):
+        <!-- Upload Card -->
+        <div class="glass rounded-2xl p-5 space-y-4 shadow-xl">
+            <label class="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
+                📹 Unggah Video Pendek (Bahasa Indonesia):
             </label>
             
-            <div class="border-2 border-dashed border-slate-700/80 rounded-xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative bg-slate-900/50" onclick="document.getElementById('videoInput').click()">
-                <input type="file" id="videoInput" accept="video/*" class="hidden" onchange="handleFileSelect(event)">
-                <div id="uploadPlaceholder" class="space-y-2">
-                    <div class="w-10 h-10 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-indigo-400 text-lg">
-                        📂
-                    </div>
-                    <p class="text-xs font-medium text-slate-300">Ketuk untuk pilih file video dari HP</p>
-                    <p class="text-[10px] text-slate-500">Mendukung MP4, MOV (Kamera Depan / Reels)</p>
-                </div>
-                <div id="fileInfoBox" class="hidden space-y-1">
-                    <p class="text-xs font-semibold text-emerald-400">✅ Video Terpilih:</p>
-                    <p id="fileNameDisplay" class="text-[11px] text-slate-300 truncate font-mono"></p>
-                </div>
-            </div>
+            <input type="file" id="videoFile" accept="video/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer bg-slate-900/90 p-3 rounded-xl border border-slate-700/80">
 
-            <button onclick="startRealAIProcess()" id="actionBtn" disabled
-                class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 font-bold text-xs text-white shadow-lg shadow-indigo-600/30 opacity-50 cursor-not-allowed transition flex items-center justify-center space-x-2">
-                <span id="btnText">🪄 Proses AI: Ekstrak & Terjemahkan ke Inggris</span>
+            <!-- URL Termux disembunyikan/ditanam otomatis agar pengguna tidak perlu isi manual -->
+            <input type="hidden" id="serverUrl" value="https://a6bed81e4a56bfa7-140-213-29-232.serveousercontent.com">
+
+            <button onclick="uploadAndTranslate()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 font-bold text-xs text-white shadow-lg shadow-indigo-600/30 hover:opacity-95 transition">
+                ✨ Terjemahkan ke Teks Bahasa Inggris
             </button>
         </div>
 
-        <!-- Step 2: Progress Status Bar (Nyata) -->
-        <div id="progressSection" class="glass-box rounded-2xl p-4 shadow-xl space-y-2.5 hidden border-amber-500/30">
-            <div class="flex justify-between items-center text-xs">
-                <span id="progressStatusText" class="font-semibold text-amber-300">Memuat AI Engine ke Browser...</span>
-                <span id="progressPercent" class="font-mono text-amber-400">0%</span>
-            </div>
-            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
-            </div>
-            <p class="text-[10px] text-slate-400 italic text-center">Proses berjalan secara lokal di perangkat Anda (tanpa server luar).</p>
+        <!-- Progress Box -->
+        <div id="progressBox" class="glass rounded-2xl p-4 hidden space-y-2 border-amber-500/30">
+            <p id="statusLog" class="text-xs font-semibold text-amber-300 animate-pulse">Memproses audio video di Termux...</p>
         </div>
 
-        <!-- Step 3: Video Preview & Live Subtitles Output -->
-        <div id="outputSection" class="glass-box rounded-2xl p-4 shadow-xl space-y-3 hidden border-indigo-500/30">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-                    ✨ Hasil Subtitle Inggris Bait per Bait
-                </span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Synced AI Subtitles</span>
+        <!-- Output Result -->
+        <div id="resultBox" class="glass rounded-2xl p-5 hidden space-y-4 shadow-xl border-indigo-500/30">
+            <h3 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                ✅ Hasil Terjemahan Teks Sampai Selesai:
+            </h3>
+            
+            <div class="space-y-2">
+                <label class="text-[10px] text-slate-400 uppercase font-mono">Full Terjemahan Inggris:</label>
+                <div id="translatedTextOutput" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs text-indigo-100 font-mono leading-relaxed select-all max-h-48 overflow-y-auto"></div>
             </div>
 
-            <!-- Video Player dengan Overlay Subtitle Asli -->
-            <div class="relative w-full bg-black rounded-xl overflow-hidden aspect-[9/16] max-h-[380px] flex items-center justify-center border border-slate-800">
-                <video id="resultVideo" class="w-full h-full object-contain" controls></video>
-                
-                <!-- Kotak Subtitle Real-time -->
-                <div class="absolute bottom-6 left-4 right-4 text-center pointer-events-none">
-                    <span id="liveSubText" class="inline-block px-3.5 py-1.5 bg-black/70 backdrop-blur-md text-white font-black text-sm md:text-base tracking-wide rounded-xl subtitle-style transition-all">
-                        [Subtitle English akan muncul di sini...]
-                    </span>
-                </div>
+            <div class="space-y-2">
+                <label class="text-[10px] text-slate-400 uppercase font-mono">Format Subtitle (.SRT):</label>
+                <textarea id="srtOutputBox" rows="6" readonly class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-[11px] font-mono text-slate-300"></textarea>
             </div>
 
-            <!-- Download Button -->
-            <button onclick="downloadSRTFile()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl transition border border-slate-700 flex items-center justify-center gap-1.5">
-                📥 Download File Subtitle (.SRT) Profesional
+            <button onclick="downloadSRT()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition shadow-md">
+                📥 Unduh File Subtitle .SRT
             </button>
         </div>
 
@@ -112,108 +78,59 @@
 
     <!-- Footer -->
     <footer class="w-full border-t border-slate-900 bg-slate-950 py-4 text-center text-[11px] text-slate-500">
-        <p>Real AI Video Subtitle Studio • GitHub Pages Ready</p>
+        <p>GitHub Pages Frontend • Termux Python & FFmpeg Backend</p>
     </footer>
 
-    <!-- Script Fungsional Nyata -->
     <script>
-        const videoInput = document.getElementById('videoInput');
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-        const fileInfoBox = document.getElementById('fileInfoBox');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const actionBtn = document.getElementById('actionBtn');
-        const progressSection = document.getElementById('progressSection');
-        const progressStatusText = document.getElementById('progressStatusText');
-        const progressPercent = document.getElementById('progressPercent');
-        const progressBar = document.getElementById('progressBar');
-        const outputSection = document.getElementById('outputSection');
-        const resultVideo = document.getElementById('resultVideo');
-        const liveSubText = document.getElementById('liveSubText');
-
-        let selectedVideoFile = null;
-        let generatedSubtitles = [];
-
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                selectedVideoFile = file;
-                fileNameDisplay.textContent = file.name;
-                uploadPlaceholder.classList.add('hidden');
-                fileInfoBox.classList.remove('hidden');
-                
-                actionBtn.disabled = false;
-                actionBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        async function startRealAIProcess() {
-            if (!selectedVideoFile) return;
-
-            progressSection.classList.remove('hidden');
-            actionBtn.disabled = true;
-            actionBtn.classList.add('opacity-50');
-
-            // Simulasi tahapan ekstraksi audio nyata & analisis AI lokal browser
-            let steps = [
-                { text: "Mengekstrak trek audio dari video mentah...", percent: 20, width: "20%" },
-                { text: "Menjalankan AI Speech Recognition (Bahasa Indonesia)...", percent: 50, width: "50%" },
-                { text: "Menerjemahkan kalimat ke Bahasa Inggris (Natural Flow)...", percent: 80, width: "80%" },
-                { text: "Menyinkronkan timestamp bait per bait...", percent: 100, width: "100%" }
-            ];
-
-            for (let s of steps) {
-                progressStatusText.textContent = s.text;
-                progressPercent.textContent = `${s.percent}%`;
-                progressBar.style.width = s.width;
-                await new Promise(r => setTimeout(r, 900));
-            }
-
-            // Memuat video ke pemutar
-            const videoURL = URL.createObjectURL(selectedVideoFile);
-            resultVideo.src = videoURL;
-
-            // Generate subtitle berdasarkan durasi video asli
-            generatedSubtitles = [
-                { start: 0.0, end: 3.5, text: "Hey everyone! Welcome back to my daily creator vlog." },
-                { start: 3.5, end: 7.0, text: "Today, let me show you how I build my global content." },
-                { start: 7.0, end: 11.0, text: "Make sure to watch closely and enjoy the process!" }
-            ];
-
-            progressSection.classList.add('hidden');
-            outputSection.classList.remove('hidden');
-            outputSection.scrollIntoView({ behavior: 'smooth' });
-
-            // Hubungkan pemutar video dengan teks subtitle real-time
-            resultVideo.ontimeupdate = () => {
-                let ct = resultVideo.currentTime;
-                let active = generatedSubtitles.find(sub => ct >= sub.start && ct <= sub.end);
-                if (active) {
-                    liveSubText.textContent = active.text;
-                    liveSubText.style.opacity = "1";
-                } else {
-                    liveSubText.style.opacity = "0.3";
-                }
-            };
-
-            alert("Berhasil! Subtitle bahasa Inggris bait per bait telah disinkronkan ke video Anda.");
-        }
-
-        function downloadSRTFile() {
-            if (generatedSubtitles.length === 0) return;
-            let srtData = "1\n00:00:00,000 --> 00:00:03,500\nHey everyone! Welcome back to my daily creator vlog.\n\n" +
-                          "2\n00:00:03,500 --> 00:00:07,000\nToday, let me show you how I build my global content.\n\n" +
-                          "3\n00:00:07,000 --> 00:00:11,000\nMake sure to watch closely and enjoy the process!";
+        async function uploadAndTranslate() {
+            const fileInput = document.getElementById('videoFile');
+            const serverUrl = document.getElementById('serverUrl').value.trim();
             
-            const blob = new Blob([srtData], { type: 'text/plain' });
+            if (!fileInput.files[0]) {
+                alert("Silakan pilih file video terlebih dahulu!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', fileInput.files[0]);
+
+            document.getElementById('progressBox').classList.remove('hidden');
+            document.getElementById('statusLog').textContent = "Mengunggah video pendek ke server Termux...";
+
+            try {
+                const response = await fetch(`${serverUrl}/translate`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('translatedTextOutput').textContent = data.translation;
+                    document.getElementById('srtOutputBox').value = data.srt;
+                    document.getElementById('progressBox').classList.add('hidden');
+                    document.getElementById('resultBox').classList.remove('hidden');
+                    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert("Gagal memproses: " + data.error);
+                    document.getElementById('progressBox').classList.add('hidden');
+                }
+            } catch (err) {
+                alert("Gagal terhubung ke server Termux. Pastikan Termux dan perintah Serveo masih menyala!");
+                document.getElementById('progressBox').classList.add('hidden');
+            }
+        }
+
+        function downloadSRT() {
+            const content = document.getElementById('srtOutputBox').value;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `AI_English_Subtitles_${Date.now()}.srt`;
+            a.download = "creator_english_subtitles.srt";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            alert("File .SRT berhasil diunduh!");
         }
     </script>
 </body>
