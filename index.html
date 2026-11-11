@@ -23,14 +23,14 @@
                     <p class="text-[10px] text-slate-400">ID Video to EN Subtitle Translation</p>
                 </div>
             </div>
-            <!-- Tombol Pengaturan Server Tersembunyi/Praktis -->
+            <!-- Tombol Pengaturan Server -->
             <button onclick="toggleSettings()" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1">
                 ⚙️ <span id="serverStatusText">Atur Link</span>
             </button>
         </div>
     </header>
 
-    <!-- Modal Pengaturan Link Server (Hanya perlu diisi sekali per sesi Termux) -->
+    <!-- Modal Pengaturan Link Server -->
     <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="glass max-w-md w-full rounded-2xl p-5 space-y-4 border-indigo-500/40 shadow-2xl">
             <div class="flex justify-between items-center">
@@ -95,11 +95,9 @@
     </footer>
 
     <script>
-        // Cek apakah link server sudah pernah disimpan di memori browser
         window.onload = function() {
             const savedUrl = localStorage.getItem('termux_server_url');
             if (!savedUrl) {
-                // Jika belum ada, otomatis buka popup pengaturan saat pertama kali dibuka
                 document.getElementById('settingsModal').classList.remove('hidden');
             } else {
                 document.getElementById('serverUrlInput').value = savedUrl;
@@ -112,20 +110,24 @@
         }
 
         function saveServerUrl() {
-            const urlInput = document.getElementById('serverUrlInput').value.trim();
+            let urlInput = document.getElementById('serverUrlInput').value.trim();
             if (!urlInput) {
                 alert("Link server tidak boleh kosong!");
                 return;
             }
-            // Simpan permanen di browser HP
+            // Membersihkan garis miring (/) di ujung link jika tidak sengaja terikut saat salin
+            if (urlInput.endsWith('/')) {
+                urlInput = urlInput.slice(0, -1);
+            }
+            
             localStorage.setItem('termux_server_url', urlInput);
             document.getElementById('settingsModal').classList.add('hidden');
-            alert("Link server berhasil disimpan dan siap digunakan!");
+            alert("Link server berhasil disimpan dan siap dihubungkan!");
         }
 
         async function uploadAndTranslate() {
             const fileInput = document.getElementById('videoFile');
-            const serverUrl = localStorage.getItem('termux_server_url');
+            let serverUrl = localStorage.getItem('termux_server_url');
             
             if (!serverUrl) {
                 alert("Silakan atur link server Termux terlebih dahulu melalui tombol ⚙️ di pojok kanan atas!");
@@ -133,8 +135,13 @@
                 return;
             }
 
+            // Pastikan double slash aman dibersihkan saat fetch
+            if (serverUrl.endsWith('/')) {
+                serverUrl = serverUrl.slice(0, -1);
+            }
+
             if (!fileInput.files[0]) {
-                alert("Silakan pilih file video terlebih dahulu!");
+                alert("Silakan pilih file video pendek terlebih dahulu!");
                 return;
             }
 
