@@ -23,11 +23,27 @@
                     <p class="text-[10px] text-slate-400">ID Video to EN Subtitle Translation</p>
                 </div>
             </div>
-            <span class="text-[10px] font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Connected
-            </span>
+            <!-- Tombol Pengaturan Server Tersembunyi/Praktis -->
+            <button onclick="toggleSettings()" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1">
+                ⚙️ <span id="serverStatusText">Atur Link</span>
+            </button>
         </div>
     </header>
+
+    <!-- Modal Pengaturan Link Server (Hanya perlu diisi sekali per sesi Termux) -->
+    <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass max-w-md w-full rounded-2xl p-5 space-y-4 border-indigo-500/40 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider">🔗 Konfigurasi Link Termux (Serveo)</h3>
+                <button onclick="toggleSettings()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+            <p class="text-[11px] text-slate-400">Masukkan link Serveo aktif dari Termux Anda di bawah ini. Link akan tersimpan otomatis di browser Anda:</p>
+            <input type="text" id="serverUrlInput" placeholder="https://xxxx.serveousercontent.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+            <button onclick="saveServerUrl()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+                Simpan & Hubungkan
+            </button>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="max-w-xl w-full mx-auto px-4 py-6 flex-grow space-y-4">
@@ -39,9 +55,6 @@
             </label>
             
             <input type="file" id="videoFile" accept="video/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer bg-slate-900/90 p-3 rounded-xl border border-slate-700/80">
-
-            <!-- URL Termux disembunyikan/ditanam otomatis agar pengguna tidak perlu isi manual -->
-            <input type="hidden" id="serverUrl" value="https://a6bed81e4a56bfa7-140-213-29-232.serveousercontent.com">
 
             <button onclick="uploadAndTranslate()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 font-bold text-xs text-white shadow-lg shadow-indigo-600/30 hover:opacity-95 transition">
                 ✨ Terjemahkan ke Teks Bahasa Inggris
@@ -82,10 +95,44 @@
     </footer>
 
     <script>
+        // Cek apakah link server sudah pernah disimpan di memori browser
+        window.onload = function() {
+            const savedUrl = localStorage.getItem('termux_server_url');
+            if (!savedUrl) {
+                // Jika belum ada, otomatis buka popup pengaturan saat pertama kali dibuka
+                document.getElementById('settingsModal').classList.remove('hidden');
+            } else {
+                document.getElementById('serverUrlInput').value = savedUrl;
+            }
+        }
+
+        function toggleSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function saveServerUrl() {
+            const urlInput = document.getElementById('serverUrlInput').value.trim();
+            if (!urlInput) {
+                alert("Link server tidak boleh kosong!");
+                return;
+            }
+            // Simpan permanen di browser HP
+            localStorage.setItem('termux_server_url', urlInput);
+            document.getElementById('settingsModal').classList.add('hidden');
+            alert("Link server berhasil disimpan dan siap digunakan!");
+        }
+
         async function uploadAndTranslate() {
             const fileInput = document.getElementById('videoFile');
-            const serverUrl = document.getElementById('serverUrl').value.trim();
+            const serverUrl = localStorage.getItem('termux_server_url');
             
+            if (!serverUrl) {
+                alert("Silakan atur link server Termux terlebih dahulu melalui tombol ⚙️ di pojok kanan atas!");
+                document.getElementById('settingsModal').classList.remove('hidden');
+                return;
+            }
+
             if (!fileInput.files[0]) {
                 alert("Silakan pilih file video terlebih dahulu!");
                 return;
@@ -115,7 +162,7 @@
                     document.getElementById('progressBox').classList.add('hidden');
                 }
             } catch (err) {
-                alert("Gagal terhubung ke server Termux. Pastikan Termux dan perintah Serveo masih menyala!");
+                alert("Gagal terhubung ke Termux. Pastikan perintah Serveo di Termux Anda sedang menyala dan link yang dimasukkan benar!");
                 document.getElementById('progressBox').classList.add('hidden');
             }
         }
